@@ -3,6 +3,8 @@ package com.example.googlemapusingmanual;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -83,6 +85,15 @@ public class AchieveActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "완료", Toast.LENGTH_SHORT).show();
                     intWater = increase(intWater);
                     checkBoxs[0].setText(water[intWater]);
+
+                    // 딜레이
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkBoxs[0].setChecked(false);
+                        }
+                    }, 1000);
                 }
             }
         });
@@ -94,6 +105,14 @@ public class AchieveActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "완료", Toast.LENGTH_SHORT).show();
                     intWalk = increase(intWalk);
                     checkBoxs[1].setText(walk[intWalk]);
+                    // 딜레이
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkBoxs[1].setChecked(false);
+                        }
+                    }, 1000);
                 }
             }
         });
@@ -105,6 +124,14 @@ public class AchieveActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "완료", Toast.LENGTH_SHORT).show();
                     intRun = increase(intRun);
                     checkBoxs[2].setText(run[intRun]);
+                    // 딜레이
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkBoxs[2].setChecked(false);
+                        }
+                    }, 1000);
                 }
             }
         });
@@ -116,6 +143,14 @@ public class AchieveActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "완료", Toast.LENGTH_SHORT).show();
                     intBicycle = increase(intBicycle);
                     checkBoxs[3].setText(bicycle[intBicycle]);
+                    // 딜레이
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkBoxs[3].setChecked(false);
+                        }
+                    }, 1000);
                 }
             }
         });
@@ -127,6 +162,14 @@ public class AchieveActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "완료", Toast.LENGTH_SHORT).show();
                     intTime = increase(intTime);
                     checkBoxs[4].setText(time[intTime]);
+                    // 딜레이
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkBoxs[4].setChecked(false);
+                        }
+                    }, 1000);
                 }
             }
         });
