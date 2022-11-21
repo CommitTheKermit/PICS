@@ -6,73 +6,86 @@
     android:layout_height="match_parent"
     tools:context=".AchieveActivity">
 
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="220dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="116dp"
-        android:button="@null"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="업적1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <CheckBox-->
+<!--        android:id="@+id/checkBox1"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:layout_marginEnd="116dp"-->
+<!--        android:button="@null"-->
+<!--        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"-->
+<!--        android:text="업적1"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="220dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="116dp"
-        android:button="@null"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="업적2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox1" />
+<!--    <CheckBox-->
+<!--        android:id="@+id/checkBox2"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginEnd="116dp"-->
+<!--        android:button="@null"-->
+<!--        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"-->
+<!--        android:text="업적2"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/checkBox1" />-->
 
-    <CheckBox
-        android:id="@+id/checkBox3"
-        android:layout_width="220dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="116dp"
-        android:button="@null"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="업적3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+<!--    <CheckBox-->
+<!--        android:id="@+id/checkBox3"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginEnd="116dp"-->
+<!--        android:button="@null"-->
+<!--        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"-->
+<!--        android:text="업적3"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />-->
 
-    <CheckBox
-        android:id="@+id/checkBox4"
-        android:layout_width="220dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="116dp"
-        android:button="@null"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="업적4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+<!--    <CheckBox-->
+<!--        android:id="@+id/checkBox4"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginEnd="116dp"-->
+<!--        android:button="@null"-->
+<!--        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"-->
+<!--        android:text="업적4"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/checkBox3" />-->
 
-    <CheckBox
-        android:id="@+id/checkBox5"
-        android:layout_width="220dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="116dp"
-        android:button="@null"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="업적5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox4" />
+<!--    <CheckBox-->
+<!--        android:id="@+id/checkBox5"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginStart="75dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginEnd="116dp"-->
+<!--        android:button="@null"-->
+<!--        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"-->
+<!--        android:text="업적5"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/checkBox4" />-->
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

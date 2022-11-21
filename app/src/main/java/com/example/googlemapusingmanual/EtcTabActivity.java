@@ -35,11 +35,11 @@ public class EtcTabActivity extends AppCompatActivity {
         setMainScreen();
     }
 
-    public void onClickSetAlarmButton(View v) {
-        Intent intent = new Intent(EtcTabActivity.this, NotificationSettingActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    public void onClickSetAlarmButton(View v) {
+//        Intent intent = new Intent(EtcTabActivity.this, NotificationSettingActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 
     // etcLogic
     public void setMainScreen() {

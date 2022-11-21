@@ -24,15 +24,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity
-            android:name=".NotificationSettingActivity"
-            android:exported="false" />
+
         <activity
             android:name=".EtcTabActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true" />
