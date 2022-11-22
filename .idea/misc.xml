@@ -3,7 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< Updated upstream
         <entry key="..\:/Users/kermit/AndroidStudioProjects/googleMapUsingManual/app/src/main/res/layout/activity_main.xml" value="0.24157303370786518" />
+=======
+        <entry key="..\:/Users/kermit/AndroidStudioProjects/googleMapUsingManual/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/kermit/AndroidStudioProjects/googleMapUsingManual/app/src/main/res/layout/fragment_achievement_tab.xml" value="0.1037037037037037" />
+        <entry key="..\:/Users/kermit/AndroidStudioProjects/googleMapUsingManual/app/src/main/res/layout/fragment_etc_tab.xml" value="0.1037037037037037" />
+        <entry key="..\:/Users/kermit/AndroidStudioProjects/googleMapUsingManual/app/src/main/res/layout/fragment_map_tab.xml" value="0.1037037037037037" />
+        <entry key="..\:/Users/kermit/AndroidStudioProjects/googleMapUsingManual/app/src/main/res/layout/fragment_ranking_tab.xml" value="0.1037037037037037" />
+        <entry key="..\:/Users/kermit/AndroidStudioProjects/googleMapUsingManual/app/src/main/res/layout/fragment_weight_tab.xml" value="0.1037037037037037" />
+        <entry key="..\:/Users/kermit/AndroidStudioProjects/googleMapUsingManual/app/src/main/res/menu/menu.xml" value="0.1037037037037037" />
+>>>>>>> Stashed changes
       </map>
     </option>
   </component>

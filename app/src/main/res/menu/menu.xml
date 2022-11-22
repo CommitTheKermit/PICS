@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menuIcon1"
+        android:id="@+id/iconAchievement"
         android:enabled="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_baseline_dns_24"
         android:title="업적"/>
     <item
-        android:id="@+id/menuIcon2"
+        android:id="@+id/iconRanking"
         android:enabled="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_baseline_flash_on_24"
+        android:title="랭킹"/>
+    <item
+        android:id="@+id/iconMap"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_adjust_24"
         android:title="기록"/>
     <item
-        android:id="@+id/menuIcon3"
+        android:id="@+id/iconWeight"
         android:enabled="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_baseline_line_weight_24"
+        android:title="체중"/>
+    <item
+        android:id="@+id/iconEtc"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_category_24"
         android:title="기타"/>
 
 </menu>
