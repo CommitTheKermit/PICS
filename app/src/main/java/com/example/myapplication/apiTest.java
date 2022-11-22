@@ -15,11 +15,11 @@ import java.io.IOException;
 public class apiTest extends Thread{
     public void func() throws IOException, JSONException {
         String endPoint =  "http://apis.data.go.kr/1360000/VilageFcstInfoService/";
-        String serviceKey = "bRsNyPW+NewTx2aUvwqDdABLPU5afYJQI5PoS/SLSbiJ3llFANs1eBUdVnq5zaSNfvQ2AqLWJRrHvNOPJm3k8Q==";
-        //String serviceKey = "bRsNyPW%2BNewTx2aUvwqDdABLPU5afYJQI5PoS%2FSLSbiJ3llFANs1eBUdVnq5zaSNfvQ2AqLWJRrHvNOPJm3k8Q%3D%3D";
+        //String serviceKey = "bRsNyPW+NewTx2aUvwqDdABLPU5afYJQI5PoS/SLSbiJ3llFANs1eBUdVnq5zaSNfvQ2AqLWJRrHvNOPJm3k8Q==";
+        String serviceKey = "bRsNyPW%2BNewTx2aUvwqDdABLPU5afYJQI5PoS%2FSLSbiJ3llFANs1eBUdVnq5zaSNfvQ2AqLWJRrHvNOPJm3k8Q%3D%3D";
         String pageNo = "1";
         String numOfRows = "10";
-        String baseDate = "202221115"; //원하는 날짜
+        String baseDate = "20221122"; //원하는 날짜
         String baseTime = "1100"; //원하는 시간
         String nx = "98"; //위경도임.
         String ny = "77"; //위경도 정보는 api문서 볼 것
