@@ -30,19 +30,20 @@ public class EtcTabActivity extends AppCompatActivity {
 
         builder.create().show();
     }
+    public void withdrawal() {
+        // TODO: 회원 탈퇴 기능 추가
+        /* if (회원탈퇴 됐으면) {
 
-    public void onClickSetMainScreenButton(View v) {
-        setMainScreen();
+        } */
+        AlertDialog.Builder builder = new AlertDialog.Builder(EtcTabActivity.this);
+        builder.setTitle("회원 탈퇴");
+        builder.setMessage("회원 탈퇴가 되었습니다.");
+        builder.setPositiveButton("확인", null);
+
+        builder.create().show();
     }
 
-//    public void onClickSetAlarmButton(View v) {
-//        Intent intent = new Intent(EtcTabActivity.this, NotificationSettingActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
-
-    // etcLogic
-    public void setMainScreen() {
+    public void onClickSetMainScreenButton(View v){
         String[] mainScreenStrings = {"업적", "랭킹", "지도", "체중 기록", "기타"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EtcTabActivity.this);
@@ -61,20 +62,6 @@ public class EtcTabActivity extends AppCompatActivity {
                 }
             }
         });
-
-        builder.create().show();
-    }
-
-    public void withdrawal() {
-        // TODO: 회원 탈퇴 기능 추가
-        /* if (회원탈퇴 됐으면) {
-
-        } */
-        AlertDialog.Builder builder = new AlertDialog.Builder(EtcTabActivity.this);
-        builder.setTitle("회원 탈퇴");
-        builder.setMessage("회원 탈퇴가 되었습니다.");
-        builder.setPositiveButton("확인", null);
-
         builder.create().show();
     }
 
@@ -102,6 +89,29 @@ public class EtcTabActivity extends AppCompatActivity {
             }
         });
 
+        builder.create().show();
+    }
+
+    public void onClickLogoutButton(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(EtcTabActivity.this);
+        builder.setTitle("로그 아웃");
+        builder.setMessage("로그 아웃하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                logout();
+            }
+        });
+        builder.setNegativeButton("아니오", null);
+
+        builder.create().show();
+    }
+    public void logout() {
+        // TODO: 로그 아웃 기능 추가 현재는 알림뿐
+        AlertDialog.Builder builder = new AlertDialog.Builder(EtcTabActivity.this);
+        builder.setTitle("로그 아웃");
+        builder.setMessage("로그 아웃 되었습니다.");
+        builder.setPositiveButton("확인", null);
         builder.create().show();
     }
 }
