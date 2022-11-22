@@ -1,196 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    android:background="?attr/colorAccent"
     android:orientation="vertical">
 
-<!--    구글맵 부분-->
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/map"
-        tools:context=".MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
-
-<!--    각종버튼-->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btnGpsStart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="GPS start"/>
 
-<!--            <Button-->
-<!--                android:id="@+id/gpsProvider"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="gpsProvider"/>-->
-<!--            <Button-->
-<!--                android:id="@+id/netProvider"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="netProvider"/>-->
-            <Button
-                android:id="@+id/currentLoc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="currentLoc"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="80dp"
+                android:gravity="center_horizontal"
+                android:text="로그인"
+                android:textColor="#000000"
+                android:textSize="40dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-
-            <Button
-                android:id="@+id/markMarker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="mark"
-                android:layout_gravity="center"/>
-
-            <Button
-                android:id="@+id/drawLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="drawLine"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
         <TextView
-            android:id="@+id/txtResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sample TEXT"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:text="ID"
+            android:textColor="#232323" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_id"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginId"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:text="경과시간"
-                android:layout_weight="1"
-                android:gravity="center"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:background="@color/white"
+                android:hint="아이디"
+                android:textColor="@color/black" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="이동거리"
-                android:layout_weight="1"
-                android:gravity="center"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp"
+            android:text="PASSWORD"
+            android:textColor="#232323" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_password"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
             android:orientation="horizontal">
-<!--            <TextView-->
-<!--                android:id="@+id/txtElapsedTime"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="00:00"-->
-<!--                android:layout_weight="1"-->
-<!--                android:gravity="center"-->
-<!--                android:textSize="30dp"/>-->
 
-            <Chronometer
-                android:id="@+id/chronoElapsedTime"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginPasswd"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:format="%s"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="30dp"
-                android:text="00:00"/>
+                android:layout_gravity="center_horizontal"
+                android:background="@color/white"
+                android:hint="비밀번호"
+                android:inputType="textPassword"
+                android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/txtTotalDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0.00km"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="30dp"/>
-
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
-            <LinearLayout
+
+            <Button
+                android:id="@+id/LoginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="측정속도"
-                    android:layout_weight="1"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="평균속도"
-                    android:layout_weight="1"
-                    android:gravity="center"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/txtMeasuredSpeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0km/s"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="30dp"/>
-
-                <TextView
-                    android:id="@+id/txtAvgSpeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0km/s"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="30dp"/>
-
-            </LinearLayout>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
+                android:backgroundTint="#ffffff"
+                android:text="로그인"
+                android:textColor="#000000" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/RegisterBtn"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="30dp"
+                android:backgroundTint="#ffffff"
+                android:text="Join"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/Find_Btn"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="30dp"
+                android:backgroundTint="#ffffff"
+                android:text="ID/PW찾기"
+                android:textColor="#000000" />
+        </LinearLayout>
 
     </LinearLayout>
-    <Button
-        android:id="@+id/btnInitiate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="초기화"/>
-
 
 </LinearLayout>
