@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuIcon1"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:title="업적"/>
+    <item
+        android:id="@+id/menuIcon2"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:title="기록"/>
+    <item
+        android:id="@+id/menuIcon3"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:title="기타"/>
+
+</menu>

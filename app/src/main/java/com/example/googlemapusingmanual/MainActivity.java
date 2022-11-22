@@ -198,8 +198,6 @@ public class MainActivity extends AppCompatActivity
 //        });
         mHandler = new Handler() ;
 
-
-
         // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
         final Runnable runnable = new Runnable() {
 

@@ -11,7 +11,7 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="270dp"
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
@@ -183,14 +183,22 @@
             </LinearLayout>
 
         </LinearLayout>
+        <Button
+            android:id="@+id/btnInitiate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="초기화"/>
+
 
 
     </LinearLayout>
-    <Button
-        android:id="@+id/btnInitiate"
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="초기화"/>
-
+        android:layout_gravity="bottom"
+        android:background="#ffffff"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/menu"/>
 
 </LinearLayout>
