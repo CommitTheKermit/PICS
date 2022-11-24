@@ -81,12 +81,16 @@ import androidx.loader.app.LoaderManager;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -94,14 +98,24 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
+    Button btnLogo, btnNotification, btnMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigation = (BottomNavigationView) findViewById(R.id.bottomNavigation);
+
+//        btnLogo = (Button) findViewById(R.id.btnLogo);
+//        btnNotification = (Button) findViewById(R.id.btnNotification);
+//        btnMenu = (Button) findViewById(R.id.btnMenu);
+
+//        btnLogo.bringToFront();
+//        btnNotification.bringToFront();
+//        btnMenu.bringToFront();
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide(); //상단 바 없애기
+
 
 //        gpsProviderButton = (Button) findViewById(R.id.gpsProvider);
 //        gpsProviderButton.setOnClickListener(new View.OnClickListener() {
@@ -184,4 +198,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle presses on the action bar items
+//        switch (item.getItemId()) {
+//            case R.id.action_btn1:
+//                playBtn();
+//                return true;
+//            case R.id.action_btn2:
+//                stopBtn();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 }

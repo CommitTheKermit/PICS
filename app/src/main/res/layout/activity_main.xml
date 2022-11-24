@@ -4,21 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    tools:context=".MainActivity">
 
-    <TextView
+    <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/purple_500"
-        />
+        android:gravity="center_vertical"
+        android:background="@color/purple_500">
+
+        <ImageButton
+            android:id="@+id/btnLogo"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_launcher_foreground"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="right"/>
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_baseline_menu_24"
+            android:layout_alignParentRight="true"
+            android:layout_marginHorizontal="10dp"/>
+        <ImageButton
+            android:id="@+id/btnNotification"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-70dp"
+            android:background="@drawable/ic_baseline_notifications_24"
+            android:layout_alignLeft="@id/btnMenu"/>
+
+<!--        <Spinner-->
+<!--            android:visibility="invisible"-->
+<!--            android:id="@+id/spinnerExercise"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_centerHorizontal="true"-->
+
+<!--            />-->
+
+    </RelativeLayout>
+
 
     <FrameLayout
         android:id="@+id/frameMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/topBar"/>
+        android:layout_below="@id/topBar" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"

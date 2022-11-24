@@ -22,15 +22,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -59,14 +64,20 @@ public class mapTab extends Fragment implements
         private boolean permissionDenied = false;
 
         private GoogleMap map;
+        private UiSettings mUiSettings;
+
         Button btnPause, btnStart, btnStop;
-        private TextView txtResult, txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
+        private TextView txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
         private static Handler mHandler ;
         Chronometer chronoElapsedTime;
         boolean flagTime;
         long[] timeArray = {0, 0};
 
         Thread statisticsThread;
+        boolean pressed = false;
+        boolean running = false;
+        long currentTime;
+        Spinner spinnerExercise;
 
 
         ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
@@ -139,6 +150,47 @@ public class mapTab extends Fragment implements
         mHandler = new Handler() ;
 
         // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
+
+
+
+
+
+
+
+//        currentLocButton.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//
+//            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
+//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            double currentLat = location.getLatitude();
+//            double currentLon = location.getLongitude();
+//            Toast.makeText(getActivity().getApplicationContext(), "위도:" + currentLat +"\n경도" + currentLon, Toast.LENGTH_LONG).show();
+//        }
+//    });
+        // Inflate the layout for this fragment
+        return rootView;
+
+}
+
+
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+
+
+        map = googleMap;
+        map.setOnMyLocationButtonClickListener(this);
+        map.setOnMyLocationClickListener(this);
+        enableMyLocation();
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.83066595547154 ,128.75450499202682), 15));
+        map.getUiSettings().setZoomControlsEnabled(true);
+
         final Runnable runnable = new Runnable() {
 
             @Override
@@ -194,24 +246,22 @@ public class mapTab extends Fragment implements
                 sum = sum / speedList.size();
                 txtAvgSpeed.setText(sum + "km/h");
 
-    //                float elapsedMillis =  (SystemClock.elapsedRealtime()
-    //                        - chronoElapsedTime.getBase());
-    //                speed = Math.round(distanceKilometer / (elapsedMillis / 1000.0)  * (1/3600));
-    //                if(speed > 100 || speed < 0 )
-    //                    speed = 0;
-    //                txtAvgSpeed.setText( speed+ "km/h");
-    //                Log.d("DEBUG","elapsedMillis   " + elapsedMillis + "milsec");
-    //                Log.d("DEBUG","avgSpeed   " + speed + "km/h");
+//                float elapsedMillis =  (SystemClock.elapsedRealtime()
+//                        - chronoElapsedTime.getBase());
+//                speed = Math.round(distanceKilometer / (elapsedMillis / 1000.0)  * (1/3600));
+//                if(speed > 100 || speed < 0 )
+//                    speed = 0;
+//                txtAvgSpeed.setText( speed+ "km/h");
+//                Log.d("DEBUG","elapsedMillis   " + elapsedMillis + "milsec");
+//                Log.d("DEBUG","avgSpeed   " + speed + "km/h");
 
             }
         } ;
 
-
         class NewRunnable implements Runnable {
             @Override
             public void run() {
-                while (true) {
-
+                while (true && running == true) {
                     try {
                         Thread.sleep(3000);
                     } catch (Exception e) {
@@ -223,106 +273,6 @@ public class mapTab extends Fragment implements
             }
         }
 
-//        btnGpsStart.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
-//            NewRunnable nr = new NewRunnable();
-//            statisticsThread = new Thread(nr);
-//            statisticsThread.start();
-//
-//            chronoElapsedTime.start();
-//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//                return;
-//            }
-//
-//            //gps기반 + 네트워크 기반 gps 업데이트 시작
-//            //mintime 업데이트 최소 시간
-//            //mindistance 업데이트 최소 거리 둘 다 초과하여야 gpsLocationListener 작동함.
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-//                    5000,
-//                    5,
-//                    gpsLocationListener);
-//
-////                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-////                        5000,
-////                        5,
-////                        gpsLocationListener);
-//
-//
-//        }
-//    });
-
-//        currentLocButton.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//
-//            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//                return;
-//            }
-//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//            double currentLat = location.getLatitude();
-//            double currentLon = location.getLongitude();
-//            Toast.makeText(getActivity().getApplicationContext(), "위도:" + currentLat +"\n경도" + currentLon, Toast.LENGTH_LONG).show();
-//        }
-//    });
-        // Inflate the layout for this fragment
-        return rootView;
-
-}
-
-
-    final LocationListener gpsLocationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            // 위치 리스너는 위치정보를 전달할 때 호출되므로 onLocationChanged()메소드 안에 위지청보를 처리를 작업을 구현 해야합니다.
-            String provider = location.getProvider();  // 위치정보
-            double longitude = location.getLongitude(); // 위도
-            double latitude = location.getLatitude(); // 경도
-            double altitude = location.getAltitude(); // 고도
-
-
-            double currentLat = location.getLatitude();
-            double currentLon = location.getLongitude();
-
-            LatLng currentLocMarker = new LatLng(currentLat,currentLon);
-            map.addMarker(new MarkerOptions().position(currentLocMarker));
-
-            latLngList.add(currentLocMarker);
-            timeArray[0] = timeArray[1];
-            timeArray[1] = (SystemClock.elapsedRealtime()
-                    - chronoElapsedTime.getBase()) / 1000;
-            Log.d("DEBUG","timeArray   " + timeArray[1]);
-//
-//            txtResult.setText("위치정보 : " + provider + "\n" + "위도 : " + latitude +
-//                    "\n" + "경도 : " + longitude +
-//                    "\n" + "고도 : " + altitude +
-//                    "\n마커 개수" + locsList.size());
-
-            txtResult.setText("마커 개수 :" + latLngList.size());
-            Log.d("DEBUG","마커 개수   " + latLngList.size());
-
-        } public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        } public void onProviderEnabled(String provider) {
-
-        } public void onProviderDisabled(String provider) {
-
-        }
-    };
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-
-
-        map = googleMap;
-        map.setOnMyLocationButtonClickListener(this);
-        map.setOnMyLocationClickListener(this);
-        enableMyLocation();
 
 
 //        markMarkerBtn.setOnClickListener(new View.OnClickListener() {
@@ -373,11 +323,62 @@ public class mapTab extends Fragment implements
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(pressed == true){
+                    running = false;
+                    statisticsThread.interrupt();
+                    chronoElapsedTime.stop();
+                    currentTime = SystemClock.elapsedRealtime() - chronoElapsedTime.getBase();
+                    Log.d("time", "systemTime" + SystemClock.elapsedRealtime());
+                    Log.d("time", "getBase" + chronoElapsedTime.getBase());
+                }
+                else return;
             }
         });
 
         btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(pressed == true && running == false){
+                    chronoElapsedTime.setBase(SystemClock.elapsedRealtime() - currentTime);
+                    chronoElapsedTime.start();
+                    running = true;
+                }
+                else{
+                    chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
+                    chronoElapsedTime.start();
+                }
+
+                pressed = true;
+                running = true;
+                NewRunnable nr = new NewRunnable();
+                statisticsThread = new Thread(nr);
+                statisticsThread.start();
+
+                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+
+                //gps기반 + 네트워크 기반 gps 업데이트 시작
+                //mintime 업데이트 최소 시간
+                //mindistance 업데이트 최소 거리 둘 다 초과하여야 gpsLocationListener 작동함.
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        5000,
+                        5,
+                        gpsLocationListener);
+
+//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+//                        5000,
+//                        5,
+//                        gpsLocationListener);
+
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
@@ -386,17 +387,59 @@ public class mapTab extends Fragment implements
                 txtAvgSpeed.setText("0km/s");
                 latLngList.clear();
                 map.clear();
-            }
-        });
-
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                statisticsThread.interrupt();
+                pressed = false;
+                running = false;
 
             }
         });
 
     }
+
+    final LocationListener gpsLocationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            // 위치 리스너는 위치정보를 전달할 때 호출되므로 onLocationChanged()메소드 안에 위지청보를 처리를 작업을 구현 해야합니다.
+//            String provider = location.getProvider();  // 위치정보
+//            double longitude = location.getLongitude(); // 위도
+//            double latitude = location.getLatitude(); // 경도
+//            double altitude = location.getAltitude(); // 고도
+
+
+            double currentLat = location.getLatitude();
+            double currentLon = location.getLongitude();
+
+            LatLng currentLocMarker = new LatLng(currentLat,currentLon);
+            map.addMarker(new MarkerOptions().position(currentLocMarker));
+
+            latLngList.add(currentLocMarker);
+
+            if(latLngList.size() > 1){
+                Polyline polyline = map.addPolyline(new PolylineOptions().addAll(latLngList)
+                        .width(10)
+                        .color(Color.RED));
+            }
+
+            timeArray[0] = timeArray[1];
+            timeArray[1] = (SystemClock.elapsedRealtime()
+                    - chronoElapsedTime.getBase()) / 1000;
+            Log.d("DEBUG","timeArray   " + timeArray[1]);
+//
+//            txtResult.setText("위치정보 : " + provider + "\n" + "위도 : " + latitude +
+//                    "\n" + "경도 : " + longitude +
+//                    "\n" + "고도 : " + altitude +
+//                    "\n마커 개수" + locsList.size());
+
+            Log.d("DEBUG","마커 개수   " + latLngList.size());
+
+        } public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        } public void onProviderEnabled(String provider) {
+
+        } public void onProviderDisabled(String provider) {
+
+        }
+    };
+
 
     /**
      * Enables the My Location layer if the fine location permission has been granted.
