@@ -7,10 +7,18 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/purple_500"
+        />
+
     <FrameLayout
         android:id="@+id/frameMain"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topBar"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
@@ -20,6 +28,6 @@
         android:background="#ffffff"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/menu"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

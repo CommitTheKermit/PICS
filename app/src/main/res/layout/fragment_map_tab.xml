@@ -9,7 +9,6 @@
     android:background="@color/white"
     android:id="@+id/tabMap">
 
-
     <!--    구글맵 부분-->
     <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"
@@ -19,73 +18,73 @@
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     <!--    각종버튼-->
-    <LinearLayout
-        android:id="@+id/tempButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/map">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/btnGpsStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="GPS start"/>
+<!--    <LinearLayout-->
+<!--        android:id="@+id/tempButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_below="@+id/map">-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+<!--            <Button-->
+<!--                android:id="@+id/btnGpsStart"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="GPS start"/>-->
 
-            <!--            <Button-->
-            <!--                android:id="@+id/gpsProvider"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="gpsProvider"/>-->
-            <!--            <Button-->
-            <!--                android:id="@+id/netProvider"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="netProvider"/>-->
-            <Button
-                android:id="@+id/currentLoc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="currentLoc"/>
-        </LinearLayout>
+<!--            &lt;!&ndash;            <Button&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:id="@+id/gpsProvider"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:text="gpsProvider"/>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <Button&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:id="@+id/netProvider"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:text="netProvider"/>&ndash;&gt;-->
+<!--            <Button-->
+<!--                android:id="@+id/currentLoc"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="currentLoc"/>-->
+<!--        </LinearLayout>-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_gravity="center">-->
 
-            <Button
-                android:id="@+id/markMarker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="mark"
-                android:layout_gravity="center"/>
+<!--            <Button-->
+<!--                android:id="@+id/markMarker"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="mark"-->
+<!--                android:layout_gravity="center"/>-->
 
-            <Button
-                android:id="@+id/drawLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="drawLine"
-                android:layout_gravity="center"/>
+<!--            <Button-->
+<!--                android:id="@+id/drawLine"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="drawLine"-->
+<!--                android:layout_gravity="center"/>-->
 
-        </LinearLayout>
-        <TextView
-            android:id="@+id/txtResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sample TEXT"/>
-    </LinearLayout>
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/txtResult"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="sample TEXT"/>-->
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/linearStatistics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/tempButton">
+        android:layout_below="@+id/map">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -189,11 +188,39 @@
             </LinearLayout>
 
         </LinearLayout>
-        <Button
-            android:id="@+id/btnInitiate"
+<!--        <Button-->
+<!--            android:id="@+id/btnInitiate"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="초기화"/>-->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="초기화"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            >
+            <Button
+                android:id="@+id/btnPause"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ic_baseline_pause_24"
+                android:layout_marginHorizontal="10dp"/>
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ic_baseline_play_arrow_24"
+                android:layout_marginHorizontal="10dp"/>
+            <Button
+                android:id="@+id/btnStop"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ic_baseline_stop_24"
+                android:layout_marginHorizontal="10dp"/>
+
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

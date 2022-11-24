@@ -59,17 +59,14 @@ public class mapTab extends Fragment implements
         private boolean permissionDenied = false;
 
         private GoogleMap map;
-
-//    Button gpsProviderButton;
-//    Button netProviderButton;
-        Button currentLocButton, markMarkerBtn, drawLineBtn;
-        Button btnGpsStart, btnInitiate;
+        Button btnPause, btnStart, btnStop;
         private TextView txtResult, txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
         private static Handler mHandler ;
         Chronometer chronoElapsedTime;
         boolean flagTime;
         long[] timeArray = {0, 0};
-        private BottomNavigationView bottomNavigation;
+
+        Thread statisticsThread;
 
 
         ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
@@ -119,9 +116,9 @@ public class mapTab extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View rootView = inflater.inflate(R.layout.fragment_map_tab, container, false);
+
+
 
         /*Fragment내에서는 mapView로 지도를 실행*/
         mapView = (MapView)rootView.findViewById(R.id.map);
@@ -129,172 +126,152 @@ public class mapTab extends Fragment implements
         mapView.onResume();
         mapView.getMapAsync(this);
 
-        btnGpsStart = (Button)rootView.findViewById(R.id.btnGpsStart);
-        currentLocButton = (Button) rootView.findViewById(R.id.currentLoc);
         chronoElapsedTime = (Chronometer)rootView.findViewById(R.id.chronoElapsedTime);
-        btnInitiate = (Button)rootView.findViewById(R.id.btnInitiate);
 
         txtTotalDistance = (TextView)rootView.findViewById(R.id.txtTotalDistance);
         txtMeasuredSpeed = (TextView)rootView.findViewById(R.id.txtMeasuredSpeed);
         txtAvgSpeed = (TextView)rootView.findViewById(R.id.txtAvgSpeed);
 
-        txtResult = (TextView) rootView.findViewById(R.id.txtResult);
+        btnPause = (Button) rootView.findViewById(R.id.btnPause);
+        btnStart = (Button) rootView.findViewById(R.id.btnStart);
+        btnStop = (Button) rootView.findViewById(R.id.btnStop);
 
+        mHandler = new Handler() ;
 
-//        MapsInitializer.initialize(getActivity().getApplicationContext(), Renderer.LATEST, this);
+        // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
+        final Runnable runnable = new Runnable() {
 
-//        SupportMapFragment mapFragment =
-//                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-
-
-    markMarkerBtn = (Button) rootView.findViewById(R.id.markMarker);
-    drawLineBtn = (Button) rootView.findViewById(R.id.drawLine);
-    mHandler = new Handler() ;
-
-    // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
-    final Runnable runnable = new Runnable() {
-
-        @Override
-        public void run() {
-            if(latLngList.size() < 2){
-                return;
-            }
-
-            Location previousLoc = new Location("");
-
-            previousLoc.setLatitude(latLngList.get(0).latitude);
-            previousLoc.setLongitude(latLngList.get(0).longitude);
-
-            long distanceMeter = 0;
-
-            for(int i = 1; i <latLngList.size();i++){
-                Location tempLoc = new Location("");
-                tempLoc.setLatitude(latLngList.get(i).latitude);
-                tempLoc.setLongitude(latLngList.get(i).longitude);
-                distanceMeter += Math.round(tempLoc.distanceTo(previousLoc));
-
-                previousLoc = tempLoc;
-            }
-            float distanceKilometer =  (float) (distanceMeter / 1000.0);
-            txtTotalDistance.setText(distanceKilometer + "km");
-            Log.d("DEBUG","distanceM   " + distanceMeter);
-            Log.d("DEBUG","distanceKM   " + distanceKilometer);
-
-            Location beforeLastLoc = new Location("");
-            Location lastLoc = new Location("");
-
-            beforeLastLoc.setLatitude(latLngList.get(latLngList.size() - 2).latitude);
-            beforeLastLoc.setLongitude(latLngList.get(latLngList.size() - 2).longitude);
-
-            lastLoc.setLatitude(latLngList.get(latLngList.size() - 1).latitude);
-            lastLoc.setLongitude(latLngList.get(latLngList.size() - 1).longitude);
-
-            float secToHour = 0;
-            secToHour = (float) ((float)(timeArray[1] - timeArray[0]) / 3600.0);
-            float speed = lastLoc.distanceTo(beforeLastLoc) / 1000 / secToHour;
-            speed = Math.round(speed);
-            if(speed > 100 || speed < 0 )
-                speed = 0;
-            txtMeasuredSpeed.setText( speed+ "km/h");
-            Log.d("DEBUG","secToHour   " + secToHour);
-            Log.d("DEBUG","speed   " + speed + "km/h");
-
-            speedList.add(speed);
-            float sum = 0;
-            for(float item : speedList){
-                sum += item;
-            }
-            sum = sum / speedList.size();
-            txtAvgSpeed.setText(sum + "km/h");
-
-//                float elapsedMillis =  (SystemClock.elapsedRealtime()
-//                        - chronoElapsedTime.getBase());
-//                speed = Math.round(distanceKilometer / (elapsedMillis / 1000.0)  * (1/3600));
-//                if(speed > 100 || speed < 0 )
-//                    speed = 0;
-//                txtAvgSpeed.setText( speed+ "km/h");
-//                Log.d("DEBUG","elapsedMillis   " + elapsedMillis + "milsec");
-//                Log.d("DEBUG","avgSpeed   " + speed + "km/h");
-
-        }
-    } ;
-
-
-    class NewRunnable implements Runnable {
-        @Override
-        public void run() {
-            while (true) {
-
-                try {
-                    Thread.sleep(3000);
-                } catch (Exception e) {
-                    e.printStackTrace() ;
+            @Override
+            public void run() {
+                if(latLngList.size() < 2){
+                    return;
                 }
 
-                mHandler.post(runnable) ;
+                Location previousLoc = new Location("");
+
+                previousLoc.setLatitude(latLngList.get(0).latitude);
+                previousLoc.setLongitude(latLngList.get(0).longitude);
+
+                long distanceMeter = 0;
+
+                for(int i = 1; i <latLngList.size();i++){
+                    Location tempLoc = new Location("");
+                    tempLoc.setLatitude(latLngList.get(i).latitude);
+                    tempLoc.setLongitude(latLngList.get(i).longitude);
+                    distanceMeter += Math.round(tempLoc.distanceTo(previousLoc));
+
+                    previousLoc = tempLoc;
+                }
+                float distanceKilometer =  (float) (distanceMeter / 1000.0);
+                txtTotalDistance.setText(distanceKilometer + "km");
+                Log.d("DEBUG","distanceM   " + distanceMeter);
+                Log.d("DEBUG","distanceKM   " + distanceKilometer);
+
+                Location beforeLastLoc = new Location("");
+                Location lastLoc = new Location("");
+
+                beforeLastLoc.setLatitude(latLngList.get(latLngList.size() - 2).latitude);
+                beforeLastLoc.setLongitude(latLngList.get(latLngList.size() - 2).longitude);
+
+                lastLoc.setLatitude(latLngList.get(latLngList.size() - 1).latitude);
+                lastLoc.setLongitude(latLngList.get(latLngList.size() - 1).longitude);
+
+                float secToHour = 0;
+                secToHour = (float) ((float)(timeArray[1] - timeArray[0]) / 3600.0);
+                float speed = lastLoc.distanceTo(beforeLastLoc) / 1000 / secToHour;
+                speed = Math.round(speed);
+                if(speed > 100 || speed < 0 )
+                    speed = 0;
+                txtMeasuredSpeed.setText( speed+ "km/h");
+                Log.d("DEBUG","secToHour   " + secToHour);
+                Log.d("DEBUG","speed   " + speed + "km/h");
+
+                speedList.add(speed);
+                float sum = 0;
+                for(float item : speedList){
+                    sum += item;
+                }
+                sum = sum / speedList.size();
+                txtAvgSpeed.setText(sum + "km/h");
+
+    //                float elapsedMillis =  (SystemClock.elapsedRealtime()
+    //                        - chronoElapsedTime.getBase());
+    //                speed = Math.round(distanceKilometer / (elapsedMillis / 1000.0)  * (1/3600));
+    //                if(speed > 100 || speed < 0 )
+    //                    speed = 0;
+    //                txtAvgSpeed.setText( speed+ "km/h");
+    //                Log.d("DEBUG","elapsedMillis   " + elapsedMillis + "milsec");
+    //                Log.d("DEBUG","avgSpeed   " + speed + "km/h");
+
+            }
+        } ;
+
+
+        class NewRunnable implements Runnable {
+            @Override
+            public void run() {
+                while (true) {
+
+                    try {
+                        Thread.sleep(3000);
+                    } catch (Exception e) {
+                        e.printStackTrace() ;
+                    }
+
+                    mHandler.post(runnable) ;
+                }
             }
         }
-    }
 
-        btnGpsStart.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
-            NewRunnable nr = new NewRunnable();
-            Thread statisticsThread = new Thread(nr);
-            statisticsThread.start();
+//        btnGpsStart.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
+//            NewRunnable nr = new NewRunnable();
+//            statisticsThread = new Thread(nr);
+//            statisticsThread.start();
+//
+//            chronoElapsedTime.start();
+//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
+//
+//            //gps기반 + 네트워크 기반 gps 업데이트 시작
+//            //mintime 업데이트 최소 시간
+//            //mindistance 업데이트 최소 거리 둘 다 초과하여야 gpsLocationListener 작동함.
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//                    5000,
+//                    5,
+//                    gpsLocationListener);
+//
+////                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+////                        5000,
+////                        5,
+////                        gpsLocationListener);
+//
+//
+//        }
+//    });
 
-            chronoElapsedTime.start();
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-
-            //gps기반 + 네트워크 기반 gps 업데이트 시작
-            //mintime 업데이트 최소 시간
-            //mindistance 업데이트 최소 거리 둘 다 초과하여야 gpsLocationListener 작동함.
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    5000,
-                    10,
-                    gpsLocationListener);
-
-//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-//                        5000,
-//                        5,
-//                        gpsLocationListener);
-
-
-        }
-    });
-        btnInitiate.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
-            txtTotalDistance.setText("0.00km");
-            txtMeasuredSpeed.setText("0km/s");
-            txtAvgSpeed.setText("0km/s");
-            latLngList.clear();
-        }
-    });
-        currentLocButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            double currentLat = location.getLatitude();
-            double currentLon = location.getLongitude();
-            Toast.makeText(getActivity().getApplicationContext(), "위도:" + currentLat +"\n경도" + currentLon, Toast.LENGTH_LONG).show();
-        }
-    });
+//        currentLocButton.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//
+//            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
+//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            double currentLat = location.getLatitude();
+//            double currentLon = location.getLongitude();
+//            Toast.makeText(getActivity().getApplicationContext(), "위도:" + currentLat +"\n경도" + currentLon, Toast.LENGTH_LONG).show();
+//        }
+//    });
         // Inflate the layout for this fragment
         return rootView;
 
@@ -348,51 +325,76 @@ public class mapTab extends Fragment implements
         enableMyLocation();
 
 
-        markMarkerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                double currentLat = location.getLatitude();
-                double currentLon = location.getLongitude();
-
-                LatLng currentLocMarker = new LatLng(currentLat,currentLon);
-                map.addMarker(new MarkerOptions().position(currentLocMarker));
-
-                latLngList.add(currentLocMarker);
-
-            }
-        });
-
-        drawLineBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                for(int i = 0; i < locsList.size(); i++)
-//                Log.println((String)locsList.get(i));
-//                for(int i = 0; i < locsList.size(); i++){
-//                    polylineOptions = new PolylineOptions().add((LatLng) locsList.get(i));
+//        markMarkerBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//
+//                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+//                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//                    return;
 //                }
+//
+//                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                double currentLat = location.getLatitude();
+//                double currentLon = location.getLongitude();
+//
+//                LatLng currentLocMarker = new LatLng(currentLat,currentLon);
+//                map.addMarker(new MarkerOptions().position(currentLocMarker));
+//
+//                latLngList.add(currentLocMarker);
+//
+//            }
+//        });
 
-                if(latLngList.size() > 1){
-                    Polyline polyline = map.addPolyline(new PolylineOptions().addAll(latLngList)
-                            .width(5)
-                            .color(Color.RED));
-                }
-                else{
-                    Toast.makeText(getActivity().getApplicationContext(),"두개 이상의 마커 필요",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//        drawLineBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                for(int i = 0; i < locsList.size(); i++)
+////                Log.println((String)locsList.get(i));
+////                for(int i = 0; i < locsList.size(); i++){
+////                    polylineOptions = new PolylineOptions().add((LatLng) locsList.get(i));
+////                }
+//
+//                if(latLngList.size() > 1){
+//                    Polyline polyline = map.addPolyline(new PolylineOptions().addAll(latLngList)
+//                            .width(7)
+//                            .color(Color.RED));
+//                }
+//                else{
+//                    Toast.makeText(getActivity().getApplicationContext(),"두개 이상의 마커 필요",Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//            }
+//        });
+
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });
 
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
+                txtTotalDistance.setText("0.00km");
+                txtMeasuredSpeed.setText("0km/s");
+                txtAvgSpeed.setText("0km/s");
+                latLngList.clear();
+                map.clear();
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
@@ -416,7 +418,7 @@ public class mapTab extends Fragment implements
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(getActivity().getApplicationContext(), "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), "현재 내 위치로 이동", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
