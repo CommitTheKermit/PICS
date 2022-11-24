@@ -114,4 +114,9 @@ public class EtcTabActivity extends AppCompatActivity {
         builder.setPositiveButton("확인", null);
         builder.create().show();
     }
+
+    public void onClickNotificationhistoryButton(View v){
+        Intent intent = new Intent(EtcTabActivity.this, NotificationHistoryActivity.class);
+        startActivity(intent);
+    }
 }
