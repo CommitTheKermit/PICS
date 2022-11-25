@@ -89,7 +89,7 @@ public class Find extends TabActivity {
                 number = pwd_phn.getText().toString();
                 email = pwd_email.getText().toString();
                 id_arr = email.split("@");
-                mPwdFindDataRef.child(number).child(id_arr[0]).child("pwd").addListenerForSingleValueEvent(new ValueEventListener() {
+                mPwdFindDataRef.child(id_arr[0]).child(number).child("pwd").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String value = snapshot.getValue(String.class);

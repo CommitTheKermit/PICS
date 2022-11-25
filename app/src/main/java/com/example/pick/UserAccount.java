@@ -3,26 +3,19 @@ package com.example.pick;
 public class UserAccount {
     private String email;
     private String pwd;
-//    private String number;
-//    private String idToken;
+    private String check;
+    private String number;
+
 
     public UserAccount(){ }
 
-//    public String getNumber() {
-//        return number;
-//    }
-//
-//    public void setNumber(String number) {
-//        this.number = number;
-//    }
+    public String getNumber() {
+        return number;
+    }
 
-//    public String getIdToken() {
-//        return idToken;
-//    }
-//
-//    public void setIdToken(String idToken) {
-//        this.idToken = idToken;
-//    }
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
     public String getEmail() {
         return email;
@@ -38,5 +31,13 @@ public class UserAccount {
 
     public void setPwd(String pwd) {
         this.pwd = pwd;
+    }
+
+    public String getCheck() {
+        return check;
+    }
+
+    public void setCheck(String check) {
+        this.check = check;
     }
 }

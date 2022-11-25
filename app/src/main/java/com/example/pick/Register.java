@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 
 public class Register extends AppCompatActivity {
@@ -31,6 +32,7 @@ public class Register extends AppCompatActivity {
     private DatabaseReference mDataRef, mIdFindDataRef,mPwdFindDataRef, mIdCheckDataRef;
     private String email,pwd,pwd2,number;
     private String[] id_arr;
+    private String check = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class Register extends AppCompatActivity {
         mPwdFindDataRef = mDataRef.child("PwdFind");
         mIdCheckDataRef = mDataRef.child("IdCheck");
 
+
+
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +67,7 @@ public class Register extends AppCompatActivity {
             public void onClick(View view) {
                 email = input_email.getText().toString();
                 id_arr = email.split("@");
-                mIdCheckDataRef.child(id_arr[0]).addListenerForSingleValueEvent(new ValueEventListener() {
+                mIdCheckDataRef.child(id_arr[0]).child("email").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String value = snapshot.getValue(String.class);
@@ -94,44 +98,33 @@ public class Register extends AppCompatActivity {
                 number = input_number.getText().toString();
 
                 if (pwd.equals(pwd2) == true) {
-                    try{
-                        mAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser user = mAuth.getCurrentUser();
+                    mAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
 
-                                    UserAccount account = new UserAccount();
-//                                account.setIdToken(user.getUid());
-                                    account.setEmail(email);
-                                    account.setPwd(pwd);
-//                                account.setNumber(number);
+                                UserAccount account = new UserAccount();
 
-                                    id_arr = email.split("@");
+                                account.setEmail(email);
+                                account.setPwd(pwd);
+                                account.setCheck(check);
+                                account.setNumber(number);
 
-                                    mIdCheckDataRef.child(id_arr[0]).setValue(email);
-                                    mIdFindDataRef.child(number).setValue(email);
-                                    mPwdFindDataRef.child(number).child(id_arr[0]).setValue(account);
-//                                mDataRef.child("UserAccount").child(number).setValue(id_arr[0]);
-//                                mDataRef.child("UserAccount").child(id_arr[0]).setValue(id_arr[0]);
-                                    Toast.makeText(Register.this, "등록 성공", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    Toast.makeText(Register.this, "등록 에러", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
+                                id_arr = email.split("@");
+
+                                mIdCheckDataRef.child(id_arr[0]).setValue(account);
+                                mIdFindDataRef.child(number).setValue(email);
+                                mPwdFindDataRef.child(id_arr[0]).child(number).setValue(pwd);
+
+                                Toast.makeText(Register.this, "등록 성공", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
-
-                    catch (Exception e){
-
-                        Log.d("kermit",e.getMessage());
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
-
-                    }
-
+                            else {
+                                Toast.makeText(Register.this, "등록 에러", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+                    });
 
 
                 }
