@@ -60,6 +60,11 @@ public class mapTab extends Fragment implements
     OnMapsSdkInitializedCallback{
 
         private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+        private static final int NOT_RUNNING_RECORD = 0;
+        private static final int RUNNING_RECORD = 1;
+        private static final int RELEASED = 0;
+        private static final int PRESSED = 1;
+
 
         private boolean permissionDenied = false;
 
@@ -130,7 +135,6 @@ public class mapTab extends Fragment implements
         View rootView = inflater.inflate(R.layout.fragment_map_tab, container, false);
 
 
-
         /*Fragment내에서는 mapView로 지도를 실행*/
         mapView = (MapView)rootView.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -152,11 +156,6 @@ public class mapTab extends Fragment implements
         // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
 
 
-
-
-
-
-
 //        currentLocButton.setOnClickListener(new View.OnClickListener() {
 //        @Override
 //        public void onClick(View v) {
@@ -175,10 +174,7 @@ public class mapTab extends Fragment implements
 //    });
         // Inflate the layout for this fragment
         return rootView;
-
 }
-
-
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -407,6 +403,8 @@ public class mapTab extends Fragment implements
 
             double currentLat = location.getLatitude();
             double currentLon = location.getLongitude();
+
+            if( running)
 
             LatLng currentLocMarker = new LatLng(currentLat,currentLon);
             map.addMarker(new MarkerOptions().position(currentLocMarker));
