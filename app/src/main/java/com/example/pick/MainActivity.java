@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     if(value.equals(check_num)==true){
                                         mDataRef.child("IdCheck").child(id_arr[0]).updateChildren(checkMap);
-                                        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                                        Intent intent = new Intent(MainActivity.this, PersonalInfo.class);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -85,13 +85,6 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
 
-//                            mDataRef.child("IdCheck").child(id_arr[0]).updateChildren(checkMap);
-
-
-
-//                            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-//                            startActivity(intent);
-//                            finish();
                         }
                         else {//실패했을때
                             Toast.makeText(MainActivity.this, "로그인 오류", Toast.LENGTH_SHORT).show();

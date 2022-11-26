@@ -82,24 +82,35 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text5"
+    <Spinner
+        android:id="@+id/Gen_btn"
+        android:entries="@array/my_array"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text4"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginRight="20dp"/>
+    <Button
+        android:id="@+id/sava_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Gen_btn"
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/GenderText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:hint="성별"
-            android:textColor="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginLeft="90dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:text="확인" />
+    <Button
+        android:id="@+id/cancle_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Gen_btn"
+        android:layout_toRightOf="@+id/sava_btn"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:text="취소" />
 
 
 </RelativeLayout>
