@@ -12,8 +12,9 @@
         <entry key="app/src/main/res/layout/activity_notification_history.xml" value="0.2042495727539062" />
         <entry key="app/src/main/res/layout/activity_notification_setting.xml" value="0.2631805419921875" />
         <entry key="app/src/main/res/layout/fragment_achievement_tab.xml" value="0.1037037037037037" />
-        <entry key="app/src/main/res/layout/fragment_etc_tab.xml" value="0.15007974130135993" />
+        <entry key="app/src/main/res/layout/fragment_etc_tab.xml" value="0.18897552490234376" />
         <entry key="app/src/main/res/layout/fragment_map_tab.xml" value="0.1037037037037037" />
+        <entry key="app/src/main/res/layout/fragment_ranking_tab.xml" value="0.19519927536231885" />
       </map>
     </option>
   </component>

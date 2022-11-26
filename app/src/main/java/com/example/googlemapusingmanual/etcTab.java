@@ -11,25 +11,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+
 public class etcTab extends Fragment {
+
+    private FirebaseAuth mAuth;
 
     Button btnWithdrawal, btnWeatherDelay, btnLogout, btnMainScreenSet, btnAlarm;
     Switch pushSwitch;
     public void withdrawal() {
         // TODO: 회원 탈퇴 기능 추가
-            /* if (회원탈퇴 됐으면) {
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.getCurrentUser().delete();
 
-            } */
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("회원 탈퇴");
         builder.setMessage("회원 탈퇴가 되었습니다.");
         builder.setPositiveButton("확인", null);
         builder.create().show();
     }
+
     public void weatherDelaySetting() {
         String[] mainScreenStrings = {"1분", "5분", "10분"};
 
@@ -54,6 +59,9 @@ public class etcTab extends Fragment {
     }
     public void logout() {
         // TODO: 로그 아웃 기능 추가 현재는 알림뿐
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth.getInstance().signOut();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("로그 아웃");
         builder.setMessage("로그 아웃 되었습니다.");
@@ -110,12 +118,10 @@ public class etcTab extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // TODO: 메인 화면 설정 로직이 추가되면 여기에 추가
+                        Fragment fragment = null;
                         switch (i) {
                             case 0:
-                                // 업적
                                 break;
-                            default:
-                                // ...
                         }
                     }
                 });

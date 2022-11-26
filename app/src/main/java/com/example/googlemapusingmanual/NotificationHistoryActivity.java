@@ -80,8 +80,7 @@ public class NotificationHistoryActivity extends AppCompatActivity {
         }
     }
 
-//    public void onClickBackButton(View v){
-//        Intent intent = new Intent(NotificationHistoryActivity.this, etcTab.class);
-//        startActivity(intent);
-//    }
+    public void onClickBackButton(View v){
+        finish();
+    }
 }

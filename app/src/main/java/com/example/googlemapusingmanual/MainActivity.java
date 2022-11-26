@@ -76,6 +76,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
 
 import android.os.Handler;
@@ -91,7 +92,16 @@ import android.widget.Toast;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+
+
 public class MainActivity extends AppCompatActivity {
+
+//    public void setFragment(Fragment fragment) {
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.frameMain, fragment)
+//                .commit();
+//    }
 
     private BottomNavigationView bottomNavigation;
 
@@ -160,18 +170,19 @@ public class MainActivity extends AppCompatActivity {
 //        });
         bottomNavigation.getMenu().getItem(2).setChecked(true);
         getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new mapTab()).commit();
+//        setFragment();
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.iconAchievement:
-                        getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new achievementTab()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameMain, new achievementTab()).commit();
                         break;
                     case R.id.iconRanking:
                         break;
                     case R.id.iconMap:
-                        getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new mapTab()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameMain, new mapTab()).commit();
                         break;
                     case R.id.iconWeight:
                         break;
@@ -179,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameMain, new etcTab()).commit();
                         break;
                 }
+
 
                 Log.d("kermit", "itemId :" + item.getItemId());
                 return true;
