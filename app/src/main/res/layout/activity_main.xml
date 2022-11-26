@@ -1,52 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorAccent"
+    tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="80dp"
-                android:gravity="center_horizontal"
-                android:text="로그인"
-                android:textColor="#000000"
-                android:textSize="40dp" />
-        </LinearLayout>
 
         <TextView
+            android:id="@+id/id_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="100dp"
             android:text="ID"
-            android:textColor="#232323" />
+            android:textColor="#232323"
+            android:layout_alignParentTop="true"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_id"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/id_text"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="65dp"
-            android:orientation="horizontal">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginId"
-                android:layout_width="280dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:background="@color/white"
                 android:hint="아이디"
                 android:textColor="@color/black" />
@@ -56,23 +41,28 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginTop="10dp"
+            android:id="@+id/pwd_text"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/input_layout_id"
             android:text="PASSWORD"
             android:textColor="#232323" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_password"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="65dp"
-            android:orientation="horizontal">
+            android:layout_below="@+id/pwd_text"
+
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginPasswd"
-                android:layout_width="280dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:background="@color/white"
                 android:hint="비밀번호"
                 android:inputType="textPassword"
@@ -80,54 +70,46 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
+
+
+        <Button
+            android:id="@+id/LoginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_below="@+id/input_layout_password"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:backgroundTint="#ffffff"
+            android:text="로그인"
+            android:textColor="#000000" />
 
-            <Button
-                android:id="@+id/LoginBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="36dp"
-                android:layout_marginRight="36dp"
-                android:backgroundTint="#ffffff"
-                android:text="로그인"
-                android:textColor="#000000" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/RegisterBtn"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_below="@+id/LoginBtn"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="30dp"
+            android:backgroundTint="#ffffff"
+            android:text="Join"
+            android:textColor="#000000" />
 
-            <Button
-                android:id="@+id/RegisterBtn"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginRight="30dp"
-                android:backgroundTint="#ffffff"
-                android:text="Join"
-                android:textColor="#000000" />
+        <Button
+            android:id="@+id/Find_Btn"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/LoginBtn"
+            android:layout_toRightOf="@id/RegisterBtn"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="50dp"
+            android:backgroundTint="#ffffff"
+            android:text="ID/PW찾기"
+            android:textColor="#000000" />
 
-            <Button
-                android:id="@+id/Find_Btn"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="30dp"
-                android:backgroundTint="#ffffff"
-                android:text="ID/PW찾기"
-                android:textColor="#000000" />
-        </LinearLayout>
 
-    </LinearLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

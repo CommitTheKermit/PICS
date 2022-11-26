@@ -23,6 +23,7 @@ public class PersonalInfo extends AppCompatActivity {
     private Button btn2, btn3;
     private String nickname,age,weight,height,gender;
     private Spinner spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,6 @@ public class PersonalInfo extends AppCompatActivity {
         height_text = findViewById(R.id.HeighText);
         spinner = findViewById(R.id.Gen_btn);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
