@@ -1,108 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorAccent"
-    android:orientation="vertical">
+    >
 
-    <TextView
-        android:id="@+id/textView3"
+
+    <EditText
+        android:id="@+id/input_email"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:hint="E-mail"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="20dp"
+
+        android:textColorHint="@color/black" />
+
+    <Button
+        android:id="@+id/id_check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="79dp"
-        android:layout_marginBottom="67dp"
-        android:gravity="center_horizontal"
-        android:text="회원 가입"
-        android:textColor="#232323"
-        android:textSize="40dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/input_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:hint="E-mail"
-            android:minHeight="48dp"
-            android:textColorHint="@color/black" />
-
-        <Button
-            android:id="@+id/id_check"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="중복확인" />
-
-    </LinearLayout>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/input_email"
+        android:text="중복확인" />
 
     <EditText
         android:id="@+id/input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/input_email"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:hint="Password"
         android:inputType="textPassword"
-        android:minHeight="48dp"
         android:textColorHint="@color/black" />
 
     <EditText
         android:id="@+id/input_password2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/input_password"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:hint="Password check"
         android:inputType="textPassword"
-        android:minHeight="48dp"
+
         android:textColorHint="@color/black" />
 
     <EditText
         android:id="@+id/input_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/input_password2"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:hint="PhoneNumber"
-        android:minHeight="48dp"
         android:textColorHint="@color/black" />
 
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_number"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:backgroundTint="#ffffff"
+        android:text="회원가입"
+        android:textColor="#000000" />
 
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="130dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
-            android:backgroundTint="#ffffff"
-            android:text="회원가입"
-            android:textColor="#000000" />
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_number"
+        android:layout_toRightOf="@+id/btn_register"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="90dp"
+        android:backgroundTint="#ffffff"
+        android:text="취소"
+        android:textColor="#000000" />
 
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="130dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="#ffffff"
-            android:text="취소"
-            android:textColor="#000000" />
 
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
