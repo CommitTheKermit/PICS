@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.iconWeight:
                         break;
                     case R.id.iconEtc:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameMain, new etcTab()).commit();
                         break;
                 }
 
