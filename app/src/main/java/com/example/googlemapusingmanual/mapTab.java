@@ -59,34 +59,38 @@ public class mapTab extends Fragment implements
     ActivityCompat.OnRequestPermissionsResultCallback,
     OnMapsSdkInitializedCallback{
 
-        private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-        private static final int NOT_RUNNING_RECORD = 0;
-        private static final int RUNNING_RECORD = 1;
-        private static final int RELEASED = 0;
-        private static final int PRESSED = 1;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int NOT_RUNNING_RECORD_STATE = 2;
+    private static final int RUNNING_RECORD_STATE = 3;
+
+    private static final int RECORD_BUTTON_PRESSED = 4;
+    private static final int PAUSE_BUTTON_PRESSED = 5;
+
+    private boolean permissionDenied = false;
+
+    private GoogleMap map;
+    private UiSettings mUiSettings;
+
+    Button btnPause, btnStart, btnStop;
+    private TextView txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
+    private static Handler mHandler ;
+    Chronometer chronoElapsedTime;
+    boolean flagTime;
+    long[] timeArray = {0, 0, 0 ,0};
+
+    Thread statisticsThread;
+    boolean pressed = false;
+    boolean running = false;
+    long currentTime;
+    static float avgSpeed;
+    Spinner spinnerExercise;
 
 
-        private boolean permissionDenied = false;
+    ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
+    ArrayList<Float> speedList = new ArrayList();
 
-        private GoogleMap map;
-        private UiSettings mUiSettings;
-
-        Button btnPause, btnStart, btnStop;
-        private TextView txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
-        private static Handler mHandler ;
-        Chronometer chronoElapsedTime;
-        boolean flagTime;
-        long[] timeArray = {0, 0};
-
-        Thread statisticsThread;
-        boolean pressed = false;
-        boolean running = false;
-        long currentTime;
-        Spinner spinnerExercise;
-
-
-        ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
-        ArrayList<Float> speedList = new ArrayList();
+    ArrayList<LatLng> pauseLatLngList = new ArrayList<LatLng>();
+    ArrayList<Float> pauseSpeedList = new ArrayList();
 
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -186,61 +190,133 @@ public class mapTab extends Fragment implements
         enableMyLocation();
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.83066595547154 ,128.75450499202682), 15));
         map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setCompassEnabled(true);
 
-        final Runnable runnable = new Runnable() {
+        final Runnable onRecord = new Runnable() {
 
             @Override
             public void run() {
-                if(latLngList.size() < 2){
-                    return;
+                if(running == false){
+                    if(pauseLatLngList.size() < 2){
+                        return;
+                    }
+
+                    Location previousLoc = new Location("");
+
+                    previousLoc.setLatitude(pauseLatLngList.get(0).latitude);
+                    previousLoc.setLongitude(pauseLatLngList.get(0).longitude);
+
+                    long distanceMeter = 0;
+
+                    for(int i = 1; i <pauseLatLngList.size();i++){
+                        Location tempLoc = new Location("");
+                        tempLoc.setLatitude(pauseLatLngList.get(i).latitude);
+                        tempLoc.setLongitude(pauseLatLngList.get(i).longitude);
+                        distanceMeter += Math.round(tempLoc.distanceTo(previousLoc));
+
+                        previousLoc = tempLoc;
+                    }
+                    float distanceKilometer =  (float) (distanceMeter / 1000.0);
+                    txtTotalDistance.setText(distanceKilometer + "km");
+                    Log.d("DEBUG","distanceM   " + distanceMeter);
+                    Log.d("DEBUG","distanceKM   " + distanceKilometer);
+
+                    Location beforeLastLoc = new Location("");
+                    Location lastLoc = new Location("");
+
+                    beforeLastLoc.setLatitude(pauseLatLngList.get(pauseLatLngList.size() - 2).latitude);
+                    beforeLastLoc.setLongitude(pauseLatLngList.get(pauseLatLngList.size() - 2).longitude);
+
+                    lastLoc.setLatitude(pauseLatLngList.get(pauseLatLngList.size() - 1).latitude);
+                    lastLoc.setLongitude(pauseLatLngList.get(pauseLatLngList.size() - 1).longitude);
+
+                    float secToHour = 0;
+                    secToHour = (float) ((float)(timeArray[3] - timeArray[2]) / 3600.0);
+                    float speed = lastLoc.distanceTo(beforeLastLoc) / 1000 / secToHour;
+                    speed = Math.round(speed);
+                    if(speed > 100 || speed < 0 )
+                        speed = 0;
+
+                    Log.d("DEBUG","secToHour   " + secToHour);
+                    Log.d("DEBUG","speed   " + speed + "km/h");
+
+                    pauseSpeedList.add(speed);
+                    float sum = 0;
+                    for(float eachSpeed : pauseSpeedList){
+                        sum += eachSpeed;
+                    }
+                    avgSpeed = sum / pauseSpeedList.size();
+                    //멈춤 감지에서 다시 움직인다 판정
+                    //사람의 평균 보행시속은 4.8km/h
+                    if(avgSpeed > 2){
+                        chronoElapsedTime.setBase(SystemClock.elapsedRealtime() - currentTime);
+                        chronoElapsedTime.start();
+                        running = true;
+                    }
+                }
+                else{
+                    if(latLngList.size() < 2){
+                        return;
+                    }
+
+                    Location previousLoc = new Location("");
+
+                    previousLoc.setLatitude(latLngList.get(0).latitude);
+                    previousLoc.setLongitude(latLngList.get(0).longitude);
+
+                    long distanceMeter = 0;
+
+                    for(int i = 1; i <latLngList.size();i++){
+                        Location tempLoc = new Location("");
+                        tempLoc.setLatitude(latLngList.get(i).latitude);
+                        tempLoc.setLongitude(latLngList.get(i).longitude);
+                        distanceMeter += Math.round(tempLoc.distanceTo(previousLoc));
+
+                        previousLoc = tempLoc;
+                    }
+                    float distanceKilometer =  (float) (distanceMeter / 1000.0);
+                    txtTotalDistance.setText(distanceKilometer + "km");
+                    Log.d("DEBUG","distanceM   " + distanceMeter);
+                    Log.d("DEBUG","distanceKM   " + distanceKilometer);
+
+                    Location beforeLastLoc = new Location("");
+                    Location lastLoc = new Location("");
+
+                    beforeLastLoc.setLatitude(latLngList.get(latLngList.size() - 2).latitude);
+                    beforeLastLoc.setLongitude(latLngList.get(latLngList.size() - 2).longitude);
+
+                    lastLoc.setLatitude(latLngList.get(latLngList.size() - 1).latitude);
+                    lastLoc.setLongitude(latLngList.get(latLngList.size() - 1).longitude);
+
+                    float secToHour = 0;
+                    secToHour = (float) ((float)(timeArray[1] - timeArray[0]) / 3600.0);
+                    float speed = lastLoc.distanceTo(beforeLastLoc) / 1000 / secToHour;
+                    speed = Math.round(speed);
+                    if(speed > 100 || speed < 0 )
+                        speed = 0;
+                    txtMeasuredSpeed.setText( speed+ "km/h");
+                    Log.d("DEBUG","secToHour   " + secToHour);
+                    Log.d("DEBUG","speed   " + speed + "km/h");
+
+                    speedList.add(speed);
+                    float sum = 0;
+                    for(float item : speedList){
+                        sum += item;
+                    }
+                    avgSpeed = sum / speedList.size();
+                    txtAvgSpeed.setText(avgSpeed + "km/h");
+
+                    //멈춤 감지
+                    if(avgSpeed < 2){
+                        running = false;
+//                    statisticsThread.interrupt();
+                        chronoElapsedTime.stop();
+                        currentTime = SystemClock.elapsedRealtime() - chronoElapsedTime.getBase();
+                    }
+
                 }
 
-                Location previousLoc = new Location("");
 
-                previousLoc.setLatitude(latLngList.get(0).latitude);
-                previousLoc.setLongitude(latLngList.get(0).longitude);
-
-                long distanceMeter = 0;
-
-                for(int i = 1; i <latLngList.size();i++){
-                    Location tempLoc = new Location("");
-                    tempLoc.setLatitude(latLngList.get(i).latitude);
-                    tempLoc.setLongitude(latLngList.get(i).longitude);
-                    distanceMeter += Math.round(tempLoc.distanceTo(previousLoc));
-
-                    previousLoc = tempLoc;
-                }
-                float distanceKilometer =  (float) (distanceMeter / 1000.0);
-                txtTotalDistance.setText(distanceKilometer + "km");
-                Log.d("DEBUG","distanceM   " + distanceMeter);
-                Log.d("DEBUG","distanceKM   " + distanceKilometer);
-
-                Location beforeLastLoc = new Location("");
-                Location lastLoc = new Location("");
-
-                beforeLastLoc.setLatitude(latLngList.get(latLngList.size() - 2).latitude);
-                beforeLastLoc.setLongitude(latLngList.get(latLngList.size() - 2).longitude);
-
-                lastLoc.setLatitude(latLngList.get(latLngList.size() - 1).latitude);
-                lastLoc.setLongitude(latLngList.get(latLngList.size() - 1).longitude);
-
-                float secToHour = 0;
-                secToHour = (float) ((float)(timeArray[1] - timeArray[0]) / 3600.0);
-                float speed = lastLoc.distanceTo(beforeLastLoc) / 1000 / secToHour;
-                speed = Math.round(speed);
-                if(speed > 100 || speed < 0 )
-                    speed = 0;
-                txtMeasuredSpeed.setText( speed+ "km/h");
-                Log.d("DEBUG","secToHour   " + secToHour);
-                Log.d("DEBUG","speed   " + speed + "km/h");
-
-                speedList.add(speed);
-                float sum = 0;
-                for(float item : speedList){
-                    sum += item;
-                }
-                sum = sum / speedList.size();
-                txtAvgSpeed.setText(sum + "km/h");
 
 //                float elapsedMillis =  (SystemClock.elapsedRealtime()
 //                        - chronoElapsedTime.getBase());
@@ -254,7 +330,7 @@ public class mapTab extends Fragment implements
             }
         } ;
 
-        class NewRunnable implements Runnable {
+        class Running implements Runnable {
             @Override
             public void run() {
                 while (true && running == true) {
@@ -264,10 +340,11 @@ public class mapTab extends Fragment implements
                         e.printStackTrace() ;
                     }
 
-                    mHandler.post(runnable) ;
+                    mHandler.post(onRecord) ;
                 }
             }
         }
+
 
 
 
@@ -321,11 +398,9 @@ public class mapTab extends Fragment implements
             public void onClick(View v) {
                 if(pressed == true){
                     running = false;
-                    statisticsThread.interrupt();
+//                    statisticsThread.interrupt();
                     chronoElapsedTime.stop();
                     currentTime = SystemClock.elapsedRealtime() - chronoElapsedTime.getBase();
-                    Log.d("time", "systemTime" + SystemClock.elapsedRealtime());
-                    Log.d("time", "getBase" + chronoElapsedTime.getBase());
                 }
                 else return;
             }
@@ -347,7 +422,7 @@ public class mapTab extends Fragment implements
 
                 pressed = true;
                 running = true;
-                NewRunnable nr = new NewRunnable();
+                Running nr = new Running();
                 statisticsThread = new Thread(nr);
                 statisticsThread.start();
 
@@ -400,11 +475,21 @@ public class mapTab extends Fragment implements
 //            double latitude = location.getLatitude(); // 경도
 //            double altitude = location.getAltitude(); // 고도
 
-
             double currentLat = location.getLatitude();
             double currentLon = location.getLongitude();
 
-            if( running)
+            if( running == false){
+                LatLng currentLocMarker = new LatLng(currentLat,currentLon);
+                map.addMarker(new MarkerOptions().position(currentLocMarker));
+
+                latLngList.add(currentLocMarker);
+
+                timeArray[2] = timeArray[3];
+                timeArray[3] = (SystemClock.elapsedRealtime()
+                        - chronoElapsedTime.getBase()) / 1000;
+
+                return;
+            }
 
             LatLng currentLocMarker = new LatLng(currentLat,currentLon);
             map.addMarker(new MarkerOptions().position(currentLocMarker));
