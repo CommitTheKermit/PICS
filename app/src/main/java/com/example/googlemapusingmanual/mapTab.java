@@ -22,8 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.Spinner;
@@ -34,17 +32,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import com.google.android.gms.maps.MapsInitializer;
+
 import com.google.android.gms.maps.MapsInitializer.Renderer;
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
+
+import org.json.JSONException;
 
 
 /**
@@ -73,17 +73,22 @@ public class mapTab extends Fragment implements
 
     Button btnPause, btnStart, btnStop;
     private TextView txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
-    private static Handler mHandler ;
+    private static Handler recordHandler ;
+    private static Handler weatherHandler ;
     Chronometer chronoElapsedTime;
     boolean flagTime;
     long[] timeArray = {0, 0, 0 ,0};
 
     Thread statisticsThread;
+    Thread weatherDisplayThread;
     boolean pressed = false;
     boolean running = false;
     long currentTime;
     static float avgSpeed;
     Spinner spinnerExercise;
+
+    double outerCurrentLat = 0;
+    double outerCurrentLon = 0;
 
 
     ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
@@ -155,7 +160,8 @@ public class mapTab extends Fragment implements
         btnStart = (Button) rootView.findViewById(R.id.btnStart);
         btnStop = (Button) rootView.findViewById(R.id.btnStop);
 
-        mHandler = new Handler() ;
+        recordHandler = new Handler();
+        weatherHandler = new Handler();
 
         // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
 
@@ -192,8 +198,40 @@ public class mapTab extends Fragment implements
         map.getUiSettings().setZoomControlsEnabled(true);
         map.getUiSettings().setCompassEnabled(true);
 
-        final Runnable onRecord = new Runnable() {
 
+        final WeatherAPI weather = new WeatherAPI();
+        final Runnable weatherThread = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    weather.func(outerCurrentLat, outerCurrentLon);
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+
+        class Weathering implements Runnable {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);// 날씨 딜레이 변수로 설정할것
+                    } catch (Exception e) {
+                        e.printStackTrace() ;
+                    }
+
+                    weatherHandler.post(weatherThread) ;
+                }
+            }
+        }
+
+        Weathering weathering = new Weathering();
+        weatherDisplayThread = new Thread(weathering);
+        weatherDisplayThread.start();
+
+        final Runnable onRecord = new Runnable() {
             @Override
             public void run() {
                 if(running == false){
@@ -340,10 +378,12 @@ public class mapTab extends Fragment implements
                         e.printStackTrace() ;
                     }
 
-                    mHandler.post(onRecord) ;
+                    recordHandler.post(onRecord) ;
                 }
             }
         }
+
+
 
 
 
@@ -477,6 +517,9 @@ public class mapTab extends Fragment implements
 
             double currentLat = location.getLatitude();
             double currentLon = location.getLongitude();
+
+            outerCurrentLat = currentLat;
+            outerCurrentLon = currentLon;
 
             if( running == false){
                 LatLng currentLocMarker = new LatLng(currentLat,currentLon);
