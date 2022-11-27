@@ -25,8 +25,8 @@ public class etcTab extends Fragment {
     Switch pushSwitch;
     public void withdrawal() {
         // TODO: 회원 탈퇴 기능 추가
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.getCurrentUser().delete();
+//        mAuth = FirebaseAuth.getInstance();
+//        mAuth.getCurrentUser().delete();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("회원 탈퇴");
@@ -59,8 +59,8 @@ public class etcTab extends Fragment {
     }
     public void logout() {
         // TODO: 로그 아웃 기능 추가 현재는 알림뿐
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseAuth.getInstance().signOut();
+//        mAuth = FirebaseAuth.getInstance();
+//        FirebaseAuth.getInstance().signOut();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("로그 아웃");
@@ -118,11 +118,12 @@ public class etcTab extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // TODO: 메인 화면 설정 로직이 추가되면 여기에 추가
-                        Fragment fragment = null;
-                        switch (i) {
-                            case 0:
-                                break;
-                        }
+//                        Fragment fragment = null;
+                        PreferenceManager.setInt(getActivity().getApplicationContext(), "mainScreen", i);
+//                        switch (i) {
+//                            case 0: // 업적
+//                                break;
+//                        }
                     }
                 });
                 builder.create().show();
