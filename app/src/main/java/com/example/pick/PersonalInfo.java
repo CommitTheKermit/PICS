@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class PersonalInfo extends AppCompatActivity {
 
@@ -55,19 +56,24 @@ public class PersonalInfo extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     FileOutputStream outFs = openFileOutput("Personal_Info", Context.MODE_PRIVATE);
+                    UserInfo info = new UserInfo();
                     nickname = nickname_text.getText().toString() + "\n";
                     age = age_text.getText().toString() + "\n";
                     weight = weight_text.getText().toString() + "\n";
                     height = height_text.getText().toString() + "\n";
-                    outFs.write(nickname.getBytes());
-                    outFs.write(age.getBytes());
-                    outFs.write(weight.getBytes());
-                    outFs.write(height.getBytes());
-                    outFs.write(gender.getBytes());
+                    info.setNickname(nickname);
+                    info.setAge(age);
+                    info.setWeight(weight);
+                    info.setHeight(height);
+                    info.setGender(gender);
+                    outFs.write(info.getNickname().getBytes());
+                    outFs.write(info.getAge().getBytes());
+                    outFs.write(info.getWeight().getBytes());
+                    outFs.write(info.getHeight().getBytes());
+                    outFs.write(info.getGender().getBytes());
                     outFs.close();
                     Intent intent = new Intent(PersonalInfo.this, MainActivity2.class);
                     startActivity(intent);
-
                 } catch (IOException E) {
                 }
             }
