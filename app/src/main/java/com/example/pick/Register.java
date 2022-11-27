@@ -21,11 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-
 public class Register extends AppCompatActivity {
     private EditText input_email, input_password,input_password2, input_number;
     private Button btn_register, btn_cancel, id_check;
@@ -34,6 +29,7 @@ public class Register extends AppCompatActivity {
     private String email,pwd,pwd2,number;
     private String[] id_arr;
     private String check = "0";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
