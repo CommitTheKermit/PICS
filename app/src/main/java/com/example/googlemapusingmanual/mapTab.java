@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 import com.google.android.gms.maps.MapsInitializer.Renderer;
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
@@ -83,6 +85,7 @@ public class mapTab extends Fragment implements
     Thread weatherDisplayThread;
     boolean pressed = false;
     boolean running = false;
+    boolean firstWeatherApi = true;
     long currentTime;
     static float avgSpeed;
     Spinner spinnerExercise;
@@ -143,7 +146,6 @@ public class mapTab extends Fragment implements
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map_tab, container, false);
 
-
         /*Fragment내에서는 mapView로 지도를 실행*/
         mapView = (MapView)rootView.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -199,30 +201,24 @@ public class mapTab extends Fragment implements
         map.getUiSettings().setCompassEnabled(true);
 
 
-        final WeatherAPI weather = new WeatherAPI();
-        final Runnable weatherThread = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    weather.func(outerCurrentLat, outerCurrentLon);
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        };
 
         class Weathering implements Runnable {
             @Override
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(1000);// 날씨 딜레이 변수로 설정할것
+
+                        if(firstWeatherApi != true){
+                            Thread.sleep(300000);// 날씨 딜레이 변수로 설정할것
+                        }
+                        else{
+                            firstWeatherApi = false;
+                        }
                     } catch (Exception e) {
                         e.printStackTrace() ;
                     }
-
-                    weatherHandler.post(weatherThread) ;
+                    NetworkTask networkTask = new NetworkTask();
+                    networkTask.execute();
                 }
             }
         }
@@ -231,6 +227,8 @@ public class mapTab extends Fragment implements
         weatherDisplayThread = new Thread(weathering);
         weatherDisplayThread.start();
 
+
+
         final Runnable onRecord = new Runnable() {
             @Override
             public void run() {
@@ -238,26 +236,6 @@ public class mapTab extends Fragment implements
                     if(pauseLatLngList.size() < 2){
                         return;
                     }
-
-                    Location previousLoc = new Location("");
-
-                    previousLoc.setLatitude(pauseLatLngList.get(0).latitude);
-                    previousLoc.setLongitude(pauseLatLngList.get(0).longitude);
-
-                    long distanceMeter = 0;
-
-                    for(int i = 1; i <pauseLatLngList.size();i++){
-                        Location tempLoc = new Location("");
-                        tempLoc.setLatitude(pauseLatLngList.get(i).latitude);
-                        tempLoc.setLongitude(pauseLatLngList.get(i).longitude);
-                        distanceMeter += Math.round(tempLoc.distanceTo(previousLoc));
-
-                        previousLoc = tempLoc;
-                    }
-                    float distanceKilometer =  (float) (distanceMeter / 1000.0);
-                    txtTotalDistance.setText(distanceKilometer + "km");
-                    Log.d("DEBUG","distanceM   " + distanceMeter);
-                    Log.d("DEBUG","distanceKM   " + distanceKilometer);
 
                     Location beforeLastLoc = new Location("");
                     Location lastLoc = new Location("");
@@ -278,6 +256,9 @@ public class mapTab extends Fragment implements
                     Log.d("DEBUG","secToHour   " + secToHour);
                     Log.d("DEBUG","speed   " + speed + "km/h");
 
+                    if(pauseSpeedList.size() > 3){
+                        pauseSpeedList.remove(0);
+                    }
                     pauseSpeedList.add(speed);
                     float sum = 0;
                     for(float eachSpeed : pauseSpeedList){
@@ -344,8 +325,20 @@ public class mapTab extends Fragment implements
                     avgSpeed = sum / speedList.size();
                     txtAvgSpeed.setText(avgSpeed + "km/h");
 
+                    float speedThreshold = 0;
+                    if(speedList.size() < 4){
+                        return;
+                    }
+                    else{
+                        float tempSum = 0;
+                        for(int j = speedList.size() - 1; j > speedList.size() - 4; j--){
+                            tempSum += speedList.get(j);
+                        }
+                        speedThreshold = tempSum / 3;
+                    }
+
                     //멈춤 감지
-                    if(avgSpeed < 2){
+                    if(speedThreshold < 2){
                         running = false;
 //                    statisticsThread.interrupt();
                         chronoElapsedTime.stop();
@@ -373,11 +366,10 @@ public class mapTab extends Fragment implements
             public void run() {
                 while (true && running == true) {
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(2000);
                     } catch (Exception e) {
                         e.printStackTrace() ;
                     }
-
                     recordHandler.post(onRecord) ;
                 }
             }
@@ -477,7 +469,7 @@ public class mapTab extends Fragment implements
                 //mintime 업데이트 최소 시간
                 //mindistance 업데이트 최소 거리 둘 다 초과하여야 gpsLocationListener 작동함.
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                        5000,
+                        3000,
                         5,
                         gpsLocationListener);
 
@@ -492,6 +484,7 @@ public class mapTab extends Fragment implements
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                chronoElapsedTime.stop();
                 chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
                 txtTotalDistance.setText("0.00km");
                 txtMeasuredSpeed.setText("0km/s");
@@ -525,7 +518,7 @@ public class mapTab extends Fragment implements
                 LatLng currentLocMarker = new LatLng(currentLat,currentLon);
                 map.addMarker(new MarkerOptions().position(currentLocMarker));
 
-                latLngList.add(currentLocMarker);
+                pauseLatLngList.add(currentLocMarker);
 
                 timeArray[2] = timeArray[3];
                 timeArray[3] = (SystemClock.elapsedRealtime()

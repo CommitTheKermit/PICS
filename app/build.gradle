@@ -39,5 +39,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.2'
     implementation 'androidx.navigation:navigation-ui:2.3.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    // Converter ( JSON 타입 결과를 객체로 매핑 )
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 }

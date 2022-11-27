@@ -10,12 +10,26 @@
     android:id="@+id/tabMap">
 
     <!--    구글맵 부분-->
-    <com.google.android.gms.maps.MapView
+    <FrameLayout
+        android:id="@+id/mapFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:id="@+id/map"
-        tools:context=".MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        android:layout_height="270dp">
+        <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map"
+            tools:context=".MapsActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+        <ImageView
+            android:id="@+id/imgWeatherIcon"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="60dp"
+            android:layout_gravity="right"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/sunny"/>
+    </FrameLayout>
+
 
     <!--    각종버튼-->
 <!--    <LinearLayout-->
@@ -84,7 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/map">
+        android:layout_below="@+id/mapFrameLayout">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
