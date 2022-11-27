@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,27 +63,28 @@ public class mapTab extends Fragment implements
     OnMapsSdkInitializedCallback{
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final int NOT_RUNNING_RECORD_STATE = 2;
-    private static final int RUNNING_RECORD_STATE = 3;
-
-    private static final int RECORD_BUTTON_PRESSED = 4;
-    private static final int PAUSE_BUTTON_PRESSED = 5;
 
     private boolean permissionDenied = false;
+
+    public mapTab tab;
+    public int rainState = -1;
 
     private GoogleMap map;
     private UiSettings mUiSettings;
 
     Button btnPause, btnStart, btnStop;
+    ImageView imgWeatherIcon;
     private TextView txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
     private static Handler recordHandler ;
     private static Handler weatherHandler ;
+    private static Handler iconHandler ;
     Chronometer chronoElapsedTime;
     boolean flagTime;
     long[] timeArray = {0, 0, 0 ,0};
 
     Thread statisticsThread;
     Thread weatherDisplayThread;
+    Thread iconChangeThread;
     boolean pressed = false;
     boolean running = false;
     boolean firstWeatherApi = true;
@@ -145,7 +147,7 @@ public class mapTab extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map_tab, container, false);
-
+        tab = this;
         /*Fragment내에서는 mapView로 지도를 실행*/
         mapView = (MapView)rootView.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -162,8 +164,11 @@ public class mapTab extends Fragment implements
         btnStart = (Button) rootView.findViewById(R.id.btnStart);
         btnStop = (Button) rootView.findViewById(R.id.btnStop);
 
+        imgWeatherIcon = (ImageView) rootView.findViewById(R.id.imgWeatherIcon);
+
         recordHandler = new Handler();
         weatherHandler = new Handler();
+        iconHandler = new Handler();
 
         // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
 
@@ -185,6 +190,46 @@ public class mapTab extends Fragment implements
 //        }
 //    });
         // Inflate the layout for this fragment
+
+//        Thread icon = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                // runOnUiThread를 추가하고 그 안에 UI작업을 한다.
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if(rainState == 0){
+//                            imgWeatherIcon.setImageResource(R.drawable.sunny);
+//                        }
+//                        else if(rainState == 1 || rainState == 2){
+//                            imgWeatherIcon.setImageResource(R.drawable.rainy);
+//                        }
+//                        else if(rainState == 3){
+//                            imgWeatherIcon.setImageResource(R.drawable.snow);
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//        class iconChange implements Runnable {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (Exception e) {
+//                        e.printStackTrace() ;
+//                    }
+//                    iconHandler.post(icon);
+//                }
+//            }
+//        }
+//
+//        iconChange ic = new iconChange();
+//        iconChangeThread = new Thread(ic);
+//        iconChangeThread.start();
+
         return rootView;
 }
 
@@ -214,8 +259,9 @@ public class mapTab extends Fragment implements
                     } catch (Exception e) {
                         e.printStackTrace() ;
                     }
-                    NetworkTask networkTask = new NetworkTask();
+                    NetworkTask networkTask = new NetworkTask(tab);
                     networkTask.execute();
+
                 }
             }
         }
@@ -498,6 +544,17 @@ public class mapTab extends Fragment implements
 //            double longitude = location.getLongitude(); // 위도
 //            double latitude = location.getLatitude(); // 경도
 //            double altitude = location.getAltitude(); // 고도
+
+            if(rainState == 0){
+                imgWeatherIcon.setImageResource(R.drawable.sunny);
+            }
+            else if(rainState == 1 || rainState == 2){
+                imgWeatherIcon.setImageResource(R.drawable.rainy);
+            }
+            else if(rainState == 3){
+                imgWeatherIcon.setImageResource(R.drawable.snow);
+            }
+
 
             double currentLat = location.getLatitude();
             double currentLon = location.getLongitude();

@@ -1,10 +1,7 @@
 package com.example.googlemapusingmanual;
 
-import android.util.Log;
-
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,19 +9,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.TimeZone;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WeatherAPI extends Thread{
-    public void func(double lat, double lng) throws IOException, JSONException {
+    public int func(double lat, double lng, mapTab tab) throws IOException, JSONException {
 
         try {
             Thread.sleep(1000); // 날씨 변경 딜레이 변수로 바꿀것
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
+
 
         String endPoint =  "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
         //String serviceKey = "bRsNyPW+NewTx2aUvwqDdABLPU5afYJQI5PoS/SLSbiJ3llFANs1eBUdVnq5zaSNfvQ2AqLWJRrHvNOPJm3k8Q==";
@@ -37,8 +38,8 @@ public class WeatherAPI extends Thread{
         String dataType = "XML";
         String baseDate = ""; //원하는 날짜
         String baseTime = ""; //원하는 시간
-        String nx = "55"; //위경도 아님 좌표임
-        String ny = "127"; //좌표 정보는 api문서 볼 것
+        String nx = "89"; //위경도 아님 좌표임
+        String ny = "90"; //좌표 정보는 api문서 볼 것
 
 
         LocalDate currentDay = LocalDate.now();
@@ -49,7 +50,7 @@ public class WeatherAPI extends Thread{
         LocalTime currentTime = LocalTime.now();
         DateTimeFormatter formatHour = DateTimeFormatter.ofPattern("hh");
         DateTimeFormatter formatMinute = DateTimeFormatter.ofPattern("mm");
-        String formattedHour = currentTime.format(formatHour);
+        String formattedHour = currentTime.toString().substring(0,2);
         String formattedMinute = currentTime.format(formatMinute);
 //        baseTime = formattedTime;
         int baseTimeInt;
@@ -58,7 +59,7 @@ public class WeatherAPI extends Thread{
         else
             formattedMinute = "00";
 
-        baseTime =  formattedHour + formattedMinute;
+        baseTime =  (Integer.parseInt(formattedHour) + 8) + formattedMinute;
 
         String s = endPoint+"?serviceKey="+serviceKey
                 +"&pageNo=" + pageNo
@@ -90,22 +91,64 @@ public class WeatherAPI extends Thread{
         bufferedReader.close();
         String result= stringBuilder.toString();
         conn.disconnect();
-//
-//        JSONObject mainObject = new JSONObject(result);
-//        JSONArray itemArray = mainObject.getJSONObject("response")
-//                        .getJSONObject("body").getJSONObject("items")
-//                        .getJSONArray("item");
-//        for(int i=0; i<itemArray.length(); i++){
-//            JSONObject item = itemArray.getJSONObject(i);
-//            String category = item.getString("category");
-//            String value = item.getString("fcstValue");
-//            Log.d("kermit", category + "  " +value);
-////            System.out.println(category+"  "+value);
-//        }
-        String resultLines[] = result.split("<item>");
-        for(int i=0; i<resultLines.length; i++){
-            //sky와 pty만 고려할것
 
+        String resultLines[] = result.split("<item>");
+
+        ArrayList<String> resultList = new ArrayList<String>(resultLines.length);
+//
+//        for(int i=0; i<resultLines.length; i++){
+//            resultList.add(resultLines[i]);
+//        }
+//
+        resultList.addAll(Arrays.asList(resultLines));
+
+        Map<String, String> skyMap = new HashMap<>();
+        Map<String, String> ptyMap = new HashMap<>();
+//        ArrayList<String> skyList = new ArrayList<>(10);
+//        ArrayList<String> ptyList = new ArrayList<>(10);
+        for(int i=0; i<resultList.size(); i++){
+            //sky와 pty만 고려할것
+            if(resultList.get(i).indexOf("SKY") == -1 && resultList.get(i).indexOf("PTY") == -1){
+                resultList.remove(i);
+                i--;
+                continue;
+            }
         }
+        String temp = "";
+        for(int i=0; i<resultList.size(); i++){
+            temp = resultList.get(i).split("</fcstValue>")[0];
+            temp = temp.substring(temp.indexOf("<fcstValue>") + 11);
+            if(resultList.get(i).indexOf("SKY") != -1){
+                skyMap.put(
+                        resultList.get(i).substring(
+                        resultList.get(i).indexOf("<fcstTime>") + 10,
+                        resultList.get(i).indexOf("<fcstTime>") + 14)
+                , temp);
+            }
+            else if (resultList.get(i).indexOf("PTY") != -1){
+                ptyMap.put(
+                        resultList.get(i).substring(
+                                resultList.get(i).indexOf("<fcstTime>") + 10,
+                                resultList.get(i).indexOf("<fcstTime>") + 14)
+                , temp);
+            }
+        }
+        String tempInt =
+                Integer.toString((Integer.parseInt(baseTime) / 100 + 1) * 100);
+        if(tempInt.compareTo("2400") == 0)
+            tempInt = "0000";
+        int rainState = Integer.parseInt(ptyMap.get(tempInt));
+        rainState = 3;
+//        if(rainState == 0){
+//            tab.imgWeatherIcon.setImageResource(R.drawable.sunny);
+//        }
+//        else if(rainState == 1 || rainState == 2){
+//            tab.imgWeatherIcon.setImageResource(R.drawable.rainy);
+//        }
+//        else if(rainState == 3){
+//            tab.imgWeatherIcon.setImageResource(R.drawable.snow);
+//        }
+        return rainState;
+
     }
 }
