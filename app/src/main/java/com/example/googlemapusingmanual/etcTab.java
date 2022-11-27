@@ -19,55 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class etcTab extends Fragment {
 
-    private FirebaseAuth mAuth;
-
+//    private FirebaseAuth mAuth;
     Button btnWithdrawal, btnWeatherDelay, btnLogout, btnMainScreenSet, btnAlarm;
     Switch pushSwitch;
-    public void withdrawal() {
-        // TODO: 회원 탈퇴 기능 추가
-//        mAuth = FirebaseAuth.getInstance();
-//        mAuth.getCurrentUser().delete();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("회원 탈퇴");
-        builder.setMessage("회원 탈퇴가 되었습니다.");
-        builder.setPositiveButton("확인", null);
-        builder.create().show();
-    }
-
-    public void weatherDelaySetting() {
-        String[] mainScreenStrings = {"1분", "5분", "10분"};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("날씨 정보 딜레이 설정");
-
-        builder.setItems(mainScreenStrings, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // TODO: 날씨 정보 딜레이 설정 로직이 추가되면 여기에 추가
-                switch (i) {
-                    case 0:
-                        // 업적
-                        break;
-                    default:
-                        // ...
-                }
-            }
-        });
-
-        builder.create().show();
-    }
-    public void logout() {
-        // TODO: 로그 아웃 기능 추가 현재는 알림뿐
-//        mAuth = FirebaseAuth.getInstance();
-//        FirebaseAuth.getInstance().signOut();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("로그 아웃");
-        builder.setMessage("로그 아웃 되었습니다.");
-        builder.setPositiveButton("확인", null);
-        builder.create().show();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,13 +71,7 @@ public class etcTab extends Fragment {
                 builder.setItems(mainScreenStrings, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO: 메인 화면 설정 로직이 추가되면 여기에 추가
-//                        Fragment fragment = null;
                         PreferenceManager.setInt(getActivity().getApplicationContext(), "mainScreen", i);
-//                        switch (i) {
-//                            case 0: // 업적
-//                                break;
-//                        }
                     }
                 });
                 builder.create().show();
@@ -167,5 +115,48 @@ public class etcTab extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void withdrawal() {
+        // TODO: 회원 탈퇴 기능 추가
+//        mAuth = FirebaseAuth.getInstance();
+//        mAuth.getCurrentUser().delete();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("회원 탈퇴");
+        builder.setMessage("회원 탈퇴가 되었습니다.");
+        builder.setPositiveButton("확인", null);
+        builder.create().show();
+    }
+
+    public void weatherDelaySetting() {
+        String[] weatherDelayStrings = {"1분", "5분", "10분"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("날씨 정보 딜레이 설정");
+
+        builder.setItems(weatherDelayStrings, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setDelay(i == 0 ? 1 : i * 5); //1분, 5분, 10분 간결하게.
+            }
+        });
+        builder.create().show();
+    }
+
+    public void setDelay(int t){
+        // TODO: 날씨 정보 딜레이 설정 로직이 추가되면 여기에 추가
+    }
+
+    public void logout() {
+        // TODO: 로그 아웃 기능 추가 현재는 알림뿐
+//        mAuth = FirebaseAuth.getInstance();
+//        FirebaseAuth.getInstance().signOut();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("로그 아웃");
+        builder.setMessage("로그 아웃 되었습니다.");
+        builder.setPositiveButton("확인", null);
+        builder.create().show();
     }
 }
