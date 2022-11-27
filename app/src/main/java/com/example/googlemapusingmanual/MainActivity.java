@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new achievementTab()).commit();
                         break;
                     case R.id.iconRanking:
+                        getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new rankingTab()).commit();
                         break;
                     case R.id.iconMap:
                         getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new mapTab()).commit();

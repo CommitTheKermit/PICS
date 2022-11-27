@@ -191,7 +191,6 @@ public class mapTab extends Fragment implements
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
-
         map = googleMap;
         map.setOnMyLocationButtonClickListener(this);
         map.setOnMyLocationClickListener(this);
@@ -199,8 +198,6 @@ public class mapTab extends Fragment implements
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.83066595547154 ,128.75450499202682), 15));
         map.getUiSettings().setZoomControlsEnabled(true);
         map.getUiSettings().setCompassEnabled(true);
-
-
 
         class Weathering implements Runnable {
             @Override
@@ -226,8 +223,6 @@ public class mapTab extends Fragment implements
         Weathering weathering = new Weathering();
         weatherDisplayThread = new Thread(weathering);
         weatherDisplayThread.start();
-
-
 
         final Runnable onRecord = new Runnable() {
             @Override
@@ -374,10 +369,6 @@ public class mapTab extends Fragment implements
                 }
             }
         }
-
-
-
-
 
 
 //        markMarkerBtn.setOnClickListener(new View.OnClickListener() {
@@ -629,7 +620,6 @@ public class mapTab extends Fragment implements
         mapView.onResume();
         super.onResume();
     }
-
 
     @Override
     public void onPause() {
