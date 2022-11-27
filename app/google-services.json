@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "348099700882",
+    "firebase_url": "https://pick-215f0-default-rtdb.firebaseio.com",
+    "project_id": "pick-215f0",
+    "storage_bucket": "pick-215f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348099700882:android:ce069d6d69582e30841e4b",
+        "android_client_info": {
+          "package_name": "com.example.pick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348099700882-np8ein5tag5ao1qrdd402766jkr4gdou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYYFT3DwQimYIPULx5D2eh8Ug0SclCO3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348099700882-np8ein5tag5ao1qrdd402766jkr4gdou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
