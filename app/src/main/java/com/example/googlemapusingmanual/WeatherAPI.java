@@ -138,16 +138,8 @@ public class WeatherAPI extends Thread{
         if(tempInt.compareTo("2400") == 0)
             tempInt = "0000";
         int rainState = Integer.parseInt(ptyMap.get(tempInt));
-        rainState = 3;
-//        if(rainState == 0){
-//            tab.imgWeatherIcon.setImageResource(R.drawable.sunny);
-//        }
-//        else if(rainState == 1 || rainState == 2){
-//            tab.imgWeatherIcon.setImageResource(R.drawable.rainy);
-//        }
-//        else if(rainState == 3){
-//            tab.imgWeatherIcon.setImageResource(R.drawable.snow);
-//        }
+//        int rainState = 3;
+
         return rainState;
 
     }
