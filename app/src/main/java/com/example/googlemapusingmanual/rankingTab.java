@@ -70,10 +70,8 @@ public class rankingTab extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?>parent, View view, int position, long id) {
                 txtView3.setText(exerciseList[position] + "이 선택되었습니다.");
-
                 // 그래프 변경 수정중//
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
