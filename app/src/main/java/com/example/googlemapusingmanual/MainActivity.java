@@ -63,16 +63,21 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.iconAchievement:
                         getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new achievementTab()).commit();
+                        btnMenu.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.iconRanking:
                         getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new rankingTab()).commit();
+                        btnMenu.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.iconMap:
                         getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new mapTab()).commit();
+                        btnMenu.setVisibility(View.VISIBLE);
                         break;
                     case R.id.iconWeight:
+                        btnMenu.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.iconEtc:
+                        btnMenu.setVisibility(View.INVISIBLE);
                         break;
                 }
 
