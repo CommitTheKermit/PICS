@@ -68,9 +68,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationRequest;
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -81,12 +84,15 @@ import androidx.loader.app.LoaderManager;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,7 +104,34 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
-    Button btnLogo, btnNotification, btnMenu;
+    ImageButton btnLogo, btnNotification, btnMenu ;
+
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater mInflater = getMenuInflater();
+        if (v == btnMenu){
+            mInflater.inflate(R.menu.menu2, menu);
+        }
+    }
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemCycle:
+                mapTab.currentExerciseType = "CYCLE";
+                break;
+            case R.id.itemRunning:
+                mapTab.currentExerciseType = "RUNNING";
+                break;
+            case R.id.itemWalking:
+                mapTab.currentExerciseType = "WALKING";
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
 //        btnMenu.bringToFront();
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide(); //상단 바 없애기
+
+        btnMenu = (ImageButton) findViewById(R.id.btnMenu);
+        registerForContextMenu(btnMenu);
 
 
 //        gpsProviderButton = (Button) findViewById(R.id.gpsProvider);

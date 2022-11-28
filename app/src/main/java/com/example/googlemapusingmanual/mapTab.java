@@ -1,7 +1,10 @@
 package com.example.googlemapusingmanual;
 
+import static androidx.fragment.app.DialogFragment.STYLE_NORMAL;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -22,9 +26,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +47,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 import java.util.concurrent.Executors;
 
 import com.google.android.gms.maps.MapsInitializer.Renderer;
@@ -76,32 +92,30 @@ public class mapTab extends Fragment implements
     ImageView imgWeatherIcon;
     private TextView txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
     private static Handler recordHandler ;
-    private static Handler weatherHandler ;
-    private static Handler iconHandler ;
     Chronometer chronoElapsedTime;
-    boolean flagTime;
     long[] timeArray = {0, 0, 0 ,0};
 
     Thread statisticsThread;
     Thread weatherDisplayThread;
-    Thread iconChangeThread;
     boolean pressed = false;
     boolean running = false;
     boolean firstWeatherApi = true;
     int gpsCalledCount = 0;
     long currentTime;
     static float avgSpeed;
-    Spinner spinnerExercise;
+    float outputDist;
+    static String currentExerciseType = "WALKING";
 
     double outerCurrentLat = 0;
     double outerCurrentLon = 0;
 
+    Dialog dialogView;
 
-    ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
+
+    ArrayList<LatLng> latLngList = new ArrayList<>();
     ArrayList<Float> speedList = new ArrayList();
 
-    ArrayList<LatLng> pauseLatLngList = new ArrayList<LatLng>();
-    ArrayList<Float> pauseSpeedList = new ArrayList();
+    ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
 
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -168,8 +182,6 @@ public class mapTab extends Fragment implements
         imgWeatherIcon = (ImageView) rootView.findViewById(R.id.imgWeatherIcon);
 
         recordHandler = new Handler();
-        weatherHandler = new Handler();
-        iconHandler = new Handler();
 
         // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
 
@@ -345,6 +357,7 @@ public class mapTab extends Fragment implements
                         previousLoc = tempLoc;
                     }
                     float distanceKilometer =  (float) (distanceMeter / 1000.0);
+                    outputDist = distanceKilometer;
                     txtTotalDistance.setText(distanceKilometer + "km");
                     Log.d("DEBUG","distanceM   " + distanceMeter);
                     Log.d("DEBUG","distanceKM   " + distanceKilometer);
@@ -487,6 +500,7 @@ public class mapTab extends Fragment implements
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 gpsCalledCount = 0;
 
                 if(pressed == true && running == false){
@@ -537,8 +551,77 @@ public class mapTab extends Fragment implements
                 pressed = false;
                 running = false;
                 gpsCalledCount = 0;
+                statisticsThread.interrupt();
+//                something = outputDist;// 운동 끝내고 거리 전달
 
                 locationManager.removeUpdates(mapTab.this.gpsLocationListener);
+
+                try {
+
+                    // TODO: 2022-11-28  //유저 닉네임 설정
+                    String nickname = "someone" + ".txt";
+                    InputStream in = null;
+                    try {
+                        in = getActivity().openFileInput(nickname);
+                    }
+                    catch (FileNotFoundException e){
+                        OutputStreamWriter outputStream = new OutputStreamWriter(getActivity().openFileOutput(
+                                nickname,
+                                Context.MODE_PRIVATE
+                        ));
+
+                        outputStream.write(
+                                "<CYCLE>\n" +
+                                "</CYCLE>\n"+
+                                "<RUNNING>\n" +
+                                "</RUNNING>\n" +
+                                "<WALKING>\n" +
+                                "</WALKING>");
+
+                        outputStream.close();
+                        in = getActivity().openFileInput(nickname);
+                    }
+                    
+
+                    byte[] b = new byte[in.available()];
+
+                    try {
+                        in.read(b);
+                    } catch (IOException e) {
+                        Log.d("kermit",e.getMessage());
+                    }
+                    in.close();
+                    ArrayList<String> lines = new ArrayList<String>();
+
+                    Scanner scanStop = new Scanner(new String(b));
+                    while(scanStop.hasNext()){
+                        lines.add(scanStop.next());
+                    }
+
+                    FileOutputStream outputStream = getActivity().openFileOutput(
+                            nickname,
+                            Context.MODE_PRIVATE);
+
+                    String output = "";
+
+                    for(int i = 0; i < lines.size(); i ++){
+                        int targetLine = lines.get(i).indexOf("</" + currentExerciseType + ">");
+                        if(targetLine != -1){
+                            lines.add(i, "<dist>"+ outputDist + "</dist>");
+                            i += 1;
+                        }
+                    }
+                    for(int i = 0; i < lines.size(); i ++){
+                        output += lines.get(i)+ "\n";
+                    }
+                    outputStream.write(output.getBytes());
+                    outputStream.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
 
             }
         });
