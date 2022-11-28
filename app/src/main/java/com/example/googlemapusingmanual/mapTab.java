@@ -114,48 +114,8 @@ public class mapTab extends Fragment implements
 
     ArrayList<LatLng> latLngList = new ArrayList<>();
     ArrayList<Float> speedList = new ArrayList();
-
     ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
 
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-//
-//    public mapTab() {
-//        // Required empty public constructor
-//    }
-//
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment mapTab.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static mapTab newInstance(String param1, String param2) {
-//        mapTab fragment = new mapTab();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
     MapView mapView;
 
     @Override
@@ -182,66 +142,6 @@ public class mapTab extends Fragment implements
         imgWeatherIcon = (ImageView) rootView.findViewById(R.id.imgWeatherIcon);
 
         recordHandler = new Handler();
-
-        // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
-
-
-//        currentLocButton.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//
-//            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//                return;
-//            }
-//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//            double currentLat = location.getLatitude();
-//            double currentLon = location.getLongitude();
-//            Toast.makeText(getActivity().getApplicationContext(), "위도:" + currentLat +"\n경도" + currentLon, Toast.LENGTH_LONG).show();
-//        }
-//    });
-        // Inflate the layout for this fragment
-
-//        Thread icon = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                // runOnUiThread를 추가하고 그 안에 UI작업을 한다.
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if(rainState == 0){
-//                            imgWeatherIcon.setImageResource(R.drawable.sunny);
-//                        }
-//                        else if(rainState == 1 || rainState == 2){
-//                            imgWeatherIcon.setImageResource(R.drawable.rainy);
-//                        }
-//                        else if(rainState == 3){
-//                            imgWeatherIcon.setImageResource(R.drawable.snow);
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//
-//        class iconChange implements Runnable {
-//            @Override
-//            public void run() {
-//                while (true) {
-//                    try {
-//                        Thread.sleep(1000);
-//                    } catch (Exception e) {
-//                        e.printStackTrace() ;
-//                    }
-//                    iconHandler.post(icon);
-//                }
-//            }
-//        }
-//
-//        iconChange ic = new iconChange();
-//        iconChangeThread = new Thread(ic);
-//        iconChangeThread.start();
 
         return rootView;
 }
@@ -290,38 +190,7 @@ public class mapTab extends Fragment implements
             public void run() {
                 if(running == false){
                     Toast.makeText(getActivity().getApplicationContext(),"stopped thread " + gpsCalledCount,Toast.LENGTH_SHORT).show();
-//                    if(pauseLatLngList.size() < 2){
-//                        return;
-//                    }
-//
-//                    Location beforeLastLoc = new Location("");
-//                    Location lastLoc = new Location("");
-//
-//                    beforeLastLoc.setLatitude(pauseLatLngList.get(pauseLatLngList.size() - 2).latitude);
-//                    beforeLastLoc.setLongitude(pauseLatLngList.get(pauseLatLngList.size() - 2).longitude);
-//
-//                    lastLoc.setLatitude(pauseLatLngList.get(pauseLatLngList.size() - 1).latitude);
-//                    lastLoc.setLongitude(pauseLatLngList.get(pauseLatLngList.size() - 1).longitude);
-//
-//                    float secToHour = 0;
-//                    secToHour = (float) ((float)(timeArray[3] - timeArray[2]) / 3600.0);
-//                    float speed = lastLoc.distanceTo(beforeLastLoc) / 1000 / secToHour;
-//                    speed = Math.round(speed);
-//                    if(speed > 100 || speed < 0 )
-//                        speed = 0;
-//
-//                    Log.d("DEBUG","secToHour   " + secToHour);
-//                    Log.d("DEBUG","speed   " + speed + "km/h");
-//
-//                    if(pauseSpeedList.size() > 3){
-//                        pauseSpeedList.remove(0);
-//                    }
-//                    pauseSpeedList.add(speed);
-//                    float sum = 0;
-//                    for(float eachSpeed : pauseSpeedList){
-//                        sum += eachSpeed;
-//                    }
-//                    avgSpeed = sum / pauseSpeedList.size();
+
                     //멈춤 감지에서 다시 움직인다 판정
                     //사람의 평균 보행시속은 4.8km/h
                     if(gpsCalledCount > 2){
@@ -402,24 +271,13 @@ public class mapTab extends Fragment implements
 
                     //멈춤 감지
                     if(speedThreshold < 2 || gpsCalledCount < -2){
-//                    if(gpsCalledCount < -2){
                         running = false;
-//                    statisticsThread.interrupt();
                         chronoElapsedTime.stop();
                         currentTime = SystemClock.elapsedRealtime() - chronoElapsedTime.getBase();
                         Toast.makeText(getActivity().getApplicationContext(), "자동 멈춤 : " + avgSpeed, Toast.LENGTH_SHORT).show();
-//                        latLngList.clear();
                         gpsCalledCount = 0;
                     }
                 }
-//                float elapsedMillis =  (SystemClock.elapsedRealtime()
-//                        - chronoElapsedTime.getBase());
-//                speed = Math.round(distanceKilometer / (elapsedMillis / 1000.0)  * (1/3600));
-//                if(speed > 100 || speed < 0 )
-//                    speed = 0;
-//                txtAvgSpeed.setText( speed+ "km/h");
-//                Log.d("DEBUG","elapsedMillis   " + elapsedMillis + "milsec");
-//                Log.d("DEBUG","avgSpeed   " + speed + "km/h");
             }
         };
 
@@ -436,53 +294,6 @@ public class mapTab extends Fragment implements
                 }
             }
         }
-
-
-//        markMarkerBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//
-//                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    return;
-//                }
-//
-//                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                double currentLat = location.getLatitude();
-//                double currentLon = location.getLongitude();
-//
-//                LatLng currentLocMarker = new LatLng(currentLat,currentLon);
-//                map.addMarker(new MarkerOptions().position(currentLocMarker));
-//
-//                latLngList.add(currentLocMarker);
-//
-//            }
-//        });
-
-//        drawLineBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                for(int i = 0; i < locsList.size(); i++)
-////                Log.println((String)locsList.get(i));
-////                for(int i = 0; i < locsList.size(); i++){
-////                    polylineOptions = new PolylineOptions().add((LatLng) locsList.get(i));
-////                }
-//
-//                if(latLngList.size() > 1){
-//                    Polyline polyline = map.addPolyline(new PolylineOptions().addAll(latLngList)
-//                            .width(7)
-//                            .color(Color.RED));
-//                }
-//                else{
-//                    Toast.makeText(getActivity().getApplicationContext(),"두개 이상의 마커 필요",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//            }
-//        });
-
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -528,12 +339,6 @@ public class mapTab extends Fragment implements
                     statisticsThread = new Thread(nr);
                     statisticsThread.start();
                 }
-
-
-//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-//                        5000,
-//                        5,
-//                        gpsLocationListener);
             }
         });
 
@@ -616,26 +421,16 @@ public class mapTab extends Fragment implements
                     }
                     outputStream.write(output.getBytes());
                     outputStream.close();
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-
             }
         });
-
     }
 
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             // 위치 리스너는 위치정보를 전달할 때 호출되므로 onLocationChanged()메소드 안에 위지청보를 처리를 작업을 구현 해야합니다.
-//            String provider = location.getProvider();  // 위치정보
-//            double longitude = location.getLongitude(); // 위도
-//            double latitude = location.getLatitude(); // 경도
-//            double altitude = location.getAltitude(); // 고도
-
 
             if(rainState == 0){
                 imgWeatherIcon.setImageResource(R.drawable.sunny);
@@ -688,12 +483,6 @@ public class mapTab extends Fragment implements
             timeArray[1] = (SystemClock.elapsedRealtime()
                     - chronoElapsedTime.getBase()) / 1000;
             Log.d("DEBUG","timeArray   " + timeArray[1]);
-//
-//            txtResult.setText("위치정보 : " + provider + "\n" + "위도 : " + latitude +
-//                    "\n" + "경도 : " + longitude +
-//                    "\n" + "고도 : " + altitude +
-//                    "\n마커 개수" + locsList.size());
-
             Log.d("DEBUG","마커 개수   " + latLngList.size());
 
 
@@ -795,22 +584,4 @@ public class mapTab extends Fragment implements
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
-//    @Override
-//    protected void onResumeFragments() {
-//        super.onResumeFragments();
-//        if (permissionDenied) {
-//            // Permission was not granted, display error dialog.
-//            showMissingPermissionError();
-//            permissionDenied = false;
-//        }
-//    }
-//
-//    /**
-//     * Displays a dialog with error message explaining that the location permission is missing.
-//     */
-//    private void showMissingPermissionError() {
-//        PermissionUtils.PermissionDeniedDialog
-//                .newInstance(true).show(getSupportFragmentManager(), "dialog");
-//    }
 }

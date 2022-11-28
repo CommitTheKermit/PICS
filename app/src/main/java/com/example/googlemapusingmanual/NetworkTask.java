@@ -23,10 +23,7 @@ public class NetworkTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
 
-//        RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
-//        result = requestHttpURLConnection.request(url); // 해당 URL로 부터 결과물을 얻어온다.
         WeatherAPI weather = new WeatherAPI();
-//        Oxford requestOxford = new Oxford();
         try {
             this.rainState = weather.func(11,20,this.maptab);
         } catch (IOException e) {

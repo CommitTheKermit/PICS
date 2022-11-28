@@ -121,22 +121,26 @@ public class WeatherAPI extends Thread{
             if(resultList.get(i).indexOf("SKY") != -1){
                 skyMap.put(
                         resultList.get(i).substring(
-                        resultList.get(i).indexOf("<fcstTime>") + 10,
-                        resultList.get(i).indexOf("<fcstTime>") + 14)
-                , temp);
+                                resultList.get(i).indexOf("<fcstTime>") + 10,
+                                resultList.get(i).indexOf("<fcstTime>") + 14)
+                        , temp);
             }
             else if (resultList.get(i).indexOf("PTY") != -1){
                 ptyMap.put(
                         resultList.get(i).substring(
                                 resultList.get(i).indexOf("<fcstTime>") + 10,
                                 resultList.get(i).indexOf("<fcstTime>") + 14)
-                , temp);
+                        , temp);
             }
         }
+        if(baseTime.compareTo("2400") == 0)
+            baseTime = "0000";
         String tempInt =
                 Integer.toString((Integer.parseInt(baseTime) / 100 + 1) * 100);
         if(tempInt.compareTo("2400") == 0)
             tempInt = "0000";
+        if(tempInt.compareTo("100") == 0)
+            tempInt = "0100";
         int rainState = Integer.parseInt(ptyMap.get(tempInt));
 //        int rainState = 3;
 
