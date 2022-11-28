@@ -65,12 +65,6 @@ import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
 
 import org.json.JSONException;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link mapTab} factory method to
- * create an instance of this fragment.
- */
 public class mapTab extends Fragment implements
     GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMyLocationClickListener,
@@ -88,35 +82,36 @@ public class mapTab extends Fragment implements
     private GoogleMap map;
     private UiSettings mUiSettings;
 
-    Button btnPause, btnStart, btnStop;
-    ImageView imgWeatherIcon;
+    private Button btnPause, btnStart, btnStop;
+    private ImageView imgWeatherIcon;
     private TextView txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
     private static Handler recordHandler ;
-    Chronometer chronoElapsedTime;
-    long[] timeArray = {0, 0, 0 ,0};
+    private Chronometer chronoElapsedTime;
+    private long[] timeArray = {0, 0, 0 ,0};
 
-    Thread statisticsThread;
-    Thread weatherDisplayThread;
-    boolean pressed = false;
-    boolean running = false;
-    boolean firstWeatherApi = true;
-    int gpsCalledCount = 0;
-    long currentTime;
-    static float avgSpeed;
-    float outputDist;
-    static String currentExerciseType = "WALKING";
+    private Thread statisticsThread;
+    private Thread weatherDisplayThread;
+    private boolean pressed = false;
+    private boolean running = false;
+    private boolean firstWeatherApi = true;
+    private int gpsCalledCount = 0;
+    private long currentTime;
+    private static float avgSpeed;
+    private float outputDist;
 
-    double outerCurrentLat = 0;
-    double outerCurrentLon = 0;
+    public static String currentExerciseType = "WALKING";
 
-    Dialog dialogView;
+    private double outerCurrentLat = 0;
+    private double outerCurrentLon = 0;
+
+    private Dialog dialogView;
 
 
-    ArrayList<LatLng> latLngList = new ArrayList<>();
-    ArrayList<Float> speedList = new ArrayList();
-    ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
+    private ArrayList<LatLng> latLngList = new ArrayList<>();
+    private ArrayList<Float> speedList = new ArrayList();
+    private ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
 
-    MapView mapView;
+    private MapView mapView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

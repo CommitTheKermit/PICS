@@ -18,18 +18,7 @@ import java.util.Map;
 public class WeatherAPI extends Thread{
     public int func(double lat, double lng, mapTab tab) throws IOException, JSONException {
 
-        try {
-            Thread.sleep(1000); // 날씨 변경 딜레이 변수로 바꿀것
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-
-
         String endPoint =  "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
-        //String serviceKey = "bRsNyPW+NewTx2aUvwqDdABLPU5afYJQI5PoS/SLSbiJ3llFANs1eBUdVnq5zaSNfvQ2AqLWJRrHvNOPJm3k8Q==";
-//        String serviceKey = "bRsNyPW%2BNewTx2aUvwqDdABLPU5afYJQI5PoS%2FSLSbiJ3llFANs1eBUdVnq5zaSNfvQ2AqLWJRrHvNOPJm3k8Q%3D%3D";
 //        String serviceKey = "FJU2wtWWUakhuFu7GuMmDXwJjfPd8zf7Ee/JvfvozHQRI/E5zdAhxjSm4NwgTKoNL/sD+0BQu1Em2DC6Tsfc5A==";
         String serviceKey = "FJU2wtWWUakhuFu7GuMmDXwJjfPd8zf7Ee%2FJvfvozHQRI%2FE5zdAhxjSm4NwgTKoNL%2FsD%2B0BQu1Em2DC6Tsfc5A%3D%3D";
 
@@ -48,12 +37,10 @@ public class WeatherAPI extends Thread{
         baseDate = formattedDate;
 
         LocalTime currentTime = LocalTime.now();
-        DateTimeFormatter formatHour = DateTimeFormatter.ofPattern("hh");
         DateTimeFormatter formatMinute = DateTimeFormatter.ofPattern("mm");
         String formattedHour = currentTime.toString().substring(0,2);
         String formattedMinute = currentTime.format(formatMinute);
-//        baseTime = formattedTime;
-        int baseTimeInt;
+
         if(Integer.parseInt(formattedMinute) > 30)
             formattedMinute = "00";
         else
@@ -70,8 +57,6 @@ public class WeatherAPI extends Thread{
                 +"&nx="+nx
                 +"&ny="+ny;
 
-//        s = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=FJU2wtWWUakhuFu7GuMmDXwJjfPd8zf7Ee%2FJvfvozHQRI%2FE5zdAhxjSm4NwgTKoNL%2FsD%2B0BQu1Em2DC6Tsfc5A%3D%3D&pageNo=1&numOfRows=50&dataType=XML&base_date=20221126&base_time=2000&nx=55&ny=127";
-//        s = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=FJU2wtWWUakhuFu7GuMmDXwJjfPd8zf7Ee%2FJvfvozHQRI%2FE5zdAhxjSm4NwgTKoNL%2FsD%2B0BQu1Em2DC6Tsfc5A%3D%3D&pageNo=1&numOfRows=50&dataType=XML&base_date=20221126&base_time=2330&nx=55&ny=127";
         URL url = new URL(s);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -95,17 +80,12 @@ public class WeatherAPI extends Thread{
         String resultLines[] = result.split("<item>");
 
         ArrayList<String> resultList = new ArrayList<String>(resultLines.length);
-//
-//        for(int i=0; i<resultLines.length; i++){
-//            resultList.add(resultLines[i]);
-//        }
-//
+
         resultList.addAll(Arrays.asList(resultLines));
 
         Map<String, String> skyMap = new HashMap<>();
         Map<String, String> ptyMap = new HashMap<>();
-//        ArrayList<String> skyList = new ArrayList<>(10);
-//        ArrayList<String> ptyList = new ArrayList<>(10);
+
         for(int i=0; i<resultList.size(); i++){
             //sky와 pty만 고려할것
             if(resultList.get(i).indexOf("SKY") == -1 && resultList.get(i).indexOf("PTY") == -1){

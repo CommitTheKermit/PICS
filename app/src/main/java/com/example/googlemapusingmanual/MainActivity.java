@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
-    ImageButton btnLogo, btnNotification, btnMenu ;
+    private ImageButton btnLogo, btnNotification, btnMenu ;
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
