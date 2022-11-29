@@ -1,5 +1,6 @@
 package com.example.googlemapusingmanual;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.os.Bundle;
 
@@ -78,6 +79,7 @@ public class achievementTab extends Fragment {
         //끝
 
         for(int count=0; count<20; count++) {
+            boolean checkPreference = PreferenceManager.getBoolean(getActivity(), "chk"+(count));
             //CheckBox 추가 부분
             CheckBox checkView = new CheckBox(getActivity().getApplicationContext());
 
@@ -86,6 +88,7 @@ public class achievementTab extends Fragment {
             checkView.setX(200);
             checkView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20); // textSize
             checkView.setGravity(Gravity.LEFT);
+            checkView.setChecked(checkPreference);
             linear1.addView(checkView);
             checkBoxArrayList.add(checkView);
 
@@ -114,26 +117,17 @@ public class achievementTab extends Fragment {
             checkView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int id = checkView.getId();
+
                     if(checkView.isChecked()) {
-                        int id = checkView.getId();
+                        PreferenceManager.setBoolean(getActivity(), "chk"+(id), true);
 
                         long now = System.currentTimeMillis();
                         Date date = new Date(now);
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 a HH시 mm분 ss초");
                         String getTime = sdf.format(date);
 
-                        txtView.setText("업적이 완료되었음. 1초 후 돌아감");
                         fileWrite(getTime+"\n"+achieve.get(id)+" 업적을 완료했다.\n", id);
-
-                        // 딜레이
-                        final Handler handler = new Handler(Looper.getMainLooper());
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                checkView.setChecked(false);
-                                txtView.setText(achieve.get(id) + (id+1));
-                            }
-                        }, 1000);
                     }
                 }
             });

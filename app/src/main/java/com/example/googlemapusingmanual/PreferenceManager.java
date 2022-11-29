@@ -25,7 +25,7 @@ public class PreferenceManager {
         return value;
     }
 
-    public static void setBool(Context context, String key, boolean value){
+    public static void setBoolean(Context context, String key, boolean value){
         SharedPreferences prefs = getPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(key, value);

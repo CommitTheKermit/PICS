@@ -46,23 +46,25 @@ public class etcTab extends Fragment {
             }
         });
 
-        pushSwitch = (Switch) rootView.findViewById(R.id.pushSwitch);
-        pushSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                if(pushSwitch.isChecked()){
-                    PreferenceManager.setBool(getActivity().getApplicationContext(), "pushSwitch", true);
-                    builder.setMessage("푸쉬알림이 활성화 되었습니다.");
-                }
-                else{
-                    PreferenceManager.setBool(getActivity().getApplicationContext(), "pushSwitch", false);
-                    builder.setMessage("푸쉬알림이 비활성화 되었습니다.");
-                }
-                builder.create().show();
-            }
-        });
+//        boolean pushSetting = PreferenceManager.getBoolean(getActivity(), "pushSwitch");
+//        pushSwitch = (Switch) rootView.findViewById(R.id.pushSwitch);
+//        pushSwitch.setChecked(pushSetting);
+//        pushSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//
+//                if(pushSwitch.isChecked()){
+//                    PreferenceManager.setBoolean(getActivity().getApplicationContext(), "pushSwitch", true);
+//                    builder.setMessage("푸쉬알림이 활성화 되었습니다.");
+//                }
+//                else{
+//                    PreferenceManager.setBoolean(getActivity().getApplicationContext(), "pushSwitch", false);
+//                    builder.setMessage("푸쉬알림이 비활성화 되었습니다.");
+//                }
+//                builder.create().show();
+//            }
+//        });
 
         btnMainScreenSet = (Button) rootView.findViewById(R.id.btnMainScreenSet);
         btnMainScreenSet.setOnClickListener(new View.OnClickListener() {

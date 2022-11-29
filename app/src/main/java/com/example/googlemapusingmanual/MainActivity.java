@@ -94,12 +94,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Notification 관련 파트
-        boolean pushState = PreferenceManager.getBoolean(getApplicationContext(), "pushSwitch");
-        if(pushState){
-            createNotificationChannel(DEFAULT, "default channel", NotificationManager.IMPORTANCE_HIGH);
-            createNotification(DEFAULT, -1, "Hello", "Welcome to PICS");
-        }
-        //파일
+//        boolean pushState = PreferenceManager.getBoolean(getApplicationContext(), "pushSwitch");
+//        if(pushState){
+//            createNotificationChannel(DEFAULT, "default channel", NotificationManager.IMPORTANCE_HIGH);
+//            createNotification(DEFAULT, -1, "Hello", "Welcome to PICS");
+//        }
     }
 
     private void changeFragment(int screenId) {
@@ -131,20 +130,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Notification
-    public void createNotificationChannel(String channelId, String channelName, int importance){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, importance));
-        }
-    }
-
-    public void createNotification(String channelId, int id, String title, String text){
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
-                .setPriority(NotificationCompat.PRIORITY_HIGH).setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(title).setContentText(text)
-                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(id, builder.build());
-    }
+//    public void createNotificationChannel(String channelId, String channelName, int importance){
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, importance));
+//        }
+//    }
+//
+//    public void createNotification(String channelId, int id, String title, String text){
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+//                .setPriority(NotificationCompat.PRIORITY_HIGH).setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle(title).setContentText(text)
+//                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+//        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//        notificationManager.notify(id, builder.build());
+//    }
 
 }
