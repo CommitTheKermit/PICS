@@ -16,6 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +29,16 @@ public class NotificationHistoryActivity extends AppCompatActivity {
     private LinearLayout linear;
     private ArrayList<TextView> textViewArrayList;
     private ArrayList<ImageView> imageViewArrayList;
+
+    private int[] textureArrayWin = {
+            R.drawable.water,
+            R.drawable.walk,
+            R.drawable.run,
+            R.drawable.bicycle,
+            R.drawable.push_up,
+            R.drawable.sit_up,
+            R.drawable.game
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,45 +50,23 @@ public class NotificationHistoryActivity extends AppCompatActivity {
         textViewArrayList = new ArrayList<TextView>(20);
         imageViewArrayList = new ArrayList<ImageView>(20);
 
-        int id = 0;
-        achievementTab AT = new achievementTab();
-        if(AT.textList != null){
-            for (int i = 0; i < AT.textList.size(); i++) {
-                createTextViewWith(++id, 210, 200, true, null);
-                createImgView(++id, 200, 200, 100);
-                createTextViewWith(++id, 210, 0, false, AT.textList.get(0));
-                AT.textList.remove(0);
+        String setText = "";
+        for(int id=0; id<20; id++) {
+            setText = fileRead(id);
+            if(setText != ""){
+                createImgView(id, 200, 200, 100);
+                createTextView(id, 310, -100, setText);
+                setText = "";
             }
         }
-
-//        if(checkBox.isChecked()){
-//            createTextViewWith(checkBox.getId(),  210,  200, true);
-//            createImgView(checkBox.getId(), 200, 200, 100);
-//            createTextViewWith(checkBox.getId(), 210, 0, false);
-//        }
-
-//        for(int count=0; count<20; count++) {
-//            createTextViewWith(count,  210,  200, true);
-//            createImgView(count, 200, 200, 100);
-//            createTextViewWith(count, 210, 0, false);
-//        }
     }
 
-    private void createTextViewWith(int id, int setX, int setY, boolean boolDate, String text){
+    private void createTextView(int id, int setX, int setY, String text){
         TextView textView = new TextView(getApplicationContext());
         textView.setId(id);
 
-        //날짜
-        if(boolDate == true){
-            long now = System.currentTimeMillis();
-            Date date = new Date(now);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 a HH시 mm분 ss초");
-            String getTime = sdf.format(date);
-            textView.setText(getTime);
-        }
-        else{
-            textView.setText(text);
-        }
+        textView.setText(text);
+
         textView.setX(setX);
         textView.setY(setY);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15); // textSize
@@ -87,11 +79,28 @@ public class NotificationHistoryActivity extends AppCompatActivity {
         ImageView imgView = new ImageView(getApplicationContext());
 
         imgView.setId(id);
-        imgView.setImageResource(R.drawable.img1);
+        imgView.setImageResource(textureArrayWin[id/3]);
         imgView.setLayoutParams(new LinearLayout.LayoutParams(width, height));
         imgView.setY(setY);
         linear.addView(imgView);
         imageViewArrayList.add(imgView);
+    }
+
+    public String fileRead(int id) {
+        String readStr = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(getFilesDir() + "sw"+id+".txt"));
+            String str = null;
+            while ((str = br.readLine()) != null) {
+                readStr += str + "\n";
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return readStr;
     }
 
     public void onClickBackButton(View v){

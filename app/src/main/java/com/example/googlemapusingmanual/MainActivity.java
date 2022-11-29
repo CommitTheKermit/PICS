@@ -12,6 +12,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +21,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationRequest;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -33,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -43,8 +46,21 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -78,8 +94,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Notification 관련 파트
-        createNotificationChannel(DEFAULT, "default channel", NotificationManager.IMPORTANCE_HIGH);
-        createNotification(DEFAULT, -1, "Hello", "Welcome to PICS");
+        boolean pushState = PreferenceManager.getBoolean(getApplicationContext(), "pushSwitch");
+        if(pushState){
+            createNotificationChannel(DEFAULT, "default channel", NotificationManager.IMPORTANCE_HIGH);
+            createNotification(DEFAULT, -1, "Hello", "Welcome to PICS");
+        }
+        //파일
     }
 
     private void changeFragment(int screenId) {
@@ -126,4 +146,5 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(id, builder.build());
     }
+
 }

@@ -51,10 +51,13 @@ public class etcTab extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
                 if(pushSwitch.isChecked()){
+                    PreferenceManager.setBool(getActivity().getApplicationContext(), "pushSwitch", true);
                     builder.setMessage("푸쉬알림이 활성화 되었습니다.");
                 }
                 else{
+                    PreferenceManager.setBool(getActivity().getApplicationContext(), "pushSwitch", false);
                     builder.setMessage("푸쉬알림이 비활성화 되었습니다.");
                 }
                 builder.create().show();
