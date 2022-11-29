@@ -13,8 +13,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PersonalInfoActivity extends AppCompatActivity {
 
@@ -22,6 +27,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
     private Button btn2, btn3;
     private String nickname, age, weight, height, gender;
     private Spinner spinner;
+    private DatabaseReference mDataRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,9 @@ public class PersonalInfoActivity extends AppCompatActivity {
         weight_text = findViewById(R.id.WeightText);
         height_text = findViewById(R.id.HeighText);
         spinner = findViewById(R.id.Gen_btn);
+        mDataRef = FirebaseDatabase.getInstance().getReference("Pick");
+        Map<String, Object> checkMap = new HashMap<String, Object>();
+        checkMap.put("check","1");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -53,6 +62,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         });
 
         btn2.setOnClickListener(new View.OnClickListener() {
+            LoginActivity id1 = new LoginActivity();
             @Override
             public void onClick(View view) {
                 try {
@@ -73,6 +83,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                     outFs.write(info.getHeight().getBytes());
                     outFs.write(info.getGender().getBytes());
                     outFs.close();
+                    mDataRef.child("IdCheck").child(id1.id).updateChildren(checkMap);
                     Intent intent = new Intent(PersonalInfoActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

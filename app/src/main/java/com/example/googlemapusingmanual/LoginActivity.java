@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    static String id;
     private Button LoginBtn, RegisterBtn, FindBtn;
     private EditText loginId, loginPasswd;
     private FirebaseAuth mAuth;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 email = loginId.getText().toString();
                 pwd = loginPasswd.getText().toString();
                 id_arr = email.split("@");
+                id = id_arr[0];
                 check_num = "0";
                 mAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -63,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                     if(value.equals(check_num)==true){
-                                        mDataRef.child("IdCheck").child(id_arr[0]).updateChildren(checkMap);
                                         Intent intent = new Intent(LoginActivity.this, PersonalInfoActivity.class);
                                         startActivity(intent);
                                         finish();
