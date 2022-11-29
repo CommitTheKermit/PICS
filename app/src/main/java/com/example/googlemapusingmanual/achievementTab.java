@@ -1,11 +1,13 @@
 package com.example.googlemapusingmanual;
 
+import android.app.NotificationManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,10 +23,12 @@ import java.util.ArrayList;
 
 public class achievementTab extends Fragment {
 
+    private static final String TAG = "MyActivity";
     private LinearLayout linear1;
     private ArrayList<CheckBox> checkBoxArrayList;
     private ArrayList<ImageView> imageViewArrayList;
     private ArrayList<TextView> textViewArrayList;
+    public ArrayList<String> textList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +40,7 @@ public class achievementTab extends Fragment {
         checkBoxArrayList = new ArrayList<CheckBox>(20);
         imageViewArrayList = new ArrayList<ImageView>(20);
         textViewArrayList = new ArrayList<TextView>(20);
+        textList = new ArrayList<String>(20);
 
         for(int count=0; count<20; count++) {
             //CheckBox 추가 부분
@@ -75,14 +80,17 @@ public class achievementTab extends Fragment {
                 @Override
                 public void onClick(View view) {
                     if(checkView.isChecked()) {
+                        int id = checkView.getId();
+                        textList.add("업적 "+(id+1)+"번이 완료되었습니다.");
+
                         Toast.makeText(getActivity().getApplicationContext(), "완료", Toast.LENGTH_SHORT).show();
                         txtView.setText("업적이 완료되었음. 1초 후 돌아감");
+
                         // 딜레이
                         final Handler handler = new Handler(Looper.getMainLooper());
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                int id = checkView.getId();
                                 checkView.setChecked(false);
                                 txtView.setText("업적 완료후 초기화된 업적 " + (id+1));
                             }
@@ -90,8 +98,8 @@ public class achievementTab extends Fragment {
                     }
                 }
             });
-        }
 
+        }
         return rootView;
     }
 }

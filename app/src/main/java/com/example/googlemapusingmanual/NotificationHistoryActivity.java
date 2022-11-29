@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,19 +36,36 @@ public class NotificationHistoryActivity extends AppCompatActivity {
         textViewArrayList = new ArrayList<TextView>(20);
         imageViewArrayList = new ArrayList<ImageView>(20);
 
-        for(int count=0; count<20; count++) {
-            createTextViewWith(count,  210,  200, true);
-            createImgView(count, 200, 200, 100);
-            createTextViewWith(count, 210, 0, false);
+        int id = 0;
+        achievementTab AT = new achievementTab();
+        if(AT.textList != null){
+            for (int i = 0; i < AT.textList.size(); i++) {
+                createTextViewWith(++id, 210, 200, true, null);
+                createImgView(++id, 200, 200, 100);
+                createTextViewWith(++id, 210, 0, false, AT.textList.get(0));
+                AT.textList.remove(0);
+            }
         }
+
+//        if(checkBox.isChecked()){
+//            createTextViewWith(checkBox.getId(),  210,  200, true);
+//            createImgView(checkBox.getId(), 200, 200, 100);
+//            createTextViewWith(checkBox.getId(), 210, 0, false);
+//        }
+
+//        for(int count=0; count<20; count++) {
+//            createTextViewWith(count,  210,  200, true);
+//            createImgView(count, 200, 200, 100);
+//            createTextViewWith(count, 210, 0, false);
+//        }
     }
 
-    private void createTextViewWith(int id, int setX, int setY, boolean isDate){
+    private void createTextViewWith(int id, int setX, int setY, boolean boolDate, String text){
         TextView textView = new TextView(getApplicationContext());
         textView.setId(id);
 
         //날짜
-        if(isDate == true){
+        if(boolDate == true){
             long now = System.currentTimeMillis();
             Date date = new Date(now);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 a HH시 mm분 ss초");
@@ -55,7 +73,7 @@ public class NotificationHistoryActivity extends AppCompatActivity {
             textView.setText(getTime);
         }
         else{
-            textView.setText("알림기록은 나중에 받아오겠음");
+            textView.setText(text);
         }
         textView.setX(setX);
         textView.setY(setY);
