@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".achievementTab"
+    android:id="@+id/tabAchieve"
+    android:background="@color/white">
+
+
+    <TextView
+        android:id="@+id/topBar2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/purple_500" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="260dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/topBar2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="75dp"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_below="@+id/textView1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="74dp"
+        android:textAlignment="center"
+        android:gravity="center" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="176dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="117dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="90dp"
+        android:gravity="center"
+        android:textAlignment="center" />
+
+
+</RelativeLayout>

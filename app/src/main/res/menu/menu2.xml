@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemCycle"
+        android:title="사이클">
+    </item>
+    <item
+        android:id="@+id/itemRunning"
+        android:title="달리기">
+    </item>
+    <item
+        android:id="@+id/itemWalking"
+        android:title="걷기">
+    </item>
+</menu>

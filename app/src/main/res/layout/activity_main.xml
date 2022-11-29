@@ -1,115 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:background="@color/purple_500">
+
+        <ImageButton
+            android:id="@+id/btnLogo"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@mipmap/ic_launcher_round"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="right"/>
+        <ImageButton
+            android:id="@+id/btnNotification"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_baseline_notifications_24"
+            android:layout_alignParentRight="true"
+            android:layout_marginHorizontal="10dp"/>
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-70dp"
+            android:background="@drawable/ic_baseline_menu_24"
+            android:layout_alignLeft="@id/btnNotification"/>
+
+<!--        <Spinner-->
+<!--            android:visibility="invisible"-->
+<!--            android:id="@+id/spinnerExercise"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_centerHorizontal="true"-->
+
+<!--            />-->
+
+    </RelativeLayout>
 
 
+    <FrameLayout
+        android:id="@+id/frameMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar" />
 
-        <TextView
-            android:id="@+id/id_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="100dp"
-            android:text="ID"
-            android:textColor="#232323"
-            android:layout_alignParentTop="true"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_id"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/id_text"
-            android:layout_height="wrap_content"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/loginId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:background="@color/white"
-                android:hint="아이디"
-                android:textColor="@color/black" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/pwd_text"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/input_layout_id"
-            android:text="PASSWORD"
-            android:textColor="#232323" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pwd_text"
-
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/loginPasswd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:background="@color/white"
-                android:hint="비밀번호"
-                android:inputType="textPassword"
-                android:textColor="@color/black" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-        <Button
-            android:id="@+id/LoginBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/input_layout_password"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:backgroundTint="#ffffff"
-            android:text="로그인"
-            android:textColor="#000000" />
-
-
-        <Button
-            android:id="@+id/RegisterBtn"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/LoginBtn"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="30dp"
-            android:backgroundTint="#ffffff"
-            android:text="Join"
-            android:textColor="#000000" />
-
-        <Button
-            android:id="@+id/Find_Btn"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/LoginBtn"
-            android:layout_toRightOf="@id/RegisterBtn"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="50dp"
-            android:backgroundTint="#ffffff"
-            android:text="ID/PW찾기"
-            android:textColor="#000000" />
-
-
-
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#ffffff"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/menu"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
