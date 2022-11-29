@@ -169,8 +169,8 @@ public class mapTab extends Fragment implements
                     } catch (Exception e) {
                         e.printStackTrace() ;
                     }
-                    NetworkTask networkTask = new NetworkTask(tab);
-                    networkTask.execute();
+//                    NetworkTask networkTask = new NetworkTask(tab);
+//                    networkTask.execute();
 
                 }
             }
