@@ -27,7 +27,7 @@
             android:layout_gravity="right"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/sunny"/>
+            android:background="@drawable/empty_icon"/>
     </FrameLayout>
 
 

@@ -75,6 +75,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                     outFs.close();
                     Intent intent = new Intent(PersonalInfoActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } catch (IOException E) {
                 }
             }
@@ -85,6 +86,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PersonalInfoActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

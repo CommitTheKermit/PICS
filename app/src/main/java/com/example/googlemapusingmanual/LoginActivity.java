@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private String email,pwd,check_num;
     private String[] id_arr;
     private DatabaseReference mDataRef;
+    Button btnSkip; //TODO delete
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         loginPasswd = findViewById(R.id.loginPasswd);
         mAuth = FirebaseAuth.getInstance();
         mDataRef = FirebaseDatabase.getInstance().getReference("Pick");
+
+
+        btnSkip = findViewById(R.id.btnSkip);
 
         Map<String, Object> checkMap = new HashMap<String, Object>();
         checkMap.put("check","1");
@@ -96,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -104,7 +109,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, FindActivity.class);
                 startActivity(intent);
+                finish();
+            }
+        });
+        btnSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
 }
+

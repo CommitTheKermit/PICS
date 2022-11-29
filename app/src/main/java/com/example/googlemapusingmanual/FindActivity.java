@@ -82,6 +82,7 @@ public class FindActivity extends TabActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(FindActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         btn5.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +112,7 @@ public class FindActivity extends TabActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(FindActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

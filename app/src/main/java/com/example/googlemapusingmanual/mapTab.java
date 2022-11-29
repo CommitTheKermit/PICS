@@ -5,6 +5,7 @@ import static androidx.fragment.app.DialogFragment.STYLE_NORMAL;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -93,7 +94,7 @@ public class mapTab extends Fragment implements
     private Thread weatherDisplayThread;
     private boolean pressed = false;
     private boolean running = false;
-    private boolean firstWeatherApi = true;
+    private int firstWeatherApi = 0;
     private int gpsCalledCount = 0;
     private long currentTime;
     private static float avgSpeed;
@@ -112,6 +113,8 @@ public class mapTab extends Fragment implements
     private ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
 
     private MapView mapView;
+    PushNotification push;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,7 +140,7 @@ public class mapTab extends Fragment implements
         imgWeatherIcon = (ImageView) rootView.findViewById(R.id.imgWeatherIcon);
 
         recordHandler = new Handler();
-
+        push = new PushNotification(getActivity().getApplicationContext());
         return rootView;
 }
 
@@ -159,30 +162,37 @@ public class mapTab extends Fragment implements
             public void run() {
                 while (true) {
                     try {
-
-                        if(firstWeatherApi != true){
+                        if(firstWeatherApi > 2){
                             Thread.sleep(300000);// 날씨 딜레이 변수로 설정할것
                         }
                         else{
-                            firstWeatherApi = false;
+                            firstWeatherApi += 1;
                         }
-                    } catch (Exception e) {
+                    }catch (InterruptedException e) {
+                        return;
+                    }
+                    catch (Exception e) {
                         e.printStackTrace() ;
                     }
-//                    NetworkTask networkTask = new NetworkTask(tab);
-//                    networkTask.execute();
+
+                    if(!Thread.currentThread().interrupted()){
+                        NetworkTask networkTask = new NetworkTask(tab);
+                        networkTask.execute();
+                    }
+                    else{
+                        break;
+                    }
+
 
                 }
             }
         }
 
-        Weathering weathering = new Weathering();
-        weatherDisplayThread = new Thread(weathering);
-        weatherDisplayThread.start();
 
         final Runnable onRecord = new Runnable() {
             @Override
             public void run() {
+
                 if(running == false){
                     Toast.makeText(getActivity().getApplicationContext(),"stopped thread " + gpsCalledCount,Toast.LENGTH_SHORT).show();
 
@@ -282,10 +292,20 @@ public class mapTab extends Fragment implements
                 while (true) {
                     try {
                         Thread.sleep(4000);
-                    } catch (Exception e) {
+                    }
+                    catch (InterruptedException e) {
+                        break;
+                    }
+                    catch (Exception e) {
                         e.printStackTrace() ;
                     }
-                    recordHandler.post(onRecord) ;
+                    if(!Thread.currentThread().interrupted()){
+                        recordHandler.post(onRecord) ;
+                    }
+                    else{
+                        break;
+                    }
+
                 }
             }
         }
@@ -311,6 +331,9 @@ public class mapTab extends Fragment implements
 
                 if(pressed == true && running == false){
                     chronoElapsedTime.setBase(SystemClock.elapsedRealtime() - currentTime);
+                    chronoElapsedTime.start();
+                    running = true;
+                    gpsCalledCount = 0;
                 }
                 else{
                     chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
@@ -333,6 +356,10 @@ public class mapTab extends Fragment implements
                     Running nr = new Running();
                     statisticsThread = new Thread(nr);
                     statisticsThread.start();
+
+                    Weathering weathering = new Weathering();
+                    weatherDisplayThread = new Thread(weathering);
+                    weatherDisplayThread.start();
                 }
             }
         });
@@ -348,10 +375,11 @@ public class mapTab extends Fragment implements
                 latLngList.clear();
                 map.clear();
                 statisticsThread.interrupt();
+                weatherDisplayThread.interrupt();
                 pressed = false;
                 running = false;
                 gpsCalledCount = 0;
-                statisticsThread.interrupt();
+
 //                something = outputDist;// 운동 끝내고 거리 전달
 
                 locationManager.removeUpdates(mapTab.this.gpsLocationListener);
@@ -432,10 +460,19 @@ public class mapTab extends Fragment implements
             }
             else if(rainState == 1 || rainState == 2){
                 imgWeatherIcon.setImageResource(R.drawable.rainy);
+                if(MainActivity.pushState == true){
+                    push.createNotificationChannel("DEFAULT", "default channel", NotificationManager.IMPORTANCE_HIGH);
+                    push.createNotification("DEFAULT", 2, "RECONSIDER YOUR ACTIVITY", "Rain forecasted");
+                }
             }
             else if(rainState == 3){
                 imgWeatherIcon.setImageResource(R.drawable.snow);
+                if(MainActivity.pushState == true){
+                    push.createNotificationChannel("DEFAULT", "default channel", NotificationManager.IMPORTANCE_HIGH);
+                    push.createNotification("DEFAULT", 3, "RECONSIDER YOUR ACTIVITY", "Snow forecasted");
+                }
             }
+            rainState = -1;
 
 
             double currentLat = location.getLatitude();
@@ -449,8 +486,7 @@ public class mapTab extends Fragment implements
 
             if( running == false){
                 LatLng currentLocMarker = new LatLng(currentLat,currentLon);
-                map.addMarker(new MarkerOptions().position(currentLocMarker));
-
+                map.addMarker(new MarkerOptions().position(currentLocMarker));//TODO 삭제시킬것
                 pauseLatLngList.add(currentLocMarker);
 
                 timeArray[2] = timeArray[3];
@@ -460,12 +496,8 @@ public class mapTab extends Fragment implements
                 return;
             }
 
-
-
-
             LatLng currentLocMarker = new LatLng(currentLat,currentLon);
-            map.addMarker(new MarkerOptions().position(currentLocMarker));
-
+            map.addMarker(new MarkerOptions().position(currentLocMarker));//TODO 삭제시킬것
             latLngList.add(currentLocMarker);
 
             if(latLngList.size() > 1){

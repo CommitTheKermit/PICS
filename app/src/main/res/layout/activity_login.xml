@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:orientation="vertical">
-
-
+    android:orientation="vertical"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/id_text"
@@ -74,7 +73,7 @@
 
     <Button
         android:id="@+id/LoginBtn"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/input_layout_password"
         android:layout_marginTop="30dp"
@@ -84,30 +83,44 @@
         android:text="로그인"
         android:textColor="#000000" />
 
-
-    <Button
-        android:id="@+id/RegisterBtn"
-        android:layout_width="120dp"
+    <RelativeLayout
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/LoginBtn"
-        android:layout_marginTop="30dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="30dp"
-        android:backgroundTint="#ffffff"
-        android:text="Join"
-        android:textColor="#000000" />
+        android:layout_marginRight="50dp">
+        <Button
+            android:id="@+id/RegisterBtn"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#ffffff"
+            android:text="Register"
+            android:textColor="#000000"
+            android:layout_alignParentLeft="true"/>
+
+        <Button
+            android:id="@+id/Find_Btn"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#ffffff"
+            android:text="ID/PW찾기"
+            android:textColor="#000000"
+            />
+
+
+    </RelativeLayout>
+
+
+
 
     <Button
-        android:id="@+id/Find_Btn"
-        android:layout_width="120dp"
+        android:id="@+id/btnSkip"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/LoginBtn"
-        android:layout_toRightOf="@id/RegisterBtn"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="50dp"
-        android:backgroundTint="#ffffff"
-        android:text="ID/PW찾기"
-        android:textColor="#000000" />
+        android:text="skip"/>
 
 
 

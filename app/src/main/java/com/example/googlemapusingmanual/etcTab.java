@@ -1,5 +1,8 @@
 package com.example.googlemapusingmanual;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,58 +10,151 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link etcTab#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.firebase.auth.FirebaseAuth;
+
+
 public class etcTab extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public etcTab() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment etcTab.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static etcTab newInstance(String param1, String param2) {
-        etcTab fragment = new etcTab();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    //    private FirebaseAuth mAuth;
+    Button btnWithdrawal, btnWeatherDelay, btnLogout, btnMainScreenSet;
+    Switch pushSwitch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_etc_tab, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_etc_tab, container, false);
+
+        btnWithdrawal = (Button) rootView.findViewById(R.id.btnWithdrawal);
+        btnWithdrawal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("회원 탈퇴");
+                builder.setMessage("회원 탈퇴하시겠습니까?");
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        withdrawal();
+                    }
+                });
+                builder.setNegativeButton("아니오", null);
+                builder.create().show();
+            }
+        });
+
+//        boolean pushSetting = PreferenceManager.getBoolean(getActivity(), "pushSwitch");
+        pushSwitch = (Switch) rootView.findViewById(R.id.pushSwitch);
+        pushSwitch.setChecked(MainActivity.pushState);
+        pushSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                if(pushSwitch.isChecked()){
+                    MainActivity.pushState = true;
+                    builder.setMessage("푸쉬알림이 활성화 되었습니다.");
+                }
+                else{
+                    MainActivity.pushState = false;
+                    builder.setMessage("푸쉬알림이 비활성화 되었습니다.");
+                }
+                builder.create().show();
+            }
+        });
+
+        btnMainScreenSet = (Button) rootView.findViewById(R.id.btnMainScreenSet);
+        btnMainScreenSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] mainScreenStrings = {"업적", "랭킹", "지도", "체중 기록", "기타"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("메인 화면 설정");
+                builder.setItems(mainScreenStrings, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.mainScreenID = i;
+                    }
+                });
+                builder.create().show();
+            }
+        });
+
+        btnWeatherDelay = (Button) rootView.findViewById(R.id.btnWeatherDelay);
+        btnWeatherDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                weatherDelaySetting();
+            }
+        });
+
+        btnLogout = (Button) rootView.findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("로그 아웃");
+                builder.setMessage("로그 아웃하시겠습니까?");
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        logout();
+                    }
+                });
+                builder.setNegativeButton("아니오", null);
+
+                builder.create().show();
+            }
+        });
+
+
+
+        return rootView;
+    }
+
+    public void withdrawal() {
+        // TODO: 회원 탈퇴 기능 추가
+//        mAuth = FirebaseAuth.getInstance();
+//        mAuth.getCurrentUser().delete();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("회원 탈퇴");
+        builder.setMessage("회원 탈퇴가 되었습니다.");
+        builder.setPositiveButton("확인", null);
+        builder.create().show();
+    }
+
+    public void weatherDelaySetting() {
+        String[] weatherDelayStrings = {"15분", "30분", "45분"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("날씨 정보 딜레이 설정");
+
+        builder.setItems(weatherDelayStrings, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setDelay(i == 0 ? 15 : i * 15); //1분, 5분, 10분 간결하게.
+            }
+        });
+        builder.create().show();
+    }
+
+    public void setDelay(int t){
+        // TODO: 날씨 정보 딜레이 설정 로직이 추가되면 여기에 추가
+    }
+
+    public void logout() {
+        // TODO: 로그 아웃 기능 추가 현재는 알림뿐
+//        mAuth = FirebaseAuth.getInstance();
+//        FirebaseAuth.getInstance().signOut();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("로그 아웃");
+        builder.setMessage("로그 아웃 되었습니다.");
+        builder.setPositiveButton("확인", null);
+        builder.create().show();
     }
 }
