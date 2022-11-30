@@ -1,77 +1,36 @@
 package com.example.googlemapusingmanual;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 public class weightTab extends Fragment {
-    private static final String[] APPS = null;
-    private LinearLayout linear1;
-    private ArrayList<CheckBox> checkBoxArrayList;
-    private ArrayList<ImageView> imageViewArrayList;
-    private ArrayList<TextView> textViewArrayList;
-    private ImageView imageView1;
-
-    private float outputDist;
-    public static String currentWeight = "WALKING";
-
     float height_cm = 0;
     float height_m = 0;
     float weight = 0;
@@ -85,7 +44,6 @@ public class weightTab extends Fragment {
 
     ArrayList<String> lines = new ArrayList<String>();
     ArrayList<String> history_weight = new ArrayList<String>();
-    //ArrayList<String> graph_weight = new ArrayList<String>();
 
     private LineChart chart;
 
@@ -108,21 +66,17 @@ public class weightTab extends Fragment {
             }
             in_2.close();
 
-            //ArrayList<String> lines = new ArrayList<String>();
-
             Scanner scanStop = new Scanner(new String(b));
             while(scanStop.hasNext()){
                 lines.add(scanStop.next()); // 실제읽
             }
-            //weight = Float.parseFloat(lines.get(2));
-            //height_cm = Float.parseFloat(lines.get(3));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         View rootView = inflater.inflate(R.layout.fragment_weight_tab, container, false);
 
-        //weight = Float.parseFloat(value);
         weight = Float.parseFloat(lines.get(2));
         height_cm = Float.parseFloat(lines.get(3));
         height_m = height_cm / 100;
@@ -146,14 +100,11 @@ public class weightTab extends Fragment {
             state = "초고도비만";
         }
 
-        // 그래프 관련
-
         LineChart chart = rootView.findViewById(R.id.lineChart);
 
-        chart.setExtraBottomOffset(15f); // 간격
-        chart.getDescription().setEnabled(false); // chart 밑에 description 표시 유무
+        chart.setExtraBottomOffset(15f);
+        chart.getDescription().setEnabled(false);
 
-        // Legend는 차트의 범례
         Legend legend = chart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
@@ -169,7 +120,6 @@ public class weightTab extends Fragment {
         legend.setYOffset(20f);
         legend.getCalculatedLineSizes();
 
-        // XAxis (아래쪽) - 선 유무, 사이즈, 색상, 축 위치 설정
         XAxis xAxis = chart.getXAxis();
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
@@ -180,7 +130,6 @@ public class weightTab extends Fragment {
         xAxis.setSpaceMin(0.1f); // Chart 맨 왼쪽 간격 띄우기
         xAxis.setSpaceMax(0.1f); // Chart 맨 오른쪽 간격 띄우기
 
-        // YAxis(Right) (왼쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
         YAxis yAxisLeft = chart.getAxisLeft();
         yAxisLeft.setTextSize(10f);
         yAxisLeft.setTextColor(Color.rgb(70, 50, 70));
@@ -190,7 +139,6 @@ public class weightTab extends Fragment {
         yAxisLeft.setAxisMaximum(ideal_weight+15); // 최댓값
         yAxisLeft.setGranularity(5f); // 값만큼 라인설정
 
-        // YAxis(Left) (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
         YAxis yAxis = chart.getAxisRight();
         yAxis.setDrawLabels(false); // label 삭제
         yAxis.setTextColor(Color.rgb(70, 50, 70));
@@ -240,10 +188,8 @@ public class weightTab extends Fragment {
         dataSets.add(set1); // add the data sets
         dataSets.add(set2);
 
-        // create a data object with the data sets
         LineData data = new LineData(dataSets);
 
-        // black lines and points
         set1.setLineWidth(3);
         set1.setCircleRadius(6);
         set1.setDrawValues(false);
@@ -264,13 +210,7 @@ public class weightTab extends Fragment {
         set2.setColor(Color.rgb(178, 223, 138));
         set2.setCircleColor(Color.rgb(178, 223, 138));
 
-        // set data
         chart.setData(data);
-
-
-
-
-        // 그래프 관련 끝
 
         EditText editText = (EditText)rootView.findViewById(R.id.editTextNumber);
         Button btn = rootView.findViewById(R.id.button);
@@ -312,13 +252,12 @@ public class weightTab extends Fragment {
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //    txtView8.setText(editText.getText().toString());
+
                 try {
                     String nickname = "someone_weight" + ".txt";
                     InputStream in = null;
                     OutputStreamWriter outputStream = new OutputStreamWriter(getActivity().openFileOutput(
                             nickname, Context.MODE_APPEND));
-
 
                     try {
                         outputStream.write(editText.getText().toString()+"\n");
@@ -326,7 +265,7 @@ public class weightTab extends Fragment {
                         in = getActivity().openFileInput(nickname);
                     }
                     catch (FileNotFoundException e){
-                        //outputStream.write(Float.toString(weight));
+
                         outputStream.write(editText.getText().toString()+"\n");
                         outputStream.close();
                         in = getActivity().openFileInput(nickname);
@@ -341,13 +280,11 @@ public class weightTab extends Fragment {
                     }
                     in.close();
 
-                    //ArrayList<String> history_weight = new ArrayList<String>();
-
                     Scanner scanStop = new Scanner(new String(c));
                     while(scanStop.hasNext()){
                         history_weight.add(scanStop.next()); // 실제읽
                     }
-                    //for(int i=1 ; i<history_weight.size()+1 ; i++){
+
                     weight = Float.parseFloat(history_weight.get(history_weight.size()-1));
                     //}
 
@@ -411,9 +348,6 @@ public class weightTab extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-
             }
         });
         return rootView;

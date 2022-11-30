@@ -1,47 +1,26 @@
 package com.example.googlemapusingmanual;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -61,12 +40,7 @@ public class rankingTab extends Fragment {
 
     float record = 0;  // DB에서 가져와서 저장
     float distance_recent = 0;
-    float distance_all = 0;
     double sum = 0 ;
-    float c = 0;
-    float d = 0;
-    float e = 0;
-    float f = 0;
 
     String[] exerciseList = {"걷기", "달리기", "자전거"};
 
@@ -138,8 +112,6 @@ public class rankingTab extends Fragment {
         TextView txtView3 = (TextView)rootView.findViewById(R.id.textView3);
         txtView3.setTextSize(20);
 
-
-
         LineChart chart_1 = rootView.findViewById(R.id.lineChart);
         chart_1.setExtraBottomOffset(15f); // 간격
         chart_1.getDescription().setEnabled(false); // chart 밑에 description 표시 유무
@@ -171,7 +143,6 @@ public class rankingTab extends Fragment {
         xAxis.setSpaceMin(0.1f); // Chart 맨 왼쪽 간격 띄우기
         xAxis.setSpaceMax(0.1f); // Chart 맨 오른쪽 간격 띄우기
 
-        // YAxis(Right) (왼쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
         YAxis yAxisLeft = chart_1.getAxisLeft();
         yAxisLeft.setTextSize(10f);
         yAxisLeft.setTextColor(Color.rgb(70, 50, 70));
@@ -181,7 +152,6 @@ public class rankingTab extends Fragment {
         yAxisLeft.setAxisMaximum(15); // 최댓값
         yAxisLeft.setGranularity(5f); // 값만큼 라인설정
 
-        // YAxis(Left) (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
         YAxis yAxis = chart_1.getAxisRight();
         yAxis.setDrawLabels(false); // label 삭제
         yAxis.setTextColor(Color.rgb(70, 50, 70));
@@ -193,12 +163,9 @@ public class rankingTab extends Fragment {
 
         ArrayList<Entry> values_1 = new ArrayList<>();
 
-
-
         for (int i=0; i < time_walking.size(); i++) {
            values_1.add(new Entry(i, Float.parseFloat(time_walking.get(i))));
         }
-
 
         LineDataSet set1;
         set1 = new LineDataSet(values_1, "km");
@@ -206,10 +173,8 @@ public class rankingTab extends Fragment {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the data sets
 
-        // create a data object with the data sets
         LineData data = new LineData(dataSets);
 
-        // black lines and points
         set1.setLineWidth(3);
         set1.setCircleRadius(6);
         set1.setDrawValues(false);
@@ -357,7 +322,6 @@ public class rankingTab extends Fragment {
             values_3.add(new Entry(i, Float.parseFloat(time_cycle.get(i))));
         }
 
-
         LineDataSet set3;
         set3 = new LineDataSet(values_3, "km");
 
@@ -379,7 +343,6 @@ public class rankingTab extends Fragment {
         set3.setCircleColor(Color.rgb(155, 155, 255));
 
         chart_3.setData(data_3);
-
 
         String[] exerciseList = {"걷기", "달리기", "자전거"};
 
