@@ -26,7 +26,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     private Button LoginBtn, RegisterBtn, FindBtn;
     private EditText loginId, loginPasswd;
-    private FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
     private String email,pwd,check_num;
     private String[] id_arr;
     private DatabaseReference mDataRef;

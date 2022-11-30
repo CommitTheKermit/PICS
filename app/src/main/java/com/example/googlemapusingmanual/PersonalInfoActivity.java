@@ -22,6 +22,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
     private Button btn2, btn3;
     private String nickname, age, weight, height, gender;
     private Spinner spinner;
+    public static UserInfo info; //TODO added
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,8 @@ public class PersonalInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    FileOutputStream outFs = openFileOutput("Personal_Info.txt", Context.MODE_PRIVATE);
-                    UserInfo info = new UserInfo();
+
+                    info = new UserInfo();
                     nickname = nickname_text.getText().toString() + "\n";
                     age = age_text.getText().toString() + "\n";
                     weight = weight_text.getText().toString() + "\n";
@@ -67,6 +68,9 @@ public class PersonalInfoActivity extends AppCompatActivity {
                     info.setWeight(weight);
                     info.setHeight(height);
                     info.setGender(gender);
+
+                    FileOutputStream outFs = openFileOutput(nickname + "_info.txt", Context.MODE_PRIVATE);
+
                     outFs.write(info.getNickname().getBytes());
                     outFs.write(info.getAge().getBytes());
                     outFs.write(info.getWeight().getBytes());

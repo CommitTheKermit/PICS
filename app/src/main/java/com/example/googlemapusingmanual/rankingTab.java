@@ -49,7 +49,7 @@ public class rankingTab extends Fragment {
                              Bundle savedInstanceState) {
 
         try {
-            String nickname = "someone" + ".txt";
+            String nickname = PersonalInfoActivity.info.getNickname() + ".txt";
             InputStream in = null;
             in = getActivity().openFileInput(nickname);
             byte[] b = new byte[in.available()];

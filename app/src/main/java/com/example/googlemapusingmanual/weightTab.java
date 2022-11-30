@@ -53,7 +53,7 @@ public class weightTab extends Fragment {
                              Bundle savedInstanceState) {
 
         try {
-            String nickname = "Personal_Info" + ".txt";
+            String nickname = PersonalInfoActivity.info.getNickname() + "_info.txt";
             InputStream in_2 = null;
             in_2 = getActivity().openFileInput(nickname);
 

@@ -107,13 +107,13 @@ public class mapTab extends Fragment implements
 
     private Dialog dialogView;
 
-
     private ArrayList<LatLng> latLngList = new ArrayList<>();
     private ArrayList<Float> speedList = new ArrayList();
     private ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
 
     private MapView mapView;
     PushNotification push;
+    public static int weatherDelay = 1;
 
 
     @Override
@@ -163,7 +163,7 @@ public class mapTab extends Fragment implements
                 while (true) {
                     try {
                         if(firstWeatherApi > 2){
-                            Thread.sleep(300000);// 날씨 딜레이 변수로 설정할것
+                            Thread.sleep(weatherDelay * 15 * 60 * 1000);// 날씨 딜레이 변수로 설정할것
                         }
                         else{
                             firstWeatherApi += 1;
@@ -387,7 +387,7 @@ public class mapTab extends Fragment implements
                 try {
 
                     // TODO: 2022-11-28  //유저 닉네임 설정
-                    String nickname = "someone" + ".txt";
+                    String nickname = PersonalInfoActivity.info.getNickname() + ".txt";
                     InputStream in = null;
                     try {
                         in = getActivity().openFileInput(nickname);
@@ -425,12 +425,6 @@ public class mapTab extends Fragment implements
                     while(scanStop.hasNext()){
                         lines.add(scanStop.next());
                     }
-
-                    //temp
-
-
-
-                    //temp
 
                     FileOutputStream outputStream = getActivity().openFileOutput(
                             nickname,

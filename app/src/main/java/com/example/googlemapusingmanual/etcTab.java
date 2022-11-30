@@ -109,22 +109,20 @@ public class etcTab extends Fragment {
                 builder.create().show();
             }
         });
-
-
-
         return rootView;
     }
 
     public void withdrawal() {
         // TODO: 회원 탈퇴 기능 추가
-//        mAuth = FirebaseAuth.getInstance();
-//        mAuth.getCurrentUser().delete();
+        LoginActivity.mAuth = FirebaseAuth.getInstance();
+        LoginActivity.mAuth.getCurrentUser().delete();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("회원 탈퇴");
         builder.setMessage("회원 탈퇴가 되었습니다.");
         builder.setPositiveButton("확인", null);
         builder.create().show();
+        getActivity().finish();
     }
 
     public void weatherDelaySetting() {
@@ -136,7 +134,7 @@ public class etcTab extends Fragment {
         builder.setItems(weatherDelayStrings, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                setDelay(i == 0 ? 15 : i * 15); //1분, 5분, 10분 간결하게.
+                setDelay(i + 1); //15분, 30분, 45분 간결하게.
             }
         });
         builder.create().show();
@@ -144,17 +142,20 @@ public class etcTab extends Fragment {
 
     public void setDelay(int t){
         // TODO: 날씨 정보 딜레이 설정 로직이 추가되면 여기에 추가
+        mapTab.weatherDelay = t;
+
     }
 
     public void logout() {
         // TODO: 로그 아웃 기능 추가 현재는 알림뿐
-//        mAuth = FirebaseAuth.getInstance();
-//        FirebaseAuth.getInstance().signOut();
+        LoginActivity.mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth.getInstance().signOut();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("로그 아웃");
         builder.setMessage("로그 아웃 되었습니다.");
         builder.setPositiveButton("확인", null);
         builder.create().show();
+        getActivity().finish();
     }
 }
