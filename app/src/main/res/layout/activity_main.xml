@@ -17,23 +17,23 @@
             android:id="@+id/btnLogo"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_launcher_foreground"
+            android:background="@mipmap/ic_launcher_round"
             android:layout_alignParentLeft="true"
             android:layout_gravity="right"/>
-        <ImageButton
-            android:id="@+id/btnMenu"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_baseline_menu_24"
-            android:layout_alignParentRight="true"
-            android:layout_marginHorizontal="10dp"/>
         <ImageButton
             android:id="@+id/btnNotification"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="-70dp"
             android:background="@drawable/ic_baseline_notifications_24"
-            android:layout_alignLeft="@id/btnMenu"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginHorizontal="10dp"/>
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-70dp"
+            android:background="@drawable/ic_baseline_menu_24"
+            android:layout_alignLeft="@id/btnNotification"/>
 
 <!--        <Spinner-->
 <!--            android:visibility="invisible"-->

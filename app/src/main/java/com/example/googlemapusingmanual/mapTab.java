@@ -1,7 +1,10 @@
 package com.example.googlemapusingmanual;
 
+import static androidx.fragment.app.DialogFragment.STYLE_NORMAL;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -22,8 +26,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +47,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 import java.util.concurrent.Executors;
 
 import com.google.android.gms.maps.MapsInitializer.Renderer;
@@ -48,12 +65,6 @@ import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
 
 import org.json.JSONException;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link mapTab} factory method to
- * create an instance of this fragment.
- */
 public class mapTab extends Fragment implements
     GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMyLocationClickListener,
@@ -62,90 +73,51 @@ public class mapTab extends Fragment implements
     OnMapsSdkInitializedCallback{
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final int NOT_RUNNING_RECORD_STATE = 2;
-    private static final int RUNNING_RECORD_STATE = 3;
-
-    private static final int RECORD_BUTTON_PRESSED = 4;
-    private static final int PAUSE_BUTTON_PRESSED = 5;
 
     private boolean permissionDenied = false;
+
+    public mapTab tab;
+    public int rainState = -1;
 
     private GoogleMap map;
     private UiSettings mUiSettings;
 
-    Button btnPause, btnStart, btnStop;
+    private Button btnPause, btnStart, btnStop;
+    private ImageView imgWeatherIcon;
     private TextView txtTotalDistance, txtMeasuredSpeed, txtAvgSpeed;
     private static Handler recordHandler ;
-    private static Handler weatherHandler ;
-    Chronometer chronoElapsedTime;
-    boolean flagTime;
-    long[] timeArray = {0, 0, 0 ,0};
+    private Chronometer chronoElapsedTime;
+    private long[] timeArray = {0, 0, 0 ,0};
 
-    Thread statisticsThread;
-    Thread weatherDisplayThread;
-    boolean pressed = false;
-    boolean running = false;
-    boolean firstWeatherApi = true;
-    long currentTime;
-    static float avgSpeed;
-    Spinner spinnerExercise;
+    private Thread statisticsThread;
+    private Thread weatherDisplayThread;
+    private boolean pressed = false;
+    private boolean running = false;
+    private boolean firstWeatherApi = true;
+    private int gpsCalledCount = 0;
+    private long currentTime;
+    private static float avgSpeed;
+    private float outputDist;
 
-    double outerCurrentLat = 0;
-    double outerCurrentLon = 0;
+    public static String currentExerciseType = "WALKING";
+
+    private double outerCurrentLat = 0;
+    private double outerCurrentLon = 0;
+
+    private Dialog dialogView;
 
 
-    ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
-    ArrayList<Float> speedList = new ArrayList();
+    private ArrayList<LatLng> latLngList = new ArrayList<>();
+    private ArrayList<Float> speedList = new ArrayList();
+    private ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
 
-    ArrayList<LatLng> pauseLatLngList = new ArrayList<LatLng>();
-    ArrayList<Float> pauseSpeedList = new ArrayList();
-
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-//
-//    public mapTab() {
-//        // Required empty public constructor
-//    }
-//
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment mapTab.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static mapTab newInstance(String param1, String param2) {
-//        mapTab fragment = new mapTab();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
-    MapView mapView;
+    private MapView mapView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map_tab, container, false);
-
+        tab = this;
         /*Fragment내에서는 mapView로 지도를 실행*/
         mapView = (MapView)rootView.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -162,29 +134,10 @@ public class mapTab extends Fragment implements
         btnStart = (Button) rootView.findViewById(R.id.btnStart);
         btnStop = (Button) rootView.findViewById(R.id.btnStop);
 
+        imgWeatherIcon = (ImageView) rootView.findViewById(R.id.imgWeatherIcon);
+
         recordHandler = new Handler();
-        weatherHandler = new Handler();
 
-        // 핸들러로 전달할 runnable 객체. 수신 스레드 실행.
-
-
-//        currentLocButton.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//
-//            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//                return;
-//            }
-//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//            double currentLat = location.getLatitude();
-//            double currentLon = location.getLongitude();
-//            Toast.makeText(getActivity().getApplicationContext(), "위도:" + currentLat +"\n경도" + currentLon, Toast.LENGTH_LONG).show();
-//        }
-//    });
-        // Inflate the layout for this fragment
         return rootView;
 }
 
@@ -198,6 +151,8 @@ public class mapTab extends Fragment implements
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.83066595547154 ,128.75450499202682), 15));
         map.getUiSettings().setZoomControlsEnabled(true);
         map.getUiSettings().setCompassEnabled(true);
+
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         class Weathering implements Runnable {
             @Override
@@ -214,8 +169,9 @@ public class mapTab extends Fragment implements
                     } catch (Exception e) {
                         e.printStackTrace() ;
                     }
-                    NetworkTask networkTask = new NetworkTask();
+                    NetworkTask networkTask = new NetworkTask(tab);
                     networkTask.execute();
+
                 }
             }
         }
@@ -228,48 +184,24 @@ public class mapTab extends Fragment implements
             @Override
             public void run() {
                 if(running == false){
-                    if(pauseLatLngList.size() < 2){
-                        return;
-                    }
+                    Toast.makeText(getActivity().getApplicationContext(),"stopped thread " + gpsCalledCount,Toast.LENGTH_SHORT).show();
 
-                    Location beforeLastLoc = new Location("");
-                    Location lastLoc = new Location("");
-
-                    beforeLastLoc.setLatitude(pauseLatLngList.get(pauseLatLngList.size() - 2).latitude);
-                    beforeLastLoc.setLongitude(pauseLatLngList.get(pauseLatLngList.size() - 2).longitude);
-
-                    lastLoc.setLatitude(pauseLatLngList.get(pauseLatLngList.size() - 1).latitude);
-                    lastLoc.setLongitude(pauseLatLngList.get(pauseLatLngList.size() - 1).longitude);
-
-                    float secToHour = 0;
-                    secToHour = (float) ((float)(timeArray[3] - timeArray[2]) / 3600.0);
-                    float speed = lastLoc.distanceTo(beforeLastLoc) / 1000 / secToHour;
-                    speed = Math.round(speed);
-                    if(speed > 100 || speed < 0 )
-                        speed = 0;
-
-                    Log.d("DEBUG","secToHour   " + secToHour);
-                    Log.d("DEBUG","speed   " + speed + "km/h");
-
-                    if(pauseSpeedList.size() > 3){
-                        pauseSpeedList.remove(0);
-                    }
-                    pauseSpeedList.add(speed);
-                    float sum = 0;
-                    for(float eachSpeed : pauseSpeedList){
-                        sum += eachSpeed;
-                    }
-                    avgSpeed = sum / pauseSpeedList.size();
                     //멈춤 감지에서 다시 움직인다 판정
                     //사람의 평균 보행시속은 4.8km/h
-                    if(avgSpeed > 2){
+                    if(gpsCalledCount > 2){
                         chronoElapsedTime.setBase(SystemClock.elapsedRealtime() - currentTime);
                         chronoElapsedTime.start();
                         running = true;
+                        Toast.makeText(getActivity().getApplicationContext(), "자동 시작 : " + avgSpeed, Toast.LENGTH_SHORT).show();
+                        gpsCalledCount = 0;
                     }
                 }
                 else{
+                    gpsCalledCount -= 1;
+                    Toast.makeText(getActivity().getApplicationContext(), "count subed " + gpsCalledCount,Toast.LENGTH_SHORT).show();
+
                     if(latLngList.size() < 2){
+                        gpsCalledCount += 1;
                         return;
                     }
 
@@ -289,6 +221,7 @@ public class mapTab extends Fragment implements
                         previousLoc = tempLoc;
                     }
                     float distanceKilometer =  (float) (distanceMeter / 1000.0);
+                    outputDist = distanceKilometer;
                     txtTotalDistance.setText(distanceKilometer + "km");
                     Log.d("DEBUG","distanceM   " + distanceMeter);
                     Log.d("DEBUG","distanceKM   " + distanceKilometer);
@@ -320,11 +253,10 @@ public class mapTab extends Fragment implements
                     avgSpeed = sum / speedList.size();
                     txtAvgSpeed.setText(avgSpeed + "km/h");
 
-                    float speedThreshold = 0;
-                    if(speedList.size() < 4){
-                        return;
-                    }
-                    else{
+
+
+                    float speedThreshold = 10;
+                    if(!(speedList.size() < 4)) {
                         float tempSum = 0;
                         for(int j = speedList.size() - 1; j > speedList.size() - 4; j--){
                             tempSum += speedList.get(j);
@@ -333,35 +265,23 @@ public class mapTab extends Fragment implements
                     }
 
                     //멈춤 감지
-                    if(speedThreshold < 2){
+                    if(speedThreshold < 2 || gpsCalledCount < -2){
                         running = false;
-//                    statisticsThread.interrupt();
                         chronoElapsedTime.stop();
                         currentTime = SystemClock.elapsedRealtime() - chronoElapsedTime.getBase();
+                        Toast.makeText(getActivity().getApplicationContext(), "자동 멈춤 : " + avgSpeed, Toast.LENGTH_SHORT).show();
+                        gpsCalledCount = 0;
                     }
-
                 }
-
-
-
-//                float elapsedMillis =  (SystemClock.elapsedRealtime()
-//                        - chronoElapsedTime.getBase());
-//                speed = Math.round(distanceKilometer / (elapsedMillis / 1000.0)  * (1/3600));
-//                if(speed > 100 || speed < 0 )
-//                    speed = 0;
-//                txtAvgSpeed.setText( speed+ "km/h");
-//                Log.d("DEBUG","elapsedMillis   " + elapsedMillis + "milsec");
-//                Log.d("DEBUG","avgSpeed   " + speed + "km/h");
-
             }
-        } ;
+        };
 
         class Running implements Runnable {
             @Override
             public void run() {
-                while (true && running == true) {
+                while (true) {
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(4000);
                     } catch (Exception e) {
                         e.printStackTrace() ;
                     }
@@ -369,53 +289,6 @@ public class mapTab extends Fragment implements
                 }
             }
         }
-
-
-//        markMarkerBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//
-//                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    return;
-//                }
-//
-//                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                double currentLat = location.getLatitude();
-//                double currentLon = location.getLongitude();
-//
-//                LatLng currentLocMarker = new LatLng(currentLat,currentLon);
-//                map.addMarker(new MarkerOptions().position(currentLocMarker));
-//
-//                latLngList.add(currentLocMarker);
-//
-//            }
-//        });
-
-//        drawLineBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                for(int i = 0; i < locsList.size(); i++)
-////                Log.println((String)locsList.get(i));
-////                for(int i = 0; i < locsList.size(); i++){
-////                    polylineOptions = new PolylineOptions().add((LatLng) locsList.get(i));
-////                }
-//
-//                if(latLngList.size() > 1){
-//                    Polyline polyline = map.addPolyline(new PolylineOptions().addAll(latLngList)
-//                            .width(7)
-//                            .color(Color.RED));
-//                }
-//                else{
-//                    Toast.makeText(getActivity().getApplicationContext(),"두개 이상의 마커 필요",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//            }
-//        });
-
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -424,6 +297,7 @@ public class mapTab extends Fragment implements
 //                    statisticsThread.interrupt();
                     chronoElapsedTime.stop();
                     currentTime = SystemClock.elapsedRealtime() - chronoElapsedTime.getBase();
+                    locationManager.removeUpdates(mapTab.this.gpsLocationListener);
                 }
                 else return;
             }
@@ -433,42 +307,33 @@ public class mapTab extends Fragment implements
             @Override
             public void onClick(View v) {
 
+                gpsCalledCount = 0;
+
                 if(pressed == true && running == false){
                     chronoElapsedTime.setBase(SystemClock.elapsedRealtime() - currentTime);
-                    chronoElapsedTime.start();
-                    running = true;
                 }
                 else{
                     chronoElapsedTime.setBase(SystemClock.elapsedRealtime());
+
+                    if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    //gps기반 + 네트워크 기반 gps 업데이트 시작
+                    //mintime 업데이트 최소 시간
+                    //mindistance 업데이트 최소 거리 둘 다 초과하여야 gpsLocationListener 작동함.
+                    locationManager.requestLocationUpdates(LocationManager.FUSED_PROVIDER,
+                            3000,
+                            5,
+                            gpsLocationListener);
                     chronoElapsedTime.start();
+                    pressed = true;
+                    running = true;
+                    Running nr = new Running();
+                    statisticsThread = new Thread(nr);
+                    statisticsThread.start();
                 }
-
-                pressed = true;
-                running = true;
-                Running nr = new Running();
-                statisticsThread = new Thread(nr);
-                statisticsThread.start();
-
-                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-
-                //gps기반 + 네트워크 기반 gps 업데이트 시작
-                //mintime 업데이트 최소 시간
-                //mindistance 업데이트 최소 거리 둘 다 초과하여야 gpsLocationListener 작동함.
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                        3000,
-                        5,
-                        gpsLocationListener);
-
-//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-//                        5000,
-//                        5,
-//                        gpsLocationListener);
-
             }
         });
 
@@ -485,25 +350,103 @@ public class mapTab extends Fragment implements
                 statisticsThread.interrupt();
                 pressed = false;
                 running = false;
+                gpsCalledCount = 0;
+                statisticsThread.interrupt();
+//                something = outputDist;// 운동 끝내고 거리 전달
 
+                locationManager.removeUpdates(mapTab.this.gpsLocationListener);
+
+                try {
+
+                    // TODO: 2022-11-28  //유저 닉네임 설정
+                    String nickname = "someone" + ".txt";
+                    InputStream in = null;
+                    try {
+                        in = getActivity().openFileInput(nickname);
+                    }
+                    catch (FileNotFoundException e){
+                        OutputStreamWriter outputStream = new OutputStreamWriter(getActivity().openFileOutput(
+                                nickname,
+                                Context.MODE_PRIVATE
+                        ));
+
+                        outputStream.write(
+                                "<CYCLE>\n" +
+                                "</CYCLE>\n"+
+                                "<RUNNING>\n" +
+                                "</RUNNING>\n" +
+                                "<WALKING>\n" +
+                                "</WALKING>\n"
+                        );
+
+                        outputStream.close();
+                        in = getActivity().openFileInput(nickname);
+                    }
+                    
+
+                    byte[] b = new byte[in.available()];
+
+                    try {
+                        in.read(b);
+                    } catch (IOException e) {
+                        Log.d("kermit",e.getMessage());
+                    }
+                    in.close();
+                    ArrayList<String> lines = new ArrayList<String>();
+
+                    Scanner scanStop = new Scanner(new String(b));
+                    while(scanStop.hasNext()){
+                        lines.add(scanStop.next()); // 실제읽
+                    }
+
+                    FileOutputStream outputStream = getActivity().openFileOutput(
+                            nickname,
+                            Context.MODE_PRIVATE);
+
+                    String output = "";
+
+                    for(int i = 0; i < lines.size(); i ++){
+                        int targetLine = lines.get(i).indexOf("</" + currentExerciseType + ">");
+                        if(targetLine != -1){
+                            lines.add(i, "<dist>"+ outputDist + "</dist>");
+                            i += 1;
+                        }
+                    }
+                    for(int i = 0; i < lines.size(); i ++){
+                        output += lines.get(i)+ "\n";
+                    }
+                    outputStream.write(output.getBytes());
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
-
     }
 
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             // 위치 리스너는 위치정보를 전달할 때 호출되므로 onLocationChanged()메소드 안에 위지청보를 처리를 작업을 구현 해야합니다.
-//            String provider = location.getProvider();  // 위치정보
-//            double longitude = location.getLongitude(); // 위도
-//            double latitude = location.getLatitude(); // 경도
-//            double altitude = location.getAltitude(); // 고도
+
+            if(rainState == 0){
+                imgWeatherIcon.setImageResource(R.drawable.sunny);
+            }
+            else if(rainState == 1 || rainState == 2){
+                imgWeatherIcon.setImageResource(R.drawable.rainy);
+            }
+            else if(rainState == 3){
+                imgWeatherIcon.setImageResource(R.drawable.snow);
+            }
+
 
             double currentLat = location.getLatitude();
             double currentLon = location.getLongitude();
 
             outerCurrentLat = currentLat;
             outerCurrentLon = currentLon;
+
+            gpsCalledCount += 1;
+            Toast.makeText(getActivity().getApplicationContext(),"count " + gpsCalledCount, Toast.LENGTH_SHORT).show();
 
             if( running == false){
                 LatLng currentLocMarker = new LatLng(currentLat,currentLon);
@@ -517,6 +460,9 @@ public class mapTab extends Fragment implements
 
                 return;
             }
+
+
+
 
             LatLng currentLocMarker = new LatLng(currentLat,currentLon);
             map.addMarker(new MarkerOptions().position(currentLocMarker));
@@ -533,13 +479,9 @@ public class mapTab extends Fragment implements
             timeArray[1] = (SystemClock.elapsedRealtime()
                     - chronoElapsedTime.getBase()) / 1000;
             Log.d("DEBUG","timeArray   " + timeArray[1]);
-//
-//            txtResult.setText("위치정보 : " + provider + "\n" + "위도 : " + latitude +
-//                    "\n" + "경도 : " + longitude +
-//                    "\n" + "고도 : " + altitude +
-//                    "\n마커 개수" + locsList.size());
-
             Log.d("DEBUG","마커 개수   " + latLngList.size());
+
+
 
         } public void onStatusChanged(String provider, int status, Bundle extras) {
 
@@ -638,22 +580,4 @@ public class mapTab extends Fragment implements
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
-//    @Override
-//    protected void onResumeFragments() {
-//        super.onResumeFragments();
-//        if (permissionDenied) {
-//            // Permission was not granted, display error dialog.
-//            showMissingPermissionError();
-//            permissionDenied = false;
-//        }
-//    }
-//
-//    /**
-//     * Displays a dialog with error message explaining that the location permission is missing.
-//     */
-//    private void showMissingPermissionError() {
-//        PermissionUtils.PermissionDeniedDialog
-//                .newInstance(true).show(getSupportFragmentManager(), "dialog");
-//    }
 }

@@ -14,21 +14,25 @@ import java.util.Arrays;
 
 public class NetworkTask extends AsyncTask<Void, Void, Void> {
 
+    mapTab maptab;
+    int rainState;
+    public NetworkTask(mapTab tab){
+        this.maptab = tab;
+    }
 
     @Override
     protected Void doInBackground(Void... params) {
 
-//        RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
-//        result = requestHttpURLConnection.request(url); // 해당 URL로 부터 결과물을 얻어온다.
         WeatherAPI weather = new WeatherAPI();
-//        Oxford requestOxford = new Oxford();
         try {
-            weather.func(11,20);
+            this.rainState = weather.func(11,20,this.maptab);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        this.maptab.rainState = this.rainState;
+
         return null;
     }
 }
