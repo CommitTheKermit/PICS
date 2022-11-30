@@ -426,6 +426,12 @@ public class mapTab extends Fragment implements
                         lines.add(scanStop.next());
                     }
 
+                    //temp
+
+
+
+                    //temp
+
                     FileOutputStream outputStream = getActivity().openFileOutput(
                             nickname,
                             Context.MODE_PRIVATE);
@@ -444,6 +450,25 @@ public class mapTab extends Fragment implements
                     }
                     outputStream.write(output.getBytes());
                     outputStream.close();
+
+
+//                    String distances[] = {"", "", ""};
+//                    String exercices[] = {"CYCLE","RUNNING","WALKING"};
+//                    for(int j = 0; j < 3; j++) {
+//                        for (int i = 0; i < lines.size(); i++) {
+//                            int targetLine = lines.get(i).indexOf("<" + exercices[j] + ">");
+//                            if (targetLine != -1) {
+//                                int k = i + 1;
+//                                while (lines.get(k).indexOf("</" + exercices[j] + ">") == -1) {
+//                                    int start = lines.get(k).indexOf("<dist>");
+//                                    int end = lines.get(k).indexOf("</dist>");
+//                                    String temp = lines.get(k).substring(start + 6 , end);
+//                                    distances[j] += temp;
+//                                    k++;
+//                                }
+//                            }
+//                        }
+//                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

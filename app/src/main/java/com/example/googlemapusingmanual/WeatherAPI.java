@@ -37,16 +37,14 @@ public class WeatherAPI extends Thread{
         baseDate = formattedDate;
 
         LocalTime currentTime = LocalTime.now();
-        DateTimeFormatter formatMinute = DateTimeFormatter.ofPattern("mm");
         String formattedHour = currentTime.toString().substring(0,2);
-        String formattedMinute = currentTime.format(formatMinute);
 
-        if(Integer.parseInt(formattedMinute) > 30)
-            formattedMinute = "00";
-        else
-            formattedMinute = "00";
+        formattedHour = Integer.toString(Integer.parseInt(formattedHour) - 1);
 
-        baseStrTime =  formattedHour + formattedMinute;
+        baseStrTime =  formattedHour + "00";
+
+        int baseTime = Integer.parseInt(baseStrTime);
+
 
         String s = endPoint+"?serviceKey="+serviceKey
                 +"&pageNo=" + pageNo
@@ -56,7 +54,7 @@ public class WeatherAPI extends Thread{
                 +"&base_time="+baseStrTime
                 +"&nx="+nx
                 +"&ny="+ny;
-        int baseTime = Integer.parseInt(baseStrTime);
+
         String result = "";
         try{
             URL url = new URL(s);
@@ -122,10 +120,6 @@ public class WeatherAPI extends Thread{
             }
         }
 
-//        if(baseTime == 2400)
-//            baseTime = 0;
-//        baseTime = (baseTime / 100 + 1) * 100;
-
         int rainState = -1;
         try{
             baseTime = (baseTime % 2400) + 200;
@@ -135,8 +129,6 @@ public class WeatherAPI extends Thread{
             baseTime = (baseTime % 2400) + 100;
             rainState = Integer.parseInt(ptyMap.get(baseTime));
         }
-
-        rainState = 3;
 
         return rainState;
 
