@@ -114,6 +114,8 @@ public class weightTab extends Fragment {
             while(scanStop.hasNext()){
                 lines.add(scanStop.next()); // 실제읽
             }
+            //weight = Float.parseFloat(lines.get(2));
+            //height_cm = Float.parseFloat(lines.get(3));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,7 +131,7 @@ public class weightTab extends Fragment {
         calculate = (bmi-15)*29.2f;
 
         if (bmi < 20) {
-            String state = "저체중";
+             state = "저체중";
         }
         else if (bmi < 25) {
             state = "정상";
@@ -262,7 +264,13 @@ public class weightTab extends Fragment {
         set2.setColor(Color.rgb(178, 223, 138));
         set2.setCircleColor(Color.rgb(178, 223, 138));
 
+        // set data
         chart.setData(data);
+
+
+
+
+        // 그래프 관련 끝
 
         EditText editText = (EditText)rootView.findViewById(R.id.editTextNumber);
         Button btn = rootView.findViewById(R.id.button);
@@ -304,7 +312,7 @@ public class weightTab extends Fragment {
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-            //    txtView8.setText(editText.getText().toString());
+                //    txtView8.setText(editText.getText().toString());
                 try {
                     String nickname = "someone_weight" + ".txt";
                     InputStream in = null;
@@ -318,7 +326,7 @@ public class weightTab extends Fragment {
                         in = getActivity().openFileInput(nickname);
                     }
                     catch (FileNotFoundException e){
-                       //outputStream.write(Float.toString(weight));
+                        //outputStream.write(Float.toString(weight));
                         outputStream.write(editText.getText().toString()+"\n");
                         outputStream.close();
                         in = getActivity().openFileInput(nickname);
@@ -340,7 +348,7 @@ public class weightTab extends Fragment {
                         history_weight.add(scanStop.next()); // 실제읽
                     }
                     //for(int i=1 ; i<history_weight.size()+1 ; i++){
-                        weight = Float.parseFloat(history_weight.get(history_weight.size()-1));
+                    weight = Float.parseFloat(history_weight.get(history_weight.size()-1));
                     //}
 
                     if (history_weight.size()>1) {
@@ -403,6 +411,9 @@ public class weightTab extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
+
             }
         });
         return rootView;
