@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b9414528-6624-4f2a-9b78-b10bb9fc604f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/render.experimental.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Specification/class diagram.mdj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/google-services.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/com/example/googlemapusingmanual/ExampleInstrumentedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/ic_launcher-playstore.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-hdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-mdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xhdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxhdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxxhdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/values/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/LocationLayer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/MainActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/NetworkTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/NotificationHistoryActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/PermissionUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/PreferenceManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/Threads.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/UtilAndStatics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/WeatherAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/achievementTab.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/etcTab.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/mapTab.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/rankingTab.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/googlemapusingmanual/weightTab.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/achievement.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/app_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/cloudy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/gray.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/pathrecord02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/rainy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/settingtab02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/shower.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/snow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/sunny.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/thunderbolt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/weightrecord02.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/bmi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_adjust_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_category_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_dns_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_flash_on_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_line_weight_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_menu_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_notifications_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_pause_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_stop_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/img1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/position.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/spinner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_notification_history.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_achievement_tab.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_etc_tab.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_map_tab.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_ranking_tab.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_weight_tab.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-night/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/exercises.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/backup_rules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/data_extraction_rules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/example/googlemapusingmanual/ExampleUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/asdzxc.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\yhj\.android\avd\Pixel_5_API_30.avd]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="googleMapUsingManual" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2I83b9zQ9bw8cLGcTPduRleMjYu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DEBUGGABLE_DEVICE" value="Pixel_5_API_30 [emulator-5554]" />
+    <property name="DEBUGGABLE_PROCESS" value="com.example.googlemapusingmanual" />
+    <property name="DEBUGGER_ID" value="Auto" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHOW_ALL_PROCESSES" value="false" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../a2/PICS" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\yhj\Documents\GitHub\a2\PICS\app\src\main\res\drawable" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\yhj\Documents\GitHub\a2\PICS\app\src\main\res\drawable" />
+    </key>
+    <key name="android.template.-1371439403">
+      <recent name="com.example.googlemapusingmanual" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="bundle" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="googleMapUsingManual.app.main" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+      <option name="CLEAR_APP_STORAGE" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+        <option name="PROFILING_MODE" value="NOT_SET" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b9414528-6624-4f2a-9b78-b10bb9fc604f" name="Changes" comment="" />
+      <created>1669549452194</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1669549452194</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
