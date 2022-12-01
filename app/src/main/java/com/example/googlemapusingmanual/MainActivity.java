@@ -2,96 +2,21 @@ package com.example.googlemapusingmanual;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
-import android.Manifest;
 
 import java.util.List;
-
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
-import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.concurrent.Executors;
-import com.google.android.gms.maps.MapsInitializer.Renderer;
-import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
-import org.json.JSONException;
 //import com.example.googlemapusingmanual.PushNotification.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -154,27 +79,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.iconAchievement:
-//                        getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new achievementTab()).commit();
-//                        btnMenu.setVisibility(View.INVISIBLE);
-//                        break;
-//                    case R.id.iconRanking:
-//                        getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new rankingTab()).commit();
-//                        btnMenu.setVisibility(View.INVISIBLE);
-//                        break;
-//                    case R.id.iconMap:
-//                        getSupportFragmentManager().beginTransaction().add(R.id.frameMain, new mapTab()).commit();
-//                        btnMenu.setVisibility(View.VISIBLE);
-//                        break;
-//                    case R.id.iconWeight:
-//                        btnMenu.setVisibility(View.INVISIBLE);
-//                        break;
-//                    case R.id.iconEtc:
-//                        btnMenu.setVisibility(View.INVISIBLE);
-//                        break;
-//                }
-                List<Integer> arr = List.of(R.id.iconAchievement, R.id.iconRanking, R.id.iconMap, R.id.iconWeight, R.id.iconEtc);
+
+                List<Integer> arr = List.of(R.id.iconAchievement, R.id.iconTrace, R.id.iconMap, R.id.iconWeight, R.id.iconEtc);
                 changeFragment(arr.indexOf(item.getItemId()));
                 return true;
 
@@ -208,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 btnMenu.setVisibility(View.INVISIBLE);
                 break;
             case 1: // 랭킹
-                setFragment(new rankingTab());
+                setFragment(new traceTab());
                 btnMenu.setVisibility(View.INVISIBLE);
                 break;
             case 2: // 지도

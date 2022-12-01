@@ -42,12 +42,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/a1"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="120dp"
-        android:layout_marginEnd="50dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -103,7 +101,7 @@
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center" />
     </LinearLayout>
 
@@ -127,7 +125,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="200dp"
         android:layout_marginEnd="120dp"
         android:layout_toEndOf="@+id/textView7"
         android:ems="10"
@@ -136,6 +134,18 @@
         android:hint="kg"
         android:inputType="numberDecimal" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="62dp"
+        android:layout_height="38dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:text="완료 "
+        android:textAlignment="center" />
+
     <TextView
         android:id="@+id/textView7"
         android:layout_width="141dp"
@@ -143,30 +153,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="200dp"
         android:gravity="center"
         android:textAlignment="center" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="331dp"
-        android:layout_height="42dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="46dp"
-        android:layout_marginBottom="48dp" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="62dp"
-        android:layout_height="38dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="255dp"
-        android:layout_marginEnd="50dp"
-        android:gravity="center"
-        android:text="완료 "
-        android:textAlignment="center" />
+
 
 
 </RelativeLayout>
