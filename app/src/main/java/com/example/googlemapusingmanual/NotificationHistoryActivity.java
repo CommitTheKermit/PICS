@@ -40,10 +40,14 @@ public class NotificationHistoryActivity extends AppCompatActivity {
             R.drawable.game
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_history);
+        textureArrayWin[33] = R.drawable.sunny;
+        textureArrayWin[34] = R.drawable.rainy;
+        textureArrayWin[35] = R.drawable.snow;
 
         linear = findViewById(R.id.linear1);
 
@@ -52,6 +56,15 @@ public class NotificationHistoryActivity extends AppCompatActivity {
 
         String setText = "";
         for(int id=0; id<20; id++) {
+            setText = fileRead(id);
+            if(setText != ""){
+                createImgView(id, 200, 200, 100);
+                createTextView(id, 310, -100, setText);
+                setText = "";
+            }
+        }
+
+        for(int id=33; id<36; id++){
             setText = fileRead(id);
             if(setText != ""){
                 createImgView(id, 200, 200, 100);
