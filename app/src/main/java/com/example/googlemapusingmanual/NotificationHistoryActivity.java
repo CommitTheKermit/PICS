@@ -29,7 +29,9 @@ public class NotificationHistoryActivity extends AppCompatActivity {
             R.drawable.bicycle,
             R.drawable.push_up,
             R.drawable.sit_up,
-            R.drawable.game
+            R.drawable.game,
+            R.drawable.rainy,
+            R.drawable.snow
     };
 
     @Override
@@ -43,6 +45,16 @@ public class NotificationHistoryActivity extends AppCompatActivity {
         imageViewArrayList = new ArrayList<ImageView>(20);
 
         String setText = "";
+
+        for(int id=21; id<25; id+=3){
+            setText = fileReadWeather(id);
+            if(setText != ""){
+                createImgView(id, 200, 200, 100);
+                createTextView(id, 310, -100, setText);
+                setText = "";
+            }
+        }
+
         for(int id=0; id<20; id++) {
             setText = fileRead(id);
             if(setText != ""){
@@ -51,6 +63,9 @@ public class NotificationHistoryActivity extends AppCompatActivity {
                 setText = "";
             }
         }
+
+
+
 
 
     }
@@ -96,6 +111,24 @@ public class NotificationHistoryActivity extends AppCompatActivity {
         }
         return readStr;
     }
+
+    public String fileReadWeather(int id) {
+        String readStr = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(getFilesDir() + "weather"+id+".txt"));
+            String str = null;
+            while ((str = br.readLine()) != null) {
+                readStr += str + "\n";
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return readStr;
+    }
+
 
     public void onClickBackButton(View v){
         finish();

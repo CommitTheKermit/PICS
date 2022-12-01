@@ -22,7 +22,6 @@ public class PersonalInfoActivity extends AppCompatActivity {
     private Button btn2, btn3;
     private String nickname, age, weight, height, gender;
     private Spinner spinner;
-    public static UserInfo info; //TODO added
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,25 +56,25 @@ public class PersonalInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-
-                    info = new UserInfo();
                     nickname = nickname_text.getText().toString() + "\n";
                     age = age_text.getText().toString() + "\n";
                     weight = weight_text.getText().toString() + "\n";
                     height = height_text.getText().toString() + "\n";
-                    info.setNickname(nickname);
-                    info.setAge(age);
-                    info.setWeight(weight);
-                    info.setHeight(height);
-                    info.setGender(gender);
+                    LoginActivity.info.setNickname(nickname);
+                    LoginActivity.info.setAge(age);
+                    LoginActivity.info.setWeight(weight);
+                    LoginActivity.info.setHeight(height);
+                    LoginActivity.info.setGender(gender);
 
-                    FileOutputStream outFs = openFileOutput(nickname + "_info.txt", Context.MODE_PRIVATE);
 
-                    outFs.write(info.getNickname().getBytes());
-                    outFs.write(info.getAge().getBytes());
-                    outFs.write(info.getWeight().getBytes());
-                    outFs.write(info.getHeight().getBytes());
-                    outFs.write(info.getGender().getBytes());
+                    String temp = LoginActivity.info.getID();
+                    FileOutputStream outFs = openFileOutput(temp + "_info.txt", Context.MODE_PRIVATE);
+
+                    outFs.write(LoginActivity.info.getNickname().getBytes());
+                    outFs.write(LoginActivity.info.getAge().getBytes());
+                    outFs.write(LoginActivity.info.getWeight().getBytes());
+                    outFs.write(LoginActivity.info.getHeight().getBytes());
+                    outFs.write(LoginActivity.info.getGender().getBytes());
                     outFs.close();
                     Intent intent = new Intent(PersonalInfoActivity.this, MainActivity.class);
                     startActivity(intent);

@@ -48,22 +48,25 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
-
 import com.google.android.gms.maps.MapsInitializer.Renderer;
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
-
 import org.json.JSONException;
 
 public class mapTab extends Fragment implements
@@ -141,6 +144,7 @@ public class mapTab extends Fragment implements
 
         recordHandler = new Handler();
         push = new PushNotification(getActivity().getApplicationContext());
+
         return rootView;
 }
 
@@ -381,13 +385,17 @@ public class mapTab extends Fragment implements
                 gpsCalledCount = 0;
 
 //                something = outputDist;// 운동 끝내고 거리 전달
+                try{
+                    locationManager.removeUpdates(mapTab.this.gpsLocationListener);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
 
-                locationManager.removeUpdates(mapTab.this.gpsLocationListener);
 
                 try {
-
                     // TODO: 2022-11-28  //유저 닉네임 설정
-                    String nickname = PersonalInfoActivity.info.getNickname() + ".txt";
+                    String nickname = LoginActivity.info.getID() + ".txt";
                     InputStream in = null;
                     try {
                         in = getActivity().openFileInput(nickname);
@@ -398,6 +406,9 @@ public class mapTab extends Fragment implements
                                 Context.MODE_PRIVATE
                         ));
 
+//                        BufferedWriter outputStream = new BufferedWriter(new FileWriter(
+//                                nickname, true));
+
                         outputStream.write(
                                 "<CYCLE>\n" +
                                 "</CYCLE>\n"+
@@ -405,8 +416,8 @@ public class mapTab extends Fragment implements
                                 "</RUNNING>\n" +
                                 "<WALKING>\n" +
                                 "</WALKING>");
-
                         outputStream.close();
+
                         in = getActivity().openFileInput(nickname);
                     }
                     
@@ -445,24 +456,6 @@ public class mapTab extends Fragment implements
                     outputStream.write(output.getBytes());
                     outputStream.close();
 
-
-//                    String distances[] = {"", "", ""};
-//                    String exercices[] = {"CYCLE","RUNNING","WALKING"};
-//                    for(int j = 0; j < 3; j++) {
-//                        for (int i = 0; i < lines.size(); i++) {
-//                            int targetLine = lines.get(i).indexOf("<" + exercices[j] + ">");
-//                            if (targetLine != -1) {
-//                                int k = i + 1;
-//                                while (lines.get(k).indexOf("</" + exercices[j] + ">") == -1) {
-//                                    int start = lines.get(k).indexOf("<dist>");
-//                                    int end = lines.get(k).indexOf("</dist>");
-//                                    String temp = lines.get(k).substring(start + 6 , end);
-//                                    distances[j] += temp;
-//                                    k++;
-//                                }
-//                            }
-//                        }
-//                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -474,12 +467,18 @@ public class mapTab extends Fragment implements
         public void onLocationChanged(Location location) {
             // 위치 리스너는 위치정보를 전달할 때 호출되므로 onLocationChanged()메소드 안에 위지청보를 처리를 작업을 구현 해야합니다.
 
+            long now = System.currentTimeMillis();
+            Date date = new Date(now);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 a HH시 mm분 ss초");
+            String getTime = sdf.format(date);
+
             if(rainState == 0){
                 imgWeatherIcon.setImageResource(R.drawable.sunny);
             }
             else if(rainState == 1 || rainState == 2){
                 imgWeatherIcon.setImageResource(R.drawable.rainy);
                 if(MainActivity.pushState == true){
+                    fileWrite(getTime + "\n기상 예보 : 비", 21);
                     push.createNotificationChannel("DEFAULT", "default channel", NotificationManager.IMPORTANCE_HIGH);
                     push.createNotification("DEFAULT", 2, "RECONSIDER YOUR ACTIVITY", "Rain forecasted");
                 }
@@ -487,6 +486,7 @@ public class mapTab extends Fragment implements
             else if(rainState == 3){
                 imgWeatherIcon.setImageResource(R.drawable.snow);
                 if(MainActivity.pushState == true){
+                    fileWrite(getTime + "\n기상 예보 : 눈", 24);
                     push.createNotificationChannel("DEFAULT", "default channel", NotificationManager.IMPORTANCE_HIGH);
                     push.createNotification("DEFAULT", 3, "RECONSIDER YOUR ACTIVITY", "Snow forecasted");
                 }
@@ -629,5 +629,17 @@ public class mapTab extends Fragment implements
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    public void fileWrite(String text, int id){
+        try{
+            BufferedWriter bw = new BufferedWriter(new FileWriter(
+                    getActivity().getFilesDir()+"weather"+id+".txt", false));
+            bw.write(text);
+            bw.newLine();
+            bw.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

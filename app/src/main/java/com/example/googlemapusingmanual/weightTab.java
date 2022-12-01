@@ -53,7 +53,7 @@ public class weightTab extends Fragment {
                              Bundle savedInstanceState) {
 
         try {
-            String nickname = PersonalInfoActivity.info.getNickname() + "_info.txt";
+            String nickname = LoginActivity.info.getID() + "_info.txt";
             InputStream in_2 = null;
             in_2 = getActivity().openFileInput(nickname);
 
@@ -152,7 +152,7 @@ public class weightTab extends Fragment {
         ArrayList<Entry> values_2 = new ArrayList<>();
 
         try {
-            String nickname = "someone_weight" + ".txt";
+            String nickname = LoginActivity.info.getID() + "_weight" + ".txt";
             InputStream in_3 = null;
             in_3 = getActivity().openFileInput(nickname);
 
@@ -254,7 +254,7 @@ public class weightTab extends Fragment {
             public void onClick(View view) {
 
                 try {
-                    String nickname = "someone_weight" + ".txt";
+                    String nickname = LoginActivity.info.getID() + "_weight" + ".txt";
                     InputStream in = null;
                     OutputStreamWriter outputStream = new OutputStreamWriter(getActivity().openFileOutput(
                             nickname, Context.MODE_APPEND));
@@ -325,7 +325,7 @@ public class weightTab extends Fragment {
                     txtView6.setText(String.format("현재 당신은 '%s'에 해당합니다.",state));
 
                     try {
-                        String nickname_1 = "Personal_Info" + ".txt";
+                        String nickname_1 = LoginActivity.info.getID() + "_Info" + ".txt";
                         InputStream in_1 = null;
                         OutputStreamWriter outputStream_1 = new OutputStreamWriter(getActivity().openFileOutput(
                                 nickname_1,
