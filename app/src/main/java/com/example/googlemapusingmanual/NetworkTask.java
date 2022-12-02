@@ -25,7 +25,7 @@ public class NetworkTask extends AsyncTask<Void, Void, Void> {
 
         WeatherAPI weather = new WeatherAPI();
         try {
-            this.rainState = weather.func(11,20,this.maptab);
+            this.rainState = weather.func(this.maptab);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

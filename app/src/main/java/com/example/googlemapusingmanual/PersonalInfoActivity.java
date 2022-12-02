@@ -24,18 +24,17 @@ import java.util.Map;
 public class PersonalInfoActivity extends AppCompatActivity {
 
     private EditText nickname_text, age_text, weight_text, height_text;
-    private Button btn2, btn3;
+    private Button Info_save, Info_cancel;
     private String nickname, age, weight, height, gender;
     private Spinner spinner;
     private DatabaseReference mDataRef;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
 
-        btn2 = findViewById(R.id.sava_btn);
-        btn3 = findViewById(R.id.cancle_btn);
+        Info_save = findViewById(R.id.sava_btn);
+        Info_cancel = findViewById(R.id.cancle_btn);
         nickname_text = findViewById(R.id.NicknameText);
         age_text = findViewById(R.id.AgeText);
         weight_text = findViewById(R.id.WeightText);
@@ -44,6 +43,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         mDataRef = FirebaseDatabase.getInstance().getReference("Pick");
         Map<String, Object> checkMap = new HashMap<String, Object>();
         checkMap.put("check","1");
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -61,29 +61,31 @@ public class PersonalInfoActivity extends AppCompatActivity {
             }
         });
 
-        btn2.setOnClickListener(new View.OnClickListener() {
-            LoginActivity id1 = new LoginActivity();
+        Info_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    FileOutputStream outFs = openFileOutput("Personal_Info.txt", Context.MODE_PRIVATE);
-                    UserInfo info = new UserInfo();
                     nickname = nickname_text.getText().toString() + "\n";
                     age = age_text.getText().toString() + "\n";
                     weight = weight_text.getText().toString() + "\n";
                     height = height_text.getText().toString() + "\n";
-                    info.setNickname(nickname);
-                    info.setAge(age);
-                    info.setWeight(weight);
-                    info.setHeight(height);
-                    info.setGender(gender);
-                    outFs.write(info.getNickname().getBytes());
-                    outFs.write(info.getAge().getBytes());
-                    outFs.write(info.getWeight().getBytes());
-                    outFs.write(info.getHeight().getBytes());
-                    outFs.write(info.getGender().getBytes());
+                    LoginActivity.info.setNickname(nickname);
+                    LoginActivity.info.setAge(age);
+                    LoginActivity.info.setWeight(weight);
+                    LoginActivity.info.setHeight(height);
+                    LoginActivity.info.setGender(gender);
+
+
+                    String temp = LoginActivity.info.getID();
+                    FileOutputStream outFs = openFileOutput(temp + "_info.txt", Context.MODE_PRIVATE);
+
+                    outFs.write(LoginActivity.info.getNickname().getBytes());
+                    outFs.write(LoginActivity.info.getAge().getBytes());
+                    outFs.write(LoginActivity.info.getWeight().getBytes());
+                    outFs.write(LoginActivity.info.getHeight().getBytes());
+                    outFs.write(LoginActivity.info.getGender().getBytes());
                     outFs.close();
-                    mDataRef.child("IdCheck").child(id1.id).updateChildren(checkMap);
+                    mDataRef.child("IdCheck").child(temp).updateChildren(checkMap);
                     Intent intent = new Intent(PersonalInfoActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -92,7 +94,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
             }
         });
 
-        btn3.setOnClickListener(new View.OnClickListener() {
+        Info_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PersonalInfoActivity.this, LoginActivity.class);

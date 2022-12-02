@@ -6,6 +6,7 @@ public class UserInfo {
     private String weight;
     private String height;
     private String gender;
+    private String ID; //TODO added
 
     public String getNickname() {
         return nickname;
@@ -46,4 +47,9 @@ public class UserInfo {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public void setID(String s) {this.ID = s;}
+
+    public String getID() {return this.ID;}
+
 }

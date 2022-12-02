@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 @SuppressWarnings("deprecation")
 public class FindActivity extends TabActivity {
 
-    private Button btn3, btn4, btn5, btn6;
+    private Button IdFind_btn, IdFind_Cancel, PwdFind_btn, PwdFind_Cancel;
     private EditText id_phn, pwd_email, pwd_phn;
     private TextView id_textView, pwd_textView;
     private String email, number;
@@ -33,10 +33,10 @@ public class FindActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find);
 
-        btn3 = findViewById(R.id.btn3);
-        btn4 = findViewById(R.id.btn4);
-        btn5 = findViewById(R.id.btn5);
-        btn6 = findViewById(R.id.btn6);
+        IdFind_btn = findViewById(R.id.btn3);
+        IdFind_Cancel = findViewById(R.id.btn4);
+        PwdFind_btn = findViewById(R.id.btn5);
+        PwdFind_Cancel = findViewById(R.id.btn6);
         id_phn = findViewById(R.id.id_phnumEditText);
         pwd_email = findViewById(R.id.pwd_emailEditText);
         pwd_phn = findViewById(R.id.pwd_phnumEditText);
@@ -58,7 +58,7 @@ public class FindActivity extends TabActivity {
 
         tabHost.setCurrentTab(0);
 
-        btn3.setOnClickListener(new View.OnClickListener() {
+        IdFind_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 number = id_phn.getText().toString();
@@ -77,7 +77,7 @@ public class FindActivity extends TabActivity {
                 });
             }
         });
-        btn4.setOnClickListener(new View.OnClickListener() {
+        IdFind_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FindActivity.this, LoginActivity.class);
@@ -85,7 +85,7 @@ public class FindActivity extends TabActivity {
                 finish();
             }
         });
-        btn5.setOnClickListener(new View.OnClickListener() {
+        PwdFind_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 number = pwd_phn.getText().toString();
@@ -107,7 +107,7 @@ public class FindActivity extends TabActivity {
             }
         });
 
-        btn6.setOnClickListener(new View.OnClickListener() {
+        PwdFind_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FindActivity.this, LoginActivity.class);

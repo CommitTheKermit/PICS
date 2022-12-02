@@ -1,15 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".etcTab"
-    android:id="@+id/tabEtc">
+    tools:context=".etcTab">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/btnWithdrawal"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@android:color/white"
+        android:onClick="onClickWithdrawalButton"
+        android:text="회원 탈퇴"
+        android:textColor="#050505" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/btnWithdrawal"
+        android:backgroundTint="@android:color/white"
+        android:onClick="onClickLogoutButton"
+        android:text="로그아웃"
+        android:textColor="#050505" />
+
+    <Switch
+        android:id="@+id/pushSwitch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnWithdrawal"
+        android:layout_marginTop="30dp"
+        android:text="푸쉬 알림 활성화"
+        android:textAlignment="center" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/btnMainScreenSet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@android:color/white"
+        android:onClick="onClickSetMainScreenButton"
+        android:text="메인 화면 설정"
+        android:textColor="#000000"
+        android:layout_below="@id/pushSwitch"/>
+
+    <Button
+        android:id="@+id/btnWeatherDelay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@android:color/white"
+        android:onClick="onClickWeatherDelayButton"
+        android:text="기상 정보 딜레이 설정"
+        android:textColor="#050505"
+        android:layout_below="@id/btnMainScreenSet"/>
+
+</RelativeLayout>
