@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                     || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    Toast.makeText(this, "외부 저장소 사용을 위해 읽기/쓰기 필요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "저장소 사용 권한", Toast.LENGTH_SHORT).show();
                 }
 
                 requestPermissions(new String[]
@@ -156,20 +156,10 @@ public class LoginActivity extends AppCompatActivity {
                                         mDataRef.child("IdCheck").child(id_arr[0]).updateChildren(checkMap);
                                         Intent intent = new Intent(LoginActivity.this, PersonalInfoActivity.class);
                                         startActivity(intent);
-                                        finish();
                                     }
                                     else{
-//                                        InputStream in = null;
-//                                        try {
-//                                            in = openFileInput(id_arr[0] + "_info.txt");
-//                                        }
-//                                        catch (FileNotFoundException e){
-//                                            e.printStackTrace();
-//                                        }
-
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
-                                        finish();
                                     }
                                 }
 

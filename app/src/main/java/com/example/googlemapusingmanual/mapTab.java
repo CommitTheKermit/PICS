@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -145,6 +146,7 @@ public class mapTab extends Fragment implements
         recordHandler = new Handler();
         push = new PushNotification(getActivity().getApplicationContext());
 
+
         return rootView;
 }
 
@@ -198,7 +200,7 @@ public class mapTab extends Fragment implements
             public void run() {
 
                 if(running == false){
-                    Toast.makeText(getActivity().getApplicationContext(),"stopped thread " + gpsCalledCount,Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity().getApplicationContext(),"stopped thread " + gpsCalledCount,Toast.LENGTH_SHORT).show();
 
                     //멈춤 감지에서 다시 움직인다 판정
                     //사람의 평균 보행시속은 4.8km/h
@@ -208,11 +210,12 @@ public class mapTab extends Fragment implements
                         running = true;
                         Toast.makeText(getActivity().getApplicationContext(), "자동 시작 : " + avgSpeed, Toast.LENGTH_SHORT).show();
                         gpsCalledCount = 0;
+
                     }
                 }
                 else{
                     gpsCalledCount -= 1;
-                    Toast.makeText(getActivity().getApplicationContext(), "count subed " + gpsCalledCount,Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity().getApplicationContext(), "count subed " + gpsCalledCount,Toast.LENGTH_SHORT).show();
 
                     if(latLngList.size() < 2){
                         gpsCalledCount += 1;
@@ -265,6 +268,7 @@ public class mapTab extends Fragment implements
                         sum += item;
                     }
                     avgSpeed = sum / speedList.size();
+                    avgSpeed = Math.round(avgSpeed * 100) / 100;
                     txtAvgSpeed.setText(avgSpeed + "km/h");
 
 
@@ -501,11 +505,11 @@ public class mapTab extends Fragment implements
             outerCurrentLon = currentLon;
 
             gpsCalledCount += 1;
-            Toast.makeText(getActivity().getApplicationContext(),"count " + gpsCalledCount, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity().getApplicationContext(),"count " + gpsCalledCount, Toast.LENGTH_SHORT).show();
 
             if( running == false){
                 LatLng currentLocMarker = new LatLng(currentLat,currentLon);
-                map.addMarker(new MarkerOptions().position(currentLocMarker));//TODO 삭제시킬것
+//                map.addMarker(new MarkerOptions().position(currentLocMarker));//TODO 삭제시킬것
                 pauseLatLngList.add(currentLocMarker);
 
                 timeArray[2] = timeArray[3];
@@ -516,20 +520,20 @@ public class mapTab extends Fragment implements
             }
 
             LatLng currentLocMarker = new LatLng(currentLat,currentLon);
-            map.addMarker(new MarkerOptions().position(currentLocMarker));//TODO 삭제시킬것
+//            map.addMarker(new MarkerOptions().position(currentLocMarker));//TODO 삭제시킬것
             latLngList.add(currentLocMarker);
 
             if(latLngList.size() > 1){
                 Polyline polyline = map.addPolyline(new PolylineOptions().addAll(latLngList)
-                        .width(10)
+                        .width(20)
                         .color(Color.RED));
             }
 
             timeArray[0] = timeArray[1];
             timeArray[1] = (SystemClock.elapsedRealtime()
                     - chronoElapsedTime.getBase()) / 1000;
-            Log.d("DEBUG","timeArray   " + timeArray[1]);
-            Log.d("DEBUG","마커 개수   " + latLngList.size());
+//            Log.d("DEBUG","timeArray   " + timeArray[1]);
+//            Log.d("DEBUG","마커 개수   " + latLngList.size());
 
 
 
