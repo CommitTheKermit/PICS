@@ -21,7 +21,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PushNotification push = new PushNotification(this);
     private BottomNavigationView bottomNavigation;
     private ImageButton btnLogo, btnNotification, btnMenu ;
     private final String DEFAULT = "DEFAULT";

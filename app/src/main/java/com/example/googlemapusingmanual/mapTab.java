@@ -106,11 +106,6 @@ public class mapTab extends Fragment implements
 
     public static String currentExerciseType = "WALKING";
 
-    private double outerCurrentLat = 0;
-    private double outerCurrentLon = 0;
-
-    private Dialog dialogView;
-
     private ArrayList<LatLng> latLngList = new ArrayList<>();
     private ArrayList<Float> speedList = new ArrayList();
     private ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
@@ -146,12 +141,13 @@ public class mapTab extends Fragment implements
         recordHandler = new Handler();
         push = new PushNotification(getActivity().getApplicationContext());
 
-
         return rootView;
 }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+
+
 
         map = googleMap;
         map.setOnMyLocationButtonClickListener(this);
@@ -200,7 +196,6 @@ public class mapTab extends Fragment implements
             public void run() {
 
                 if(running == false){
-//                    Toast.makeText(getActivity().getApplicationContext(),"stopped thread " + gpsCalledCount,Toast.LENGTH_SHORT).show();
 
                     //멈춤 감지에서 다시 움직인다 판정
                     //사람의 평균 보행시속은 4.8km/h
@@ -500,9 +495,6 @@ public class mapTab extends Fragment implements
 
             double currentLat = location.getLatitude();
             double currentLon = location.getLongitude();
-
-            outerCurrentLat = currentLat;
-            outerCurrentLon = currentLon;
 
             gpsCalledCount += 1;
 //            Toast.makeText(getActivity().getApplicationContext(),"count " + gpsCalledCount, Toast.LENGTH_SHORT).show();
