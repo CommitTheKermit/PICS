@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
     private ImageButton btnLogo, btnNotification, btnMenu ;
     private final String DEFAULT = "DEFAULT";
-    static int mainScreenID = 2;
-    static boolean pushState;
+    public static int mainScreenID = 2;
+    public static boolean pushState;
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {

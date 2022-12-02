@@ -116,7 +116,7 @@ public class mapTab extends Fragment implements
     private ArrayList<LatLng> pauseLatLngList = new ArrayList<>();
 
     private MapView mapView;
-    PushNotification push;
+    private PushNotification push;
     public static int weatherDelay = 1;
 
 
