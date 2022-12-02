@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class weightTab extends Fragment {
     float height_cm = 0;
@@ -49,6 +50,7 @@ public class weightTab extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
         try {
             String nickname = LoginActivity.info.getID() + "_info.txt";
@@ -74,13 +76,13 @@ public class weightTab extends Fragment {
         }
 
         View rootView = inflater.inflate(R.layout.fragment_weight_tab, container, false);
-
+        float temp = MainActivity.bottomNavigation.getWidth() - 30;
         weight = Float.parseFloat(personal_info_arr.get(2));
         height_cm = Float.parseFloat(personal_info_arr.get(3));
         height_m = height_cm / 100;
         ideal_weight = (height_cm - 100) * 0.9f;
         bmi = weight / (height_m * height_m);
-        user_bmi_position = (bmi-15)*29.2f;
+        user_bmi_position = (bmi - 15) * (temp / 20);
 
         check_bmi_state();
 
@@ -229,15 +231,25 @@ public class weightTab extends Fragment {
         txtView7.setTextSize(15);
         txtView7.setText(String.format("변화된 체중 입력   :"));
 
-        weight = Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-1));
-        if (weight_record_arr.size()>1) {
-            difference_with_latestRecord = Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-1)) - Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-2));
+        try{
+            weight = Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-1));
+            if (weight_record_arr.size()>1) {
+                difference_with_latestRecord = Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-1)) - Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-2));
+            }
+            else {
+                difference_with_latestRecord =0;
+            }
+            difference_with_firstRecord = Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-1)) - Float.parseFloat(weight_record_arr.get(0));
         }
-        else {
+        catch (Exception e){
+
             difference_with_latestRecord =0;
+            difference_with_firstRecord=0;
         }
 
-        difference_with_firstRecord = Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-1)) - Float.parseFloat(weight_record_arr.get(0));
+
+
+
 
         txtView1.setText(String.format("당신의 이상적 체중은 %.1f kg 입니다.\n당신의 현재 체중은 %.1f kg 입니다.",ideal_weight,weight));
         txtView4.setText(String.format("%+.1f kg",difference_with_latestRecord));
@@ -278,21 +290,6 @@ public class weightTab extends Fragment {
                     while(scanStop.hasNext()){
                         weight_record_arr.add(scanStop.next());
                     }
-
-                    weight = Float.parseFloat(weight_record_arr.get(weight_record_arr.size()-1));
-
-
-                    height_m = height_cm / 100;
-                    ideal_weight = (height_cm - 100) * 0.9f;
-                    bmi = weight / (height_m * height_m);
-                    user_bmi_position = (bmi-15)*29.2f;
-
-                    check_bmi_state();
-
-                    imageView1.setX(user_bmi_position);
-
-
-
 
                     try {
                         String nickname_1 = LoginActivity.info.getID() + "_info" + ".txt";

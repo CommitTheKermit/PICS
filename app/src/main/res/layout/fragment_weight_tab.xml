@@ -8,7 +8,6 @@
     android:id="@+id/tabAchieve"
     android:background="@color/white">
 
-
     <LinearLayout
         android:id="@+id/a1"
         android:layout_width="match_parent"
