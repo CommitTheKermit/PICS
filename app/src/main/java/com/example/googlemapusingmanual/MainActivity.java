@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static BottomNavigationView bottomNavigation;
     private ImageButton btnLogo, btnNotification, btnMenu ;
-    private final String DEFAULT = "DEFAULT";
     public static int mainScreenID = 2;
     public static boolean pushState;
 
@@ -57,11 +56,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-
-
-
         bottomNavigation = (BottomNavigationView) findViewById(R.id.bottomNavigation);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide(); //상단 바 없애기
@@ -89,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeFragment(mainScreenID);
+                bottomNavigation.getMenu().getItem(mainScreenID).setChecked(true);
+
             }
         });
 
@@ -100,11 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        if(pushState == true){
-//            createNotificationChannel(DEFAULT, "default channel", NotificationManager.IMPORTANCE_HIGH);
-//            createNotification(DEFAULT, -1, "Notification is on", "set on last run");
-//        }
-
     }
     private void changeFragment(int screenId) {
         switch (screenId) {
@@ -140,21 +131,4 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frameMain, fragment)
                 .commit();
     }
-
-//    //    Notification
-//    public void createNotificationChannel(String channelId, String channelName, int importance){
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-//            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, importance));
-//        }
-//    }
-//
-//    public void createNotification(String channelId, int id, String title, String text){
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
-//                .setPriority(NotificationCompat.PRIORITY_HIGH).setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle(title).setContentText(text)
-//                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-//        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-//        notificationManager.notify(id, builder.build());
-//    }
 }

@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
     private String email,pwd,check_num;
     private String[] id_arr;
     private DatabaseReference mDataRef;
-    public static UserInfo info = new UserInfo(); //TODO added
+    public static UserInfo info = new UserInfo();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

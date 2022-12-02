@@ -82,7 +82,7 @@ public class weightTab extends Fragment {
         height_m = height_cm / 100;
         ideal_weight = (height_cm - 100) * 0.9f;
         bmi = weight / (height_m * height_m);
-        user_bmi_position = (bmi - 15) * (temp / 20);
+        user_bmi_position = (bmi - 15) * (temp / 25) - 20;
 
         check_bmi_state();
 

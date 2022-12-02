@@ -121,15 +121,14 @@ public class WeatherAPI extends Thread{
         }
 
         int rainState = -1;
-//        try{
-//            baseTime = (baseTime % 2400) + 200;
-//            rainState = Integer.parseInt(ptyMap.get(baseTime));
-//        }
-//        catch (Exception e){
-//            baseTime = (baseTime % 2400) + 100;
-//            rainState = Integer.parseInt(ptyMap.get(baseTime));//TODO 테스트 끝나면 살릴것
-//        }
-        rainState = 3;
+        try{
+            baseTime = (baseTime % 2400) + 200;
+            rainState = Integer.parseInt(ptyMap.get(baseTime));
+        }
+        catch (Exception e){
+            baseTime = (baseTime % 2400) + 100;
+            rainState = Integer.parseInt(ptyMap.get(baseTime));//TODO 테스트 끝나면 살릴것
+        }
 
         return rainState;
 

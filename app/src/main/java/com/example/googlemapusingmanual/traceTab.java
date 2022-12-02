@@ -3,6 +3,8 @@ package com.example.googlemapusingmanual;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -50,12 +54,24 @@ public class traceTab extends Fragment {
                 personal_exerciseTime_list=new String(b);
 
             } catch (IOException e) {
-                Log.d("kermit",e.getMessage());
+                MainActivity.bottomNavigation.getMenu().getItem(2).setChecked(true);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameMain, new mapTab())
+                        .commit();
+                Toast.makeText(getActivity().getApplicationContext(), "기록 없음!",Toast.LENGTH_SHORT).show();
+                return null;
             }
             in.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            MainActivity.bottomNavigation.getMenu().getItem(2).setChecked(true);
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frameMain, new mapTab())
+                    .commit();
+            Toast.makeText(getActivity().getApplicationContext(), "기록 없음!",Toast.LENGTH_SHORT).show();
+            return null;
         }
 
         extract_data();
@@ -107,8 +123,8 @@ public class traceTab extends Fragment {
         yAxisLeft.setDrawAxisLine(false);
         yAxisLeft.setAxisLineWidth(2);
         yAxisLeft.setAxisMinimum(0); // 최솟값
-        yAxisLeft.setAxisMaximum(15); // 최댓값
-        yAxisLeft.setGranularity(5f); // 값만큼 라인설정
+        yAxisLeft.setAxisMaximum(5); // 최댓값
+        yAxisLeft.setGranularity(1f); // 값만큼 라인설정
 
         YAxis yAxis = walking_chart.getAxisRight();
         yAxis.setDrawLabels(false); // label 삭제
@@ -116,8 +132,8 @@ public class traceTab extends Fragment {
         yAxis.setDrawAxisLine(false);
         yAxis.setAxisLineWidth(2);
         yAxis.setAxisMinimum(0); // 최솟값
-        yAxis.setAxisMaximum(15); // 최댓값
-        yAxis.setGranularity(5f);// 값만큼 라인설정
+        yAxis.setAxisMaximum(5); // 최댓값
+        yAxis.setGranularity(1f);// 값만큼 라인설정
 
         ArrayList<Entry> weight_value_in_walkingGraph = new ArrayList<>();
 
@@ -183,8 +199,8 @@ public class traceTab extends Fragment {
         yAxisLeft_2.setDrawAxisLine(false);
         yAxisLeft_2.setAxisLineWidth(2);
         yAxisLeft_2.setAxisMinimum(0); // 최솟값
-        yAxisLeft_2.setAxisMaximum(15); // 최댓값
-        yAxisLeft_2.setGranularity(5f); // 값만큼 라인설정
+        yAxisLeft_2.setAxisMaximum(5); // 최댓값
+        yAxisLeft_2.setGranularity(1f); // 값만큼 라인설정
 
         // YAxis(Left) (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
         YAxis yAxis_2 = running_chart.getAxisRight();
@@ -192,8 +208,8 @@ public class traceTab extends Fragment {
         yAxis_2.setTextColor(Color.rgb(70, 50, 70));
         yAxis_2.setDrawAxisLine(false);
         yAxis_2.setAxisLineWidth(2);
-        yAxis_2.setAxisMaximum(15); // 최댓값
-        yAxis_2.setGranularity(5f);// 값만큼 라인설정
+        yAxis_2.setAxisMaximum(5); // 최댓값
+        yAxis_2.setGranularity(1f);// 값만큼 라인설정
 
         ArrayList<Entry> weight_value_in_runningGraph= new ArrayList<>();
 
@@ -261,8 +277,8 @@ public class traceTab extends Fragment {
         yAxisLeft_3.setDrawAxisLine(false);
         yAxisLeft_3.setAxisLineWidth(2);
         yAxisLeft_3.setAxisMinimum(0); // 최솟값
-        yAxisLeft_3.setAxisMaximum(15); // 최댓값
-        yAxisLeft_3.setGranularity(5f); // 값만큼 라인설정
+        yAxisLeft_3.setAxisMaximum(5); // 최댓값
+        yAxisLeft_3.setGranularity(1f); // 값만큼 라인설정
 
         // YAxis(Left) (오른쪽) - 선 유무, 데이터 최솟값/최댓값, 색상
         YAxis yAxis_3 = cycle_chart.getAxisRight();
@@ -271,8 +287,8 @@ public class traceTab extends Fragment {
         yAxis_3.setDrawAxisLine(false);
         yAxis_3.setAxisLineWidth(2);
         yAxis_3.setAxisMinimum(0); // 최솟값
-        yAxis_3.setAxisMaximum(15); // 최댓값
-        yAxis_3.setGranularity(5f);// 값만큼 라인설정
+        yAxis_3.setAxisMaximum(5); // 최댓값
+        yAxis_3.setGranularity(1f);// 값만큼 라인설정
 
         ArrayList<Entry> weight_value_in_cycleGraph = new ArrayList<>();
 
@@ -314,40 +330,84 @@ public class traceTab extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?>parent, View view, int position, long id) {
                 if (position==0) {
-                    latest_distance = Float.parseFloat(time_walking.get(time_walking.size() - 1));
-                    for (int i = 0; i < time_walking.size(); i++) {
-                        sum_of_distance += Float.parseFloat(time_walking.get(i));
+                    try{
+                        latest_distance = Float.parseFloat(time_walking.get(time_walking.size() - 1));
+                        for (int i = 0; i < time_walking.size(); i++) {
+                            sum_of_distance += Float.parseFloat(time_walking.get(i));
+                        }
+                        sum_of_distance = Math.round(sum_of_distance*100)/100.0;
+
+                        walking_chart.setVisibility(View.VISIBLE);
+                        running_chart.setVisibility(View.INVISIBLE);
+                        cycle_chart.setVisibility(View.INVISIBLE);
+                        walking_chart.setEnabled(true);
+                        running_chart.setEnabled(false);
+                        cycle_chart.setEnabled(false);
                     }
-                    sum_of_distance = Math.round(sum_of_distance*100)/100.0;
-
-                    walking_chart.setVisibility(View.VISIBLE);
-                    running_chart.setVisibility(View.INVISIBLE);
-                    cycle_chart.setVisibility(View.INVISIBLE);
-
+                    catch (Exception e)
+                    {
+                        Toast.makeText(getActivity().getApplicationContext(), "기록 없음!",Toast.LENGTH_SHORT).show();
+                        MainActivity.bottomNavigation.getMenu().getItem(2).setChecked(true);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.frameMain, new mapTab())
+                                .commit();
+                        return;
+                    }
                 }
                 if (position==1) {
-                    latest_distance = Float.parseFloat(time_running.get(time_running.size() - 1));
-                    for (int i = 0; i < time_running.size(); i++) {
-                        sum_of_distance += Float.parseFloat(time_running.get(i));
+
+                    try{
+                        latest_distance = Float.parseFloat(time_running.get(time_running.size() - 1));
+                        for (int i = 0; i < time_running.size(); i++) {
+                            sum_of_distance += Float.parseFloat(time_running.get(i));
+                        }
+                        sum_of_distance = Math.round(sum_of_distance*100)/100.0;
+
+                        walking_chart.setVisibility(View.INVISIBLE);
+                        running_chart.setVisibility(View.VISIBLE);
+                        cycle_chart.setVisibility(View.INVISIBLE);
+                        walking_chart.setEnabled(false);
+                        running_chart.setEnabled(true);
+                        cycle_chart.setEnabled(false);
                     }
-                    sum_of_distance = Math.round(sum_of_distance*100)/100.0;
-
-                    walking_chart.setVisibility(View.INVISIBLE);
-                    running_chart.setVisibility(View.VISIBLE);
-                    cycle_chart.setVisibility(View.INVISIBLE);
-
+                    catch (Exception e)
+                    {
+                        Toast.makeText(getActivity().getApplicationContext(), "기록 없음!",Toast.LENGTH_SHORT).show();
+                        MainActivity.bottomNavigation.getMenu().getItem(2).setChecked(true);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.frameMain, new mapTab())
+                                .commit();
+                        return;
+                    }
                 }
                 if (position==2) {
-                    latest_distance = Float.parseFloat(time_cycle.get(time_running.size() - 1));
-                    for (int i = 0; i < time_cycle.size(); i++) {
-                        sum_of_distance += Float.parseFloat(time_cycle.get(i));
+
+                    try{
+                        latest_distance = Float.parseFloat(time_cycle.get(time_running.size() - 1));
+                        for (int i = 0; i < time_cycle.size(); i++) {
+                            sum_of_distance += Float.parseFloat(time_cycle.get(i));
+                        }
+                        sum_of_distance = Math.round(sum_of_distance*100)/100.0;
+
+                        walking_chart.setVisibility(View.INVISIBLE);
+                        running_chart.setVisibility(View.INVISIBLE);
+                        cycle_chart.setVisibility(View.VISIBLE);
+                        walking_chart.setEnabled(false);
+                        running_chart.setEnabled(false);
+                        cycle_chart.setEnabled(true);
                     }
-                    sum_of_distance = Math.round(sum_of_distance*100)/100.0;
-
-                    walking_chart.setVisibility(View.INVISIBLE);
-                    running_chart.setVisibility(View.INVISIBLE);
-                    cycle_chart.setVisibility(View.VISIBLE);
-
+                    catch (Exception e)
+                    {
+                        Toast.makeText(getActivity().getApplicationContext(), "기록 없음!",Toast.LENGTH_SHORT).show();
+                        MainActivity.bottomNavigation.getMenu().getItem(2).setChecked(true);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.frameMain, new mapTab())
+                                .commit();
+                        return;
+                    }
                 }
 
                 txtView1.setText(exerciseList[position] + " 최근 이동거리 : " + latest_distance + " km");
