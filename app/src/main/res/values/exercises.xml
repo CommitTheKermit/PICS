@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="운동">
+        <item>사이클</item>
+        <item>달리기</item>
+        <item>걷기</item>
+    </string-array>
+</resources>

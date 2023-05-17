@@ -1,4 +1,4 @@
-package com.example.googlemapusingmanual;
+package com.example.googlemapusingmanual.Utils;
 
 import android.Manifest;
 import android.Manifest.permission;
